@@ -943,28 +943,40 @@ function initStickyCards(pinEl, cards){
     scrollTimeline.to(nextCard, { y: '0%', duration: 1, ease: 'none' }, i);
   }
 }
-sizeDeckToContent('expDeck', {min:320, max:820});
-sizeDeckToContent('eduDeck', {min:260, max:560});
-sizeDeckToContent('achDeck', {min:180, max:380});
+// The fixed `max` caps here were tuned for desktop line-wrapping; on narrow
+// viewports the same bullet/description text wraps into far more lines, so the
+// natural card height can run well past those caps and gets clipped inside the
+// pinned sticky-scroll container instead of resizing to fit. Use a much higher
+// ceiling under the card-text mobile breakpoint so decks size to their actual
+// (taller) mobile content.
+function deckMax(desktopMax, mobileMax){
+  return window.innerWidth <= 980 ? mobileMax : desktopMax;
+}
+sizeDeckToContent('expDeck', {min:320, max:deckMax(820, 2200)});
+sizeDeckToContent('eduDeck', {min:260, max:deckMax(560, 1400)});
+sizeDeckToContent('achDeck', {min:180, max:deckMax(380, 900)});
 
 initStickyCards(document.getElementById('expCards'), document.querySelectorAll('#expDeck .deck-card'));
 initStickyCards(document.getElementById('eduCards'), document.querySelectorAll('#eduDeck .deck-card'));
 initStickyCards(document.getElementById('achCards'), document.querySelectorAll('#achDeck .deck-card'));
 
-if (document.fonts && document.fonts.ready) {
-  document.fonts.ready.then(() => ScrollTrigger.refresh());
+function resizeDecksToContent(){
+  sizeDeckToContent('expDeck', {min:320, max:deckMax(820, 2200)});
+  sizeDeckToContent('eduDeck', {min:260, max:deckMax(560, 1400)});
+  sizeDeckToContent('achDeck', {min:180, max:deckMax(380, 900)});
 }
-window.addEventListener('load', () => ScrollTrigger.refresh());
+if (document.fonts && document.fonts.ready) {
+  // Re-measure once web fonts land -- the initial sizeDeckToContent() calls above
+  // can run before Space Grotesk is ready, under-measuring wrapped card text
+  // (especially on narrow/mobile widths) and leaving the pinned deck box short.
+  document.fonts.ready.then(() => { resizeDecksToContent(); ScrollTrigger.refresh(); });
+}
+window.addEventListener('load', () => { resizeDecksToContent(); ScrollTrigger.refresh(); });
 
 let resizeTO;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTO);
-  resizeTO = setTimeout(() => {
-    sizeDeckToContent('expDeck', {min:320, max:820});
-    sizeDeckToContent('eduDeck', {min:260, max:560});
-    sizeDeckToContent('achDeck', {min:180, max:380});
-    ScrollTrigger.refresh();
-  }, 200);
+  resizeTO = setTimeout(() => { resizeDecksToContent(); ScrollTrigger.refresh(); }, 200);
 });
 
 /* Skills marquee */
