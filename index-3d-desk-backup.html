@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Jai Anklesaria — Product Designer</title>
+<meta name="description" content="Product Designer · UI/UX · MSc HCI, Nottingham"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em}
+
+/* ─── Loading ─────────────────────────────────── */
+#loading{position:fixed;inset:0;z-index:200;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .6s ease}
+#ld-name{font-size:clamp(18px,2.5vw,28px);font-weight:600;color:#fff;letter-spacing:-.02em}
+#ld-bar{width:180px;height:1px;background:rgba(255,255,255,0.1)}
+#ld-fill{height:1px;background:#fff;width:0%;transition:width .04s}
+#ld-pct{font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.1em}
+
+/* ─── WebGL canvas ───────────────────────────── */
+#webgl{position:fixed;inset:0;z-index:1}
+#webgl canvas{width:100%!important;height:100%!important}
+
+/* ─── UI overlay ─────────────────────────────── */
+#ui{position:fixed;inset:0;z-index:10;pointer-events:none}
+
+/* ─── Nav top-left ───────────────────────────── */
+#nav{position:absolute;top:20px;left:24px;display:flex;align-items:center;gap:10px;pointer-events:all}
+#nav-logo{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.08);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .2s}
+#nav-logo:hover{background:rgba(255,255,255,0.15)}
+#nav-links{height:40px;display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.07);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.1);border-radius:9999px;padding:0 18px}
+#nav-links a{color:rgba(255,255,255,0.75);font-size:13px;font-weight:500;text-decoration:none;transition:color .15s;pointer-events:all;cursor:pointer}
+#nav-links a:hover{color:#fff}
+
+/* ─── Nav top-right ──────────────────────────── */
+#nav-right{position:absolute;top:20px;right:24px;pointer-events:all}
+#hire-btn{height:40px;padding:0 18px;border-radius:9999px;background:rgba(255,255,255,0.07);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:6px;text-decoration:none;transition:background .2s;cursor:pointer;pointer-events:all}
+#hire-btn:hover{background:rgba(255,255,255,0.14)}
+
+/* ─── Center HUD ─────────────────────────────── */
+#hud{position:absolute;top:50%;left:50%;transform:translate(-50%,-175px);text-align:center;pointer-events:none;transition:opacity .4s}
+#hud-num{font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.22em;text-transform:uppercase;margin-bottom:5px}
+#hud-label{font-size:13px;font-weight:500;color:rgba(255,255,255,0.75);letter-spacing:-.01em}
+
+/* ─── Click prompt ───────────────────────────── */
+#click-prompt{position:absolute;top:50%;left:50%;transform:translate(-50%,130px);font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:.18em;text-transform:uppercase;pointer-events:none}
+
+/* ─── Identity bottom-left ───────────────────── */
+#identity{position:absolute;bottom:36px;left:28px}
+#id-name{font-size:14px;font-weight:600;color:#fff;letter-spacing:-.02em}
+#id-role{font-size:11px;color:rgba(255,255,255,0.38);margin-top:3px;letter-spacing:.02em}
+
+/* ─── Project nav bottom-right ───────────────── */
+#proj-nav{position:absolute;bottom:32px;right:28px;display:flex;align-items:center;gap:10px;pointer-events:all}
+.arr-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.7);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;-webkit-user-select:none;user-select:none;pointer-events:all}
+.arr-btn:hover{background:rgba(255,255,255,0.15);color:#fff}
+#proj-count{font-size:11px;color:rgba(255,255,255,0.35);min-width:38px;text-align:center;letter-spacing:.05em}
+
+/* ─── Hint bottom-center ─────────────────────── */
+#hint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);font-size:10px;color:rgba(255,255,255,0.2);letter-spacing:.16em;text-transform:uppercase;pointer-events:none}
+
+/* ─── Cursor ─────────────────────────────────── */
+#csr{position:fixed;z-index:300;width:8px;height:8px;border-radius:50%;background:#fff;pointer-events:none;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:transform .12s ease}
+#csr.big{transform:translate(-50%,-50%) scale(3.5)}
+
+/* ─── Modal ──────────────────────────────────── */
+#modal{position:fixed;inset:0;z-index:50;display:flex;opacity:0;pointer-events:none;transition:opacity .35s,backdrop-filter .35s;background:rgba(0,0,0,0);backdrop-filter:blur(0px)}
+#modal.open{opacity:1;pointer-events:all;background:rgba(0,0,0,0.72);backdrop-filter:blur(12px)}
+#modal-bd{position:absolute;inset:0;z-index:-1}
+#m-panel{width:clamp(300px,38vw,480px);height:100%;background:#080810;border-right:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;padding:32px;overflow-y:auto;position:relative;transform:translateX(-100%);transition:transform .42s cubic-bezier(.22,1,.36,1)}
+#modal.open #m-panel{transform:none}
+#m-gal{flex:1;height:100%;overflow-y:auto;background:#040408;transform:translateX(40px);opacity:0;transition:transform .42s cubic-bezier(.22,1,.36,1) .06s,opacity .42s ease .06s;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.08) transparent}
+#modal.open #m-gal{transform:none;opacity:1}
+#m-gal img{width:100%;display:block;border-bottom:1px solid rgba(255,255,255,0.04)}
+.m-close{position:absolute;top:18px;right:18px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.07);border:none;cursor:pointer;color:rgba(255,255,255,0.55);font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s}
+.m-close:hover{background:rgba(255,255,255,0.14);color:#fff}
+#m-num{font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:.14em;text-transform:uppercase;margin-bottom:22px}
+#m-title{font-size:20px;font-weight:500;line-height:1.32;letter-spacing:-.02em;color:#fff;margin-bottom:14px}
+#m-hr{height:1px;background:rgba(255,255,255,0.07);margin-bottom:14px}
+.m-desc{font-size:13px;line-height:1.75;color:rgba(255,255,255,0.46)}
+.m-desc+.m-desc{margin-top:9px}
+#m-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
+.mt{font-size:10px;color:rgba(255,255,255,0.38);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:9999px;padding:3px 9px}
+#m-hint{font-size:10px;color:rgba(255,255,255,0.22);margin-top:10px;display:flex;align-items:center;gap:4px}
+#m-link{display:inline-flex;align-items:center;gap:5px;margin-top:auto;padding-top:26px;font-size:11px;font-weight:500;color:rgba(255,255,255,0.7);border-bottom:1px solid rgba(255,255,255,0.25);padding-bottom:2px;text-decoration:none;align-self:flex-start;transition:opacity .15s}
+#m-link:hover{opacity:.55}
+.gal-spin{display:flex;align-items:center;justify-content:center;height:100%;font-size:11px;color:rgba(255,255,255,0.2);gap:8px}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading">
+  <div id="ld-name">JAI ANKLESARIA</div>
+  <div id="ld-bar"><div id="ld-fill"></div></div>
+  <div id="ld-pct">0%</div>
+</div>
+
+<!-- Cursor -->
+<div id="csr"></div>
+
+<!-- WebGL canvas -->
+<div id="webgl"></div>
+
+<!-- UI -->
+<div id="ui">
+  <div id="nav">
+    <a id="nav-logo" href="#">JA</a>
+    <div id="nav-links">
+      <a href="#" onclick="return false">Work</a>
+      <a href="#" onclick="return false">About</a>
+      <a href="#" onclick="return false">Contact</a>
+    </div>
+  </div>
+  <div id="nav-right">
+    <a id="hire-btn" href="mailto:jaianklesaria.jobs@gmail.com">
+      Hire Me
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2V8M8 14V8M8 8H2H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <div id="hud">
+    <div id="hud-num"></div>
+    <div id="hud-label"></div>
+  </div>
+  <div id="click-prompt">Click monitor to open case study</div>
+  <div id="identity">
+    <div id="id-name">Jai Anklesaria</div>
+    <div id="id-role">Product Designer · UI/UX · Mumbai, India</div>
+  </div>
+  <div id="proj-nav">
+    <button class="arr-btn" id="prev">&#8592;</button>
+    <div id="proj-count">1 / 8</div>
+    <button class="arr-btn" id="next">&#8594;</button>
+  </div>
+  <div id="hint">← → Arrow keys to navigate projects</div>
+</div>
+
+<!-- Modal -->
+<div id="modal">
+  <div id="modal-bd"></div>
+  <div id="m-panel">
+    <button class="m-close" id="m-close">✕</button>
+    <div id="m-num"></div>
+    <div id="m-title"></div>
+    <div id="m-hr"></div>
+    <p class="m-desc" id="m-d1"></p>
+    <p class="m-desc" id="m-d2"></p>
+    <div id="m-tags"></div>
+    <div id="m-hint">
+      <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M5 1v8M2 6l3 3 3-3" stroke="currentColor" stroke-width="1.2"/></svg>
+      Scroll to read full case study
+    </div>
+    <a id="m-link" href="#" target="_blank" rel="noopener">
+      Open on Behance
+      <svg width="9" height="9" viewBox="0 0 16 16" fill="none"><path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+  <div id="m-gal"><div class="gal-spin">Loading…</div></div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+
+/* ══ PROJECTS ══════════════════════════════════════════ */
+const PROJECTS=[
+  {id:'p1',num:'01.',label:'ARFinViz App',sub:'AR Data Visualization',color:'#0d2040',accent:'#3b82f6',d1:'UX case study for a mobile app visualizing financial data in AR. Research-first: ethnographic studies, usability testing and A/B testing.',d2:'Bridging complex financial data and intuitive AR — helping users make smarter investment decisions through immersive spatial visualization.',tags:['Augmented Reality','UX Design','Mobile','Figma','A/B Testing'],images:['https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/ea8492232393963.689b66d178d29.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/02d281232393963.689b66d17f3d4.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/59fbc9232393963.689b66d17b4f6.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/7beddd232393963.689b66d17d77a.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/cc4dcf232393963.689b66d1791de.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/172053232393963.689b66d17be6c.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/47e4e7232393963.689b66d1801e2.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/bb5e80232393963.689b66d17c54a.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/c77d8b232393963.689b66d17ec5d.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/0b2f84232393963.689b66d1829ea.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/f0fcd8232393963.689b66d17ced1.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/edd8e0232393963.689b66d17f922.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/898ebf232393963.689b66d178819.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/c7dabd232393963.689b66d1809ac.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/7fa2c0232393963.689b66d179b35.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/ab2e92232393963.689b66d181c69.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/bf21da232393963.689b66d17fd9d.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/a03fd8232393963.689b66d180f18.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/2ddd9e232393963.689b66d1821ad.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/4fbd4e232393963.689b66d1796a6.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/cdf64c232393963.689b66d17e4d2.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/650560232393963.689b66d1853d8.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/db6de9232393963.689b66d17a842.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/6c2d06232393963.689b66d17dcbe.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/2a96eb232393963.689b66d1813d3.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/7fe431232393963.689b66d183f22.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/0a9d32232393963.689b66d18372d.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/0d2462232393963.689b66d182f3b.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/f09624232393963.689b66d18468b.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/1882a1232393963.689b66d184bb0.png'],link:'https://www.behance.net/gallery/232393963/ARFinViz-App-Data-Visualization-in-Augmented-Reality'},
+  {id:'p2',num:'02.',label:'Shadow Fax',sub:'Courier Service Redesign',color:'#1a0820',accent:'#a855f7',d1:'Full UX redesign of a courier service mobile app — user research, visual identity, end-to-end interaction design.',d2:'Reducing friction in last-mile delivery tracking, bringing clarity and trust to a stressful user journey.',tags:['UX Design','Figma','Mobile','User Research','Visual Identity'],images:['https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/af1a67232395541.689b6c0f8804b.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/926ed9232395541.689b6c0f83d71.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/8bb6dd232395541.689b6c0f7fe50.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/9146c4232395541.689b6c0f81f20.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/e793b7232395541.689b6c0f7f725.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/dd1a6d232395541.689b6c0f85573.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/93a3e4232395541.689b6c0f84474.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/9f3ec6232395541.689b6c0f7f1bb.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/b35c9f232395541.689b6c0f837c0.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/f07763232395541.689b6c0f82eb8.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/4f2d41232395541.689b6c0f85cac.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/21a622232395541.689b6c0f8037d.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/f0f920232395541.689b6c0f85153.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/2be2d3232395541.689b6c0f8654a.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/a9fa8b232395541.689b6c0f87761.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/cec199232395541.689b6c0f89aa6.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/348edc232395541.689b6c0f8704c.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/bb3806232395541.689b6c0f84c9b.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/fca550232395541.689b6c0f8a4ed.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/b37135232395541.689b6c0f869cc.png'],link:'https://www.behance.net/gallery/232395541/Shadow-Fax-Courier-Service'},
+  {id:'p3',num:'03.',label:'Growth Book',sub:'Child Growth Tracking App',color:'#081a10',accent:'#22c55e',d1:'UX case study for a mobile app tracking child development milestones, shaped by user research and usability testing.',d2:'Giving parents calm, confident insight into their child\'s development through warm, data-driven design.',tags:['UX Design','Healthcare','Mobile','User Research','Figma'],images:['https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/91bad9232397651.689b72e1837b0.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/43b2bd232397651.689b72e182186.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/79d3c0232397651.689b72e184997.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/6442bc232397651.689b72e183d48.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/d3b310232397651.689b72e1829ae.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/99742b232397651.689b72e1873b1.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/7b76ed232397651.689b72e186b33.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/a6e0e8232397651.689b72e18658d.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/4b80e7232397651.689b72e18316e.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/248e3d232397651.689b72e187a18.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/930051232397651.689b72e18587b.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/c967a0232397651.689b72e18b4f6.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/e3251d232397651.689b72e188296.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/087331232397651.689b72e18423f.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/8e13a2232397651.689b72e188af8.png'],link:'https://www.behance.net/gallery/232397651/Growth-Book-Child-Growth-Tracking-App'},
+  {id:'p4',num:'04.',label:'Real Drive XR',sub:'Mixed Reality · Meta Quest 3',color:'#1a0a08',accent:'#f97316',d1:'Mixed reality product design for Meta Quest 3 — spatial UI, usability testing, implemented in Unity.',d2:'Translating physical driving experiences into intuitive mixed reality interactions at the frontier of spatial design.',tags:['Mixed Reality','Meta Quest 3','Unity','XR Design'],images:['https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/dd3535241982807.6963f30b39e21.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/1b46fe241982807.6963f30b3f89f.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/794459241982807.6963f30b3957b.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/638d14241982807.6963f30b3a469.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/8e2f19241982807.6963f30b3e852.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/456644241982807.6963f30b4152c.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/ccdd80241982807.6963f30b3f2af.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/0deeb3241982807.6963f30b3c398.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/8bd29b241982807.6963f30b3ae80.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/6703fa241982807.6963f30b3bb5d.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/642906241982807.6963f30b3eecf.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/8e9730241982807.6963f30b399b0.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/fbbc03241982807.6963f30b3d3f4.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/33f048241982807.6963f30b3c7bf.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/5d1f0d241982807.6963f30b40ff6.png'],link:'https://www.behance.net/gallery/241982807/Real-Drive-XR'},
+  {id:'p5',num:'05.',label:'Enchantopia',sub:'AR Game UX Case Study',color:'#180820',accent:'#ec4899',d1:'AR Enchantopia merges magic with augmented reality — encouraging physical activity and exploration for all ages.',d2:'Full UX case study: research, game mechanics and AR interaction patterns making the real world feel enchanted.',tags:['Augmented Reality','Game UX','Figma','WebXR','Blender'],images:['https://mir-s3-cdn-cf.behance.net/projects/original/8aedb1181098995.Y3JvcCwxMjQyLDk3MSwwLDM2.jpg','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/80ab07240154913.6938891f80601.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/96eb37240154913.6938891f814fa.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/f08ddd240154913.6938891f81062.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/56e039240154913.6938891f7eb6a.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/8910e2240154913.6938891f7d04e.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/72ec14240154913.6938891f7e36b.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/240962240154913.6938891f82d3c.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/48b13d240154913.6938891f824a2.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/358463240154913.6938891f7fec1.png'],link:'https://www.behance.net/gallery/240154913/Enchantopia-Augmented-Reality-AR-Game-UX-Case-Study'},
+  {id:'p6',num:'06.',label:'Grocery UX',sub:'Online Shopping Redesign',color:'#0a1a0a',accent:'#84cc16',d1:'UX case study redesigning an online grocery platform — comprehensive user research to improve the shopping experience.',d2:'Reducing decision fatigue, improving discoverability, making the weekly shop feel effortless.',tags:['UX Research','Ethnography','Survey','E-commerce'],images:['https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/b5f155240349765.693c49b82ac16.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/f924d6240349765.693c49b82d9e0.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/7d76a0240349765.693c49b826d34.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/37d77b240349765.693c49b828442.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/06f8f6240349765.693c49b8293bf.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/b27f04240349765.693c49b82641b.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/5c3b56240349765.693c49b82521d.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/7268d2240349765.693c49b82cba7.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/7f9ba1240349765.693c49b82a2cd.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/fb557e240349765.693c49b8273bf.png'],link:'https://www.behance.net/gallery/240349765/Enhancing-the-Online-Grocery-Shopping-Experience'},
+  {id:'p7',num:'07.',label:'Neon Rapter',sub:'Brewery Website Redesign',color:'#1a1200',accent:'#eab308',d1:'Comprehensive website redesign for Neon Rapter UK brewery — research through full deployment via Netlify.',d2:'Balancing bold brand aesthetics with improved navigation and a cleaner digital experience.',tags:['Website Design','Figma','Netlify','Supabase','AI'],images:['https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/32c995244831267.69a005f7bd410.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/5477c1244831267.69a005f7bcf49.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/93cf5b244831267.69a005f7be677.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/2a703e244831267.69a005f7bebae.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/dd2190244831267.69a005f7bca6b.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/3b98f3244831267.69a005f7bda8e.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/47f27a244831267.69a005f7bf0bc.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/1c5d13244831267.69a005f7bbdb1.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/897b5f244831267.69a005f7bdfb9.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/d75f36244831267.69a005f7bf747.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/d2be6d244831267.69a005f7bc34a.png'],link:'https://www.behance.net/gallery/244831267/Neon-Rapter_-website-Redesign_-Research-Design-deploy'},
+  {id:'p8',num:'08.',label:'Master Stroke',sub:'Sports Infrastructure Website',color:'#080a1a',accent:'#60a5fa',d1:'Website design for Master Stokes Design — elite sports infrastructure company with 150+ clients across India.',d2:'Clean, confident layout communicating premium quality and expertise, driving high-value client enquiries.',tags:['Website Design','UI Design','Figma','B2B','Mumbai'],images:['https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/13f688245187053.69a8232d09854.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/7eb71e245187053.69a8232d09376.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/853394245187053.69a8232d08eba.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/05ae92245187053.69a8232d09d2d.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/087435245187053.69a8232d082fc.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/24fcda245187053.69a8232d0a411.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/3a7418245187053.69a8232d07dcb.png','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/baa053245187053.69a8232d089ef.png'],link:'https://www.behance.net/gallery/245187053/Master-stroke-Website'}
+];
+
+/* ══ CURSOR ════════════════════════════════════════════ */
+const csr = document.getElementById('csr');
+let mx = 0.5, my = 0.5;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX / window.innerWidth;
+  my = e.clientY / window.innerHeight;
+  csr.style.left = e.clientX + 'px';
+  csr.style.top  = e.clientY + 'px';
+});
+
+/* ══ CANVAS TEXTURE BUILDER ═══════════════════════════ */
+function buildScreenTex(p, size = 1024) {
+  const S = size, H = Math.round(S * 0.625); // 16:10
+  const cv = document.createElement('canvas');
+  cv.width = S; cv.height = H;
+  const ctx = cv.getContext('2d');
+
+  // Background
+  const bg = ctx.createLinearGradient(0, 0, S, H);
+  bg.addColorStop(0, p.color);
+  bg.addColorStop(1, '#000');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, S, H);
+
+  // Accent glow (top bar)
+  ctx.fillStyle = p.accent + '22';
+  ctx.fillRect(0, 0, S, 4);
+  ctx.fillStyle = p.accent;
+  ctx.fillRect(0, 0, S, 2);
+
+  // Grid lines (blueprint feel)
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  for (let x = 60; x < S; x += 60) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+  }
+  for (let y = 60; y < H; y += 60) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(S, y); ctx.stroke();
+  }
+
+  // Number tag
+  ctx.font = `600 ${S * 0.022}px Inter, sans-serif`;
+  ctx.fillStyle = p.accent + 'aa';
+  ctx.fillText(p.num, S * 0.05, H * 0.14);
+
+  // Title
+  ctx.font = `600 ${S * 0.06}px Inter, sans-serif`;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText(p.label, S * 0.05, H * 0.42);
+
+  // Subtitle
+  ctx.font = `400 ${S * 0.033}px Inter, sans-serif`;
+  ctx.fillStyle = 'rgba(255,255,255,0.45)';
+  ctx.fillText(p.sub, S * 0.05, H * 0.56);
+
+  // Tags
+  let tx = S * 0.05;
+  const ty = H * 0.82;
+  ctx.font = `500 ${S * 0.026}px Inter, sans-serif`;
+  (p.tags.slice(0, 3)).forEach(tag => {
+    const tw = ctx.measureText(tag).width + S * 0.05;
+    ctx.strokeStyle = p.accent + '55';
+    ctx.lineWidth = 1;
+    roundRect(ctx, tx, ty - S * 0.025, tw, S * 0.042, S * 0.008);
+    ctx.stroke();
+    ctx.fillStyle = p.accent + 'bb';
+    ctx.fillText(tag, tx + S * 0.025, ty + S * 0.008);
+    tx += tw + S * 0.02;
+    if (tx > S * 0.8) return;
+  });
+
+  // "View Case Study" prompt
+  ctx.font = `500 ${S * 0.026}px Inter, sans-serif`;
+  ctx.fillStyle = 'rgba(255,255,255,0.22)';
+  ctx.fillText('→ Click to view case study', S * 0.05, H * 0.92);
+
+  const tex = new THREE.CanvasTexture(cv);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y); ctx.arcTo(x + w, y, x + w, y + r, r);
+  ctx.lineTo(x + w, y + h - r); ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+  ctx.lineTo(x + r, y + h); ctx.arcTo(x, y + h, x, y + h - r, r);
+  ctx.lineTo(x, y + r); ctx.arcTo(x, y, x + r, y, r);
+  ctx.closePath();
+}
+
+/* ══ THREE.JS SCENE ════════════════════════════════════ */
+const W = window.innerWidth, H = window.innerHeight;
+
+// Renderer
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(W, H);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.getElementById('webgl').appendChild(renderer.domElement);
+
+// Scene
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x050510);
+scene.fog = new THREE.FogExp2(0x050510, 0.045);
+
+// Camera — eye-level, looking at desk
+const camera = new THREE.PerspectiveCamera(52, W / H, 0.1, 80);
+camera.position.set(0, 1.8, 5.8);
+camera.lookAt(0, 0.5, 0);
+
+/* ─── LIGHTS ────────────────────────────────────────── */
+// Soft ambient
+scene.add(new THREE.AmbientLight(0x1a2040, 1.2));
+
+// Overhead fill
+const topLight = new THREE.DirectionalLight(0x8899cc, 0.6);
+topLight.position.set(0, 8, 4);
+scene.add(topLight);
+
+// Main monitor blue glow (strong — makes monitors clearly visible)
+const monGlow = new THREE.PointLight(0x4488ff, 8, 14);
+monGlow.position.set(0, 1.6, -1);
+scene.add(monGlow);
+
+// Left monitor glow
+const leftGlow = new THREE.PointLight(0x8844ff, 4, 10);
+leftGlow.position.set(-2.8, 1.2, 0);
+scene.add(leftGlow);
+
+// Right monitor glow
+const rightGlow = new THREE.PointLight(0x44aaff, 4, 10);
+rightGlow.position.set(2.8, 1.2, 0);
+scene.add(rightGlow);
+
+// Desk lamp (warm yellow — illuminates desk surface)
+const lamp = new THREE.PointLight(0xffcc66, 3.5, 8);
+lamp.position.set(1.8, 2.5, 1.5);
+scene.add(lamp);
+
+// Back rim — cool blue from behind monitors
+const rim = new THREE.PointLight(0x2244ff, 3, 12);
+rim.position.set(0, 0.5, -4.5);
+scene.add(rim);
+
+// Under-desk subtle light
+const underDesk = new THREE.PointLight(0x2233aa, 1.5, 5);
+underDesk.position.set(0, -0.8, 0.5);
+scene.add(underDesk);
+
+/* ─── MATERIALS ─────────────────────────────────────── */
+// Dark walnut desk — visible with warm lamp
+const deskMat = new THREE.MeshStandardMaterial({
+  color: 0x2a1808, roughness: 0.7, metalness: 0.05
+});
+// Monitor bezels — dark charcoal with slight metalness
+const bezelMat = new THREE.MeshStandardMaterial({
+  color: 0x1a1a28, roughness: 0.25, metalness: 0.7
+});
+// Floor — dark with slight reflectivity
+const floorMat = new THREE.MeshStandardMaterial({
+  color: 0x0a0a12, roughness: 0.6, metalness: 0.3
+});
+// Back wall — very dark blue-grey
+const wallMat = new THREE.MeshStandardMaterial({
+  color: 0x0c0c18, roughness: 1.0, metalness: 0.0
+});
+// Keyboard / accessories
+const kbdMat = new THREE.MeshStandardMaterial({
+  color: 0x151520, roughness: 0.5, metalness: 0.4
+});
+
+/* ─── FLOOR ─────────────────────────────────────────── */
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(22, 22), floorMat);
+floor.rotation.x = -Math.PI / 2;
+floor.position.y = -1.35;
+floor.receiveShadow = true;
+scene.add(floor);
+
+/* ─── BACK WALL ──────────────────────────────────────── */
+const backWall = new THREE.Mesh(new THREE.PlaneGeometry(22, 10), wallMat);
+backWall.position.set(0, 3, -6);
+backWall.receiveShadow = true;
+scene.add(backWall);
+
+/* ─── DESK SURFACE ───────────────────────────────────── */
+const deskGrp = new THREE.Group();
+scene.add(deskGrp);
+
+const deskTop = new THREE.Mesh(new THREE.BoxGeometry(5.8, 0.12, 2.4), deskMat);
+deskTop.position.set(0, 0, 0);
+deskTop.castShadow = true;
+deskTop.receiveShadow = true;
+deskGrp.add(deskTop);
+
+// Desk legs
+[[-2.65, -0.9], [2.65, -0.9], [-2.65, 0.9], [2.65, 0.9]].forEach(([x, z]) => {
+  const leg = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.4, 0.12), deskMat);
+  leg.position.set(x, -0.76, z);
+  leg.castShadow = true;
+  deskGrp.add(leg);
+});
+
+// Under-desk panel (cable management look)
+const panel = new THREE.Mesh(new THREE.BoxGeometry(5.4, 0.06, 0.4), deskMat);
+panel.position.set(0, -0.72, -0.8);
+deskGrp.add(panel);
+
+deskGrp.position.y = -0.06;
+
+/* ─── MONITOR BUILDER ────────────────────────────────── */
+const screenMeshes = [];  // clickable screens
+
+function buildMonitor(sw, sh, px, py, pz, rotY) {
+  const grp = new THREE.Group();
+
+  // Outer bezel (frame)
+  const bezel = new THREE.Mesh(new THREE.BoxGeometry(sw + 0.18, sh + 0.18, 0.12), bezelMat);
+  bezel.castShadow = true;
+  grp.add(bezel);
+
+  // Screen face (emissive canvas texture applied here)
+  const screenGeo = new THREE.PlaneGeometry(sw, sh);
+  const screenMat = new THREE.MeshBasicMaterial({ color: 0x111128 });
+  const screen = new THREE.Mesh(screenGeo, screenMat);
+  screen.position.z = 0.065;
+  grp.add(screen);
+  screenMeshes.push(screen);
+
+  // Screen emissive glow (behind bezel, bleeds light)
+  const glow = new THREE.Mesh(
+    new THREE.BoxGeometry(sw * 0.9, sh * 0.9, 0.02),
+    new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0x224488, emissiveIntensity: 0.6 })
+  );
+  glow.position.z = -0.04;
+  grp.add(glow);
+
+  // Monitor stand
+  const stand = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.55, 0.1), bezelMat);
+  stand.position.y = -(sh / 2 + 0.275);
+  grp.add(stand);
+
+  // Stand base
+  const base = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.05, 0.45), bezelMat);
+  base.position.y = -(sh / 2 + 0.555);
+  grp.add(base);
+
+  grp.position.set(px, py, pz);
+  grp.rotation.y = rotY;
+  scene.add(grp);
+
+  return { grp, screen };
+}
+
+// Main monitor (center, large)
+const mainMon = buildMonitor(2.9, 1.8, 0, 1.35, -0.8, 0);
+// Left monitor (smaller, angled in)
+const leftMon = buildMonitor(1.9, 1.18, -2.7, 1.05, -0.1, 0.32);
+// Right monitor
+const rightMon = buildMonitor(1.9, 1.18, 2.7, 1.05, -0.1, -0.32);
+
+/* ─── KEYBOARD ───────────────────────────────────────── */
+const kbd = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.05, 0.55), kbdMat);
+kbd.position.set(0, 0.085, 1.15);
+kbd.castShadow = true;
+scene.add(kbd);
+
+// Key rows (visible geometry)
+[0, 1, 2, 3].forEach(row => {
+  const bar = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.012, 0.08), new THREE.MeshStandardMaterial({
+    color: 0x22222e, roughness: 0.4, metalness: 0.5
+  }));
+  bar.position.set(0, 0.114, 0.95 + row * 0.1);
+  scene.add(bar);
+});
+
+/* ─── MOUSE ──────────────────────────────────────────── */
+const mouse3d = new THREE.Mesh(
+  new THREE.BoxGeometry(0.2, 0.06, 0.3),
+  new THREE.MeshStandardMaterial({ color: 0x1c1c28, roughness: 0.4, metalness: 0.5 })
+);
+mouse3d.position.set(1.15, 0.09, 1.15);
+mouse3d.castShadow = true;
+scene.add(mouse3d);
+
+/* ─── SMALL ITEMS ────────────────────────────────────── */
+// Coffee mug
+const mug = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.10, 0.22, 12), new THREE.MeshStandardMaterial({
+  color: 0x222230, roughness: 0.6, metalness: 0.2
+}));
+mug.position.set(-1.5, 0.17, 1.05);
+scene.add(mug);
+
+// Notebook
+const nb = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.03, 0.42), new THREE.MeshStandardMaterial({
+  color: 0x181820, roughness: 0.9
+}));
+nb.position.set(-1.0, 0.075, 1.15);
+nb.rotation.y = 0.15;
+scene.add(nb);
+
+// Pen
+const pen = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.36, 8), new THREE.MeshStandardMaterial({
+  color: 0x555570, roughness: 0.3, metalness: 0.7
+}));
+pen.position.set(-0.72, 0.088, 1.22);
+pen.rotation.z = Math.PI / 2;
+pen.rotation.y = 0.2;
+scene.add(pen);
+
+/* ─── FLOATING PARTICLES ─────────────────────────────── */
+const PC = 280;
+const pBuf = new Float32Array(PC * 3);
+const pPhs = new Float32Array(PC);
+for (let i = 0; i < PC; i++) {
+  pBuf[i*3]   = (Math.random() - 0.5) * 18;
+  pBuf[i*3+1] = Math.random() * 8 - 1.5;
+  pBuf[i*3+2] = (Math.random() - 0.5) * 12;
+  pPhs[i] = Math.random() * Math.PI * 2;
+}
+const pGeo = new THREE.BufferGeometry();
+pGeo.setAttribute('position', new THREE.BufferAttribute(pBuf, 3));
+const partSys = new THREE.Points(pGeo, new THREE.PointsMaterial({
+  color: 0x4466cc, size: 0.028, transparent: true, opacity: 0.55, depthWrite: false
+}));
+scene.add(partSys);
+
+/* ─── TEXTURE PRECOMPUTE ─────────────────────────────── */
+const TEX = PROJECTS.map(p => buildScreenTex(p));
+
+/* ─── STATE ──────────────────────────────────────────── */
+let curIdx = 0;
+
+function adj(base, offset) {
+  return ((base + offset) % PROJECTS.length + PROJECTS.length) % PROJECTS.length;
+}
+
+function applyScreens() {
+  mainMon.screen.material = new THREE.MeshBasicMaterial({ map: TEX[curIdx], toneMapped: false });
+  leftMon.screen.material = new THREE.MeshBasicMaterial({ map: TEX[adj(curIdx, -1)], toneMapped: false });
+  rightMon.screen.material = new THREE.MeshBasicMaterial({ map: TEX[adj(curIdx,  1)], toneMapped: false });
+
+  const p = PROJECTS[curIdx];
+  document.getElementById('hud-num').textContent   = p.num;
+  document.getElementById('hud-label').textContent = p.label + ' — ' + p.sub;
+  document.getElementById('proj-count').textContent = `${curIdx + 1} / ${PROJECTS.length}`;
+
+  // Update monitor glow color to match project accent
+  const c = new THREE.Color(p.accent);
+  monGlow.color.set(c);
+}
+
+function navigate(dir) {
+  curIdx = adj(curIdx, dir);
+  applyScreens();
+}
+
+document.getElementById('prev').addEventListener('click', () => navigate(-1));
+document.getElementById('next').addEventListener('click', () => navigate(1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft')  navigate(-1);
+  if (e.key === 'ArrowRight') navigate(1);
+});
+
+/* ─── RAYCASTER (click monitors) ────────────────────── */
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+const clickTargets = [mainMon.screen, leftMon.screen, rightMon.screen];
+
+window.addEventListener('mousemove', e => {
+  pointer.x =  (e.clientX / window.innerWidth)  * 2 - 1;
+  pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+});
+
+renderer.domElement.addEventListener('click', () => {
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(clickTargets);
+  if (!hits.length) return;
+  const idx = clickTargets.indexOf(hits[0].object);
+  if      (idx === 0) openModal(curIdx);
+  else if (idx === 1) navigate(-1);
+  else if (idx === 2) navigate(1);
+});
+
+// Hover cursor
+renderer.domElement.addEventListener('mousemove', () => {
+  raycaster.setFromCamera(pointer, camera);
+  const hit = raycaster.intersectObjects(clickTargets).length > 0;
+  csr.classList.toggle('big', hit);
+  renderer.domElement.style.cursor = 'none';
+});
+
+/* ─── RESIZE ─────────────────────────────────────────── */
+window.addEventListener('resize', () => {
+  const w = window.innerWidth, h = window.innerHeight;
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+});
+
+/* ─── ANIMATION LOOP ─────────────────────────────────── */
+const clock = new THREE.Clock();
+let running = false;
+
+// Camera target (smooth)
+let camX = 0, camY = 1.8, camTX = 0, camTY = 1.8;
+
+function animate() {
+  if (!running) return;
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  // Camera parallax
+  camTX = (mx - 0.5) * 0.7;
+  camTY = 1.8 - (my - 0.5) * 0.3 + Math.sin(t * 0.35) * 0.025;
+  camX += (camTX - camX) * 0.04;
+  camY += (camTY - camY) * 0.04;
+  camera.position.x = camX;
+  camera.position.y = camY;
+  camera.lookAt(0, 0.5, 0);
+
+  // Lights pulse
+  monGlow.intensity  = 7.5 + Math.sin(t * 1.4) * 0.6;
+  leftGlow.intensity = 3.5 + Math.sin(t * 0.9 + 1.2) * 0.5;
+  rightGlow.intensity= 3.5 + Math.sin(t * 0.7 + 0.6) * 0.5;
+  lamp.intensity     = 3.0 + Math.sin(t * 0.5) * 0.3;
+
+  // Particles drift upward
+  const pp = pGeo.attributes.position;
+  for (let i = 0; i < PC; i++) {
+    pp.setY(i, pp.getY(i) + 0.004);
+    if (pp.getY(i) > 6.5) pp.setY(i, -1.5);
+  }
+  pp.needsUpdate = true;
+  partSys.rotation.y = t * 0.015;
+
+  renderer.render(scene, camera);
+}
+
+/* ─── LOADING ────────────────────────────────────────── */
+let prog = 0;
+const fill = document.getElementById('ld-fill');
+const pctEl = document.getElementById('ld-pct');
+
+function step() {
+  prog = Math.min(100, prog + Math.random() * 9 + 2);
+  fill.style.width = prog + '%';
+  pctEl.textContent = Math.floor(prog) + '%';
+  if (prog >= 100) {
+    applyScreens();
+    running = true;
+    animate();
+    const ld = document.getElementById('loading');
+    ld.style.opacity = '0';
+    setTimeout(() => ld.style.display = 'none', 650);
+  } else {
+    setTimeout(step, 28 + Math.random() * 45);
+  }
+}
+setTimeout(step, 200);
+
+/* ─── MODAL ──────────────────────────────────────────── */
+function openModal(idx) {
+  const p = PROJECTS[idx];
+  document.getElementById('m-num').textContent   = p.num;
+  document.getElementById('m-title').innerHTML   = p.label + '<br><span style="font-size:14px;font-weight:400;color:rgba(255,255,255,0.45)">' + p.sub + '</span>';
+  document.getElementById('m-d1').textContent    = p.d1;
+  document.getElementById('m-d2').textContent    = p.d2;
+  document.getElementById('m-link').href         = p.link;
+  document.getElementById('m-tags').innerHTML    = p.tags.map(t => `<span class="mt">${t}</span>`).join('');
+
+  const gal = document.getElementById('m-gal');
+  gal.innerHTML = '';
+  gal.scrollTop = 0;
+  p.images.forEach((url, i) => {
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = `${p.label} ${i + 1}`;
+    img.loading = i === 0 ? 'eager' : 'lazy';
+    gal.appendChild(img);
+  });
+
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('m-close').addEventListener('click', closeModal);
+document.getElementById('modal-bd').addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
