@@ -809,8 +809,7 @@ const CASE_STUDIES_WORK = PROJECTS.filter(p => !MOVED_TO_VIBE_LABELS.includes(p.
   title: p.label, desc: p.tagline || p.sub, thumb: p.images[0], link: p.link
 })).concat([
   {title:"Where PharmEasy's Checkout Breaks Trust", desc:'Five real checkout breakdowns, audited and redesigned, so an order can actually be placed', thumb:'pharmeasy-thumb.png', link:'case-studies/pharmeasy.html'},
-  {title:'Shadow Fax - Courier Service', desc:'Real UX audit and redesign of a logistics app checkout and tracking flow', thumb:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/af1a67232395541.689b6c0f8804b.png', link:'case-studies/shadowfax.html'},
-  {title:'HERCESSI Site, WCAG 2.2 AA Conformance Audit', desc:'A real accessibility audit of a live oncology biosimilar site, 10 verified findings with handoff-ready tickets', link:'case-studies/hercessi.html'}
+  {title:'HERCESSI Site, WCAG 2.2 AA Conformance Audit', desc:'A real accessibility audit of a live oncology biosimilar site, 10 verified findings with handoff-ready tickets', thumb:'hercessi-thumb.png', link:'case-studies/hercessi.html'}
 ]);
 
 const MOVED_WORK = PROJECTS.filter(p => MOVED_TO_VIBE_LABELS.includes(p.label)).map(p => {
