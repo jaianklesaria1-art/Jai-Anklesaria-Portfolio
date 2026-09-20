@@ -808,7 +808,7 @@ const MOVED_TO_VIBE_VIDEOS = { 'Neon Rapter':'showcase-neon.mp4', 'Master Stroke
 const CASE_STUDIES_WORK = PROJECTS.filter(p => !MOVED_TO_VIBE_LABELS.includes(p.label)).map(p => ({
   title: p.label, desc: p.tagline || p.sub, thumb: p.images[0], link: p.link
 })).concat([
-  {title:'PharmEasy Checkout Redesign', desc:'Five real checkout breakdowns, audited and redesigned, so an order can actually be placed', thumb:'pharmeasy-thumb.png', link:'https://claude.ai/artifact/LBesLCVwauNUDKPmbmgyUp'}
+  {title:"Where PharmEasy's Checkout Breaks Trust", desc:'Five real checkout breakdowns, audited and redesigned, so an order can actually be placed', thumb:'pharmeasy-thumb.png', link:'https://claude.ai/artifact/LBesLCVwauNUDKPmbmgyUp'}
 ]);
 
 const MOVED_WORK = PROJECTS.filter(p => MOVED_TO_VIBE_LABELS.includes(p.label)).map(p => {
