@@ -1,0 +1,441 @@
+<title>HERCESSI Accessibility Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F4F5F7; --surface:#FFFFFF; --ink:#1C2430; --mute:#5B6472; --line:#E1E4E9; --hair:#EAEDF1;
+    --navy:#1F3A5F; --navy-soft:#EAF0F7; --link:#1F3A5F;
+    --crit:#B42318; --crit-soft:#FEE4E2;
+    --high:#B54708; --high-soft:#FFEED0;
+    --med:#854D0E; --med-soft:#FEF3C7;
+    --good:#166534; --good-soft:#DCFCE7;
+    --focus:#1F3A5F;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12161C; --surface:#1A2028; --ink:#E7EAEE; --mute:#9AA4B2; --line:#2A323D; --hair:#232A33;
+      --navy:#7FA6D6; --navy-soft:#1C2837; --link:#7FA6D6;
+      --crit:#F1897D; --crit-soft:#3A1E1C;
+      --high:#F0B26B; --high-soft:#3A2A14;
+      --med:#E4C878; --med-soft:#332B12;
+      --good:#7FCF9E; --good-soft:#152A1D;
+      --focus:#7FA6D6;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12161C; --surface:#1A2028; --ink:#E7EAEE; --mute:#9AA4B2; --line:#2A323D; --hair:#232A33;
+    --navy:#7FA6D6; --navy-soft:#1C2837; --link:#7FA6D6;
+    --crit:#F1897D; --crit-soft:#3A1E1C;
+    --high:#F0B26B; --high-soft:#3A2A14;
+    --med:#E4C878; --med-soft:#332B12;
+    --good:#7FCF9E; --good-soft:#152A1D;
+    --focus:#7FA6D6;
+  }
+
+  *{box-sizing:border-box}
+  html{font-size:17px;}
+  body{
+    background:var(--bg); color:var(--ink); font-family:"Inter",-apple-system,sans-serif; padding:0 20px; padding-block:48px 96px; line-height:1.65;
+  }
+  .wrap{max-width:800px; margin:0 auto;}
+  a{color:var(--link)}
+  :focus-visible{outline:2px solid var(--focus); outline-offset:2px}
+  p{margin:0 0 14px}
+  p:last-child{margin-bottom:0}
+  code{font-family:"IBM Plex Mono",monospace; background:var(--hair); padding:1px 5px; border-radius:4px; font-size:0.9em;}
+
+  .cover{background:var(--surface); border:1px solid var(--line); border-radius:6px; overflow:hidden; margin-bottom:32px;}
+  .cover-bar{background:var(--navy); height:6px;}
+  .cover-body{padding:36px 36px 30px;}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--navy); font-weight:600; margin-bottom:14px;
+  }
+  h1{
+    font-family:"Inter",sans-serif; font-size:clamp(1.6rem,4vw,2.1rem); font-weight:700;
+    line-height:1.25; margin:0 0 14px; letter-spacing:-0.01em;
+  }
+  .dek{
+    font-family:"Inter",sans-serif; font-weight:400; font-size:1.02rem; color:var(--mute); max-width:64ch; margin:0 0 22px; line-height:1.6;
+  }
+
+  .meta-table{width:100%; border-collapse:collapse; border-top:1px solid var(--line);}
+  .meta-table tr{border-bottom:1px solid var(--line);}
+  .meta-table th{
+    text-align:left; font-family:"IBM Plex Mono",monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em;
+    color:var(--mute); font-weight:600; padding:10px 16px 10px 0; width:160px; vertical-align:top;
+  }
+  .meta-table td{padding:10px 0; font-size:0.92rem; vertical-align:top;}
+
+  .callout--exec{
+    background:var(--crit-soft); border:1px solid var(--crit); border-radius:6px; padding:20px 22px; margin:0 0 32px;
+    font-size:1.02rem; line-height:1.55; color:var(--ink);
+  }
+  .callout--exec b{color:var(--crit); font-weight:700;}
+
+  .progress{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:44px;}
+  .progress a{
+    font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.68rem; text-decoration:none; padding:6px 12px;
+    border-radius:4px; border:1px solid var(--line); color:var(--navy); background:var(--surface);
+  }
+
+  .section{margin-bottom:44px; padding-top:32px; border-top:1px solid var(--line); scroll-margin-top:20px;}
+  .section:first-of-type{padding-top:0; border-top:none;}
+  .section-head{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:18px;}
+  .section-num{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.8rem; color:var(--navy); flex:none;}
+  .section-head h2{
+    font-family:"Inter",sans-serif; font-size:1.25rem; font-weight:700; letter-spacing:-0.005em; margin:0;
+    flex:1 1 auto; min-width:200px;
+  }
+  .section-body{font-size:0.96rem; line-height:1.65; max-width:70ch;}
+  .section-body h3{font-size:0.98rem; font-weight:700; margin:20px 0 8px;}
+  .section-body ul, .section-body ol{margin:8px 0 14px; padding-left:1.2em;}
+  .section-body li{margin-bottom:6px;}
+
+  .metric-cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin:18px 0 8px;}
+  .metric-card{border:1px solid var(--line); border-radius:6px; padding:16px 16px; background:var(--surface);}
+  .metric-card-label{font-family:"Inter",sans-serif; font-weight:800; font-size:1.6rem; margin-bottom:3px; line-height:1.1; color:var(--navy);}
+  .metric-card-sub{font-size:0.74rem; color:var(--mute); line-height:1.4;}
+
+  .exhibit-frame{
+    position:relative; width:100%; max-width:100%; margin:16px 0;
+    padding:0; border:1px solid var(--line); border-radius:6px; background:var(--surface); box-sizing:border-box; overflow:visible;
+  }
+  .exhibit-frame-pad{padding:44px;}
+  @media (max-width:640px){ .exhibit-frame-pad{ padding:28px 16px; } }
+  .exhibit-frame-inner{position:relative; width:100%; background:var(--hair);}
+  .exhibit-frame-inner img{position:relative; display:block; width:100%; border-radius:4px; border:1px solid var(--line);}
+  .callout-dot{ position:absolute; transform:translate(-50%,-50%); width:9px; height:9px; border-radius:50%; background:var(--crit); border:2px solid var(--surface); box-shadow:0 0 0 1px var(--crit); }
+  .callout-line{position:absolute; background:var(--crit); opacity:0.8;}
+  .callout-num{
+    position:absolute; transform:translate(-50%,-50%); width:22px; height:22px; border-radius:50%;
+    background:var(--surface); border:2px solid var(--crit); color:var(--crit);
+    font-family:"IBM Plex Mono",monospace; font-weight:700; font-size:0.74rem; display:flex; align-items:center; justify-content:center;
+  }
+  .evidence-label{font-family:"IBM Plex Mono",monospace; font-size:0.7rem; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; color:var(--mute); padding:10px 44px 0;}
+  .fig-cap{font-family:"IBM Plex Mono",monospace; font-size:0.72rem; color:var(--mute); padding:6px 44px 16px;}
+  @media (max-width:640px){ .evidence-label, .fig-cap{ padding-left:16px; padding-right:16px; } }
+  .fig{margin:16px 0; text-align:left;}
+  .fig img{max-width:100%; border-radius:4px; border:1px solid var(--line);}
+
+  .finding-block{border:1px solid var(--line); border-radius:6px; background:var(--surface); margin:16px 0 28px; overflow:hidden;}
+  .finding-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:14px 18px; border-bottom:1px solid var(--line); background:var(--navy-soft);}
+  .finding-id{font-family:"IBM Plex Mono",monospace; font-size:0.72rem; font-weight:700; color:var(--navy);}
+  .finding-title{font-weight:700; font-size:0.96rem; flex:1 1 auto; min-width:160px;}
+  .finding-body{padding:18px;}
+  .finding-meta{display:flex; gap:20px; flex-wrap:wrap; margin-bottom:12px; font-family:"IBM Plex Mono",monospace; font-size:0.72rem;}
+  .finding-meta span b{display:block; color:var(--mute); font-weight:600; text-transform:uppercase; letter-spacing:0.04em; font-size:0.62rem; margin-bottom:2px;}
+
+  .rd-table-wrap{overflow-x:auto; margin:16px 0; border:1px solid var(--line); border-radius:6px;}
+  .rd-table{width:100%; border-collapse:collapse; font-size:0.82rem; background:var(--surface);}
+  .rd-table th, .rd-table td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:top;}
+  .rd-table tr:last-child td{border-bottom:none;}
+  .rd-table th{font-family:"IBM Plex Mono",monospace; font-size:0.64rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--mute); font-weight:600; background:var(--hair);}
+  .sev{font-family:"IBM Plex Mono",monospace; font-size:0.66rem; font-weight:600; padding:3px 9px; border-radius:4px; white-space:nowrap; display:inline-block;}
+  .sev--crit{background:var(--crit); color:#fff;}
+  .sev--high{background:var(--high-soft); color:var(--high);}
+  .sev--med{background:var(--med-soft); color:var(--med);}
+  .crit{font-family:"IBM Plex Mono",monospace; font-size:0.72rem; color:var(--navy); white-space:nowrap;}
+
+  .priority-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:18px 0;}
+  @media (max-width:640px){ .priority-grid{grid-template-columns:1fr;} }
+  .priority-col{border:1px solid var(--line); border-radius:6px; background:var(--surface); padding:16px 18px;}
+  .priority-col h4{margin:0 0 10px; font-size:0.82rem; font-family:"IBM Plex Mono",monospace; text-transform:uppercase; letter-spacing:0.04em; color:var(--navy);}
+  .priority-col ul{margin:0; padding-left:1.1em; font-size:0.86rem;}
+  .priority-col li{margin-bottom:8px;}
+
+  .ticket{border:1px solid var(--line); border-radius:6px; background:var(--surface); margin:14px 0; overflow:hidden;}
+  .ticket-head{display:flex; align-items:center; gap:10px; padding:12px 16px; background:var(--hair); border-bottom:1px solid var(--line);}
+  .ticket-id{font-family:"IBM Plex Mono",monospace; font-size:0.72rem; font-weight:700; color:var(--navy);}
+  .ticket-title{font-weight:700; font-size:0.92rem; flex:1;}
+  .ticket-body{padding:16px;}
+  .ticket-row{margin-bottom:12px;}
+  .ticket-row:last-child{margin-bottom:0;}
+  .ticket-label{font-family:"IBM Plex Mono",monospace; font-size:0.64rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--mute); font-weight:600; display:block; margin-bottom:4px;}
+  .ticket-row ol, .ticket-row ul{margin:0; padding-left:1.2em; font-size:0.86rem;}
+  .ticket-row li{margin-bottom:4px;}
+  .accept-list{list-style:none; padding-left:0; margin:0;}
+  .accept-list li{padding-left:22px; position:relative; font-size:0.86rem; margin-bottom:6px;}
+  .accept-list li::before{content:"\2610"; position:absolute; left:0; color:var(--navy); font-family:"IBM Plex Mono",monospace;}
+
+  .a11y-list{display:flex; flex-direction:column; gap:8px; margin:14px 0 0;}
+  .a11y-item{padding:12px 14px; border-radius:6px; background:var(--good-soft); font-size:0.88rem; border:1px solid var(--good);}
+  .a11y-item b{color:var(--good)}
+  .a11y-crit{font-family:"IBM Plex Mono",monospace; font-size:0.64rem; color:var(--good); opacity:0.85}
+
+  .note-list{margin:14px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px;}
+  .note-list li{padding:12px 14px; border-left:3px solid var(--navy); background:var(--navy-soft); border-radius:0 6px 6px 0; font-size:0.88rem;}
+</style>
+
+<div class="wrap">
+  <div class="cover">
+    <div class="cover-bar"></div>
+    <div class="cover-body">
+      <div class="eyebrow">Accessibility Audit Report &middot; Independent Practice Work</div>
+      <h1 id="summary">HERCESSI Site, WCAG 2.2 AA Conformance Audit</h1>
+      <p class="dek">Accord BioPharma is a client of Asentech, where I work. I picked one of their live sites and set myself a real task: order the drug through it. The order button does nothing. Ten findings came out of checking the rest of the site the same way, by hand, against the actual code.</p>
+      <table class="meta-table">
+        <tr><th>Prepared by</th><td>UX Researcher &amp; Accessibility Auditor</td></tr>
+        <tr><th>Date</th><td>September 2026</td></tr>
+        <tr><th>Scope</th><td>hercessihcp.com &mdash; homepage and Patient Support page</td></tr>
+        <tr><th>Standard</th><td>WCAG 2.2, Level AA</td></tr>
+        <tr><th>Status</th><td>Independent practice work, done on my own time. Not commissioned by Accord BioPharma or Asentech, and not a client deliverable.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout--exec"><b>Headline risk:</b> every page carries an "Order Now" button, styled and positioned like a working call to action. Click it, tap it, or reach it by keyboard and press Enter. Nothing happens. No page loads, no modal opens, no error shows. The one task this site exists to support cannot be completed by anyone.</div>
+
+  <div class="progress">
+    <a href="#exec">Executive Summary</a>
+    <a href="#method">Scope &amp; Methodology</a>
+    <a href="#findings">Findings</a>
+    <a href="#priority">Prioritization</a>
+    <a href="#remediation">Remediation &amp; Handoff</a>
+    <a href="#conformance">Conformance Notes</a>
+    <a href="#appendix">Appendix</a>
+  </div>
+
+  <section class="section" id="exec" aria-labelledby="h-exec">
+    <div class="section-head"><span class="section-num">01</span><h2 id="h-exec">Executive Summary</h2></div>
+    <div class="section-body">
+      <p>This report covers a WCAG 2.2 Level AA audit of two pages on hercessihcp.com: the homepage and the Patient Support registration page. Ten findings were verified against the live DOM, keyboard behavior, and computed styles, not visual inspection alone. One finding sits outside WCAG's scope entirely: the site's only call-to-action button is non-functional on every page, which blocks the site's core task for all users regardless of ability.</p>
+      <p>Seven checks passed outright and are listed in the Conformance Notes section, so this reads as a balanced assessment, not a one-sided list of defects.</p>
+      <div class="metric-cards">
+        <div class="metric-card"><div class="metric-card-label">10</div><div class="metric-card-sub">Verified findings</div></div>
+        <div class="metric-card"><div class="metric-card-label">2</div><div class="metric-card-sub">Pages audited</div></div>
+        <div class="metric-card"><div class="metric-card-label">7</div><div class="metric-card-sub">Checks that passed</div></div>
+        <div class="metric-card"><div class="metric-card-label">0</div><div class="metric-card-sub">Live data submitted</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="method" aria-labelledby="h-method">
+    <div class="section-head"><span class="section-num">02</span><h2 id="h-method">Scope &amp; Methodology</h2></div>
+    <div class="section-body">
+      <p>Two pages were audited: the homepage and the Patient Support registration page. Every finding is verified, not eyeballed. Six checks were run, in order:</p>
+      <ul>
+        <li><b>Task completion test:</b> set one real goal, place an order, and attempted it exactly as a visitor would, mouse first, then keyboard only, with the console open for hidden script errors.</li>
+        <li><b>Keyboard only pass:</b> tabbed through the entry gate and main navigation with no mouse.</li>
+        <li><b>Disclosure check:</b> for every dropdown, compared the submenu's computed <code>display</code> before and after moving real keyboard focus to its trigger, not just a mouse hover.</li>
+        <li><b>Computed style inspection:</b> read <code>getComputedStyle(document.activeElement)</code> after each Tab press, so a missing focus ring is a measured fact, not an impression.</li>
+        <li><b>DOM queries:</b> counted images without alt text, mapped the full heading sequence, and checked every form field for a linked <code>&lt;label&gt;</code>.</li>
+        <li><b>Contrast and target size:</b> calculated contrast ratios directly from computed RGB values using the WCAG relative luminance formula, and measured tap targets with <code>getBoundingClientRect()</code>.</li>
+      </ul>
+      <p>One boundary was held throughout: the site's real Patient Support form was not submitted. Doing so would have pushed fake data into a live business system that isn't mine to test that way, and that requires authorization I don't have.</p>
+    </div>
+  </section>
+
+  <section class="section" id="findings" aria-labelledby="h-findings">
+    <div class="section-head"><span class="section-num">03</span><h2 id="h-findings">Findings</h2></div>
+    <div class="section-body">
+
+      <div class="finding-block">
+        <div class="finding-head"><span class="finding-id">F-01</span><span class="finding-title">Primary call to action is non-functional</span><span class="sev sev--crit">Critical</span></div>
+        <div class="finding-body">
+          <div class="finding-meta">
+            <span><b>WCAG</b>Functional, no WCAG mapping</span>
+            <span><b>Location</b>Every page, main navigation</span>
+          </div>
+          <p>Every page carries an "Order Now" button in the same position, styled identically to a working call to action. Clicking it with a mouse produces no result. Tabbing to it and pressing Enter produces no result. The browser console shows no script error. The link's <code>href</code> is a literal <code>#</code> on every page, with no click handler attached. It was never connected to anything.</p>
+          <div class="exhibit-frame">
+            <div class="exhibit-frame-pad">
+              <div class="exhibit-frame-inner">
+                <img src="images/homepage-order-now.jpg" alt="The HERCESSI homepage with the Order Now button visible in the top right of the navigation bar">
+                <div class="callout-dot" style="left:88.2%; top:13.2%;"></div>
+                <div class="callout-line" style="left:88.2%; top:13.2%; width:1px; height:60px; transform-origin:top; transform:rotate(-32deg);"></div>
+                <div class="callout-num" style="left:76%; top:29%;">1</div>
+              </div>
+            </div>
+            <div class="evidence-label">Exhibit A &middot; hercessihcp.com, every page</div>
+            <p class="fig-cap">href="#", no click handler, nothing in the console.</p>
+          </div>
+          <p><b>Recommendation:</b> wire the button to the real ordering flow, or remove it from the page until that flow exists.</p>
+        </div>
+      </div>
+
+      <div class="finding-block">
+        <div class="finding-head"><span class="finding-id">F-02</span><span class="finding-title">Entry gate suppresses its own focus indicator</span><span class="sev sev--high">High</span></div>
+        <div class="finding-body">
+          <div class="finding-meta">
+            <span><b>WCAG</b>2.4.7 Focus Visible, AA</span>
+            <span><b>Location</b>Entry gate modal, all pages</span>
+          </div>
+          <p>The site opens behind an "Are you a healthcare professional?" modal. Tabbing to the Yes button moves focus there, confirmed via the DOM, but nothing is visible on screen. <code>outline-style</code> is explicitly set to <code>none</code>, even though a color and width are still defined underneath it.</p>
+          <div class="exhibit-frame">
+            <div class="exhibit-frame-pad">
+              <div class="exhibit-frame-inner">
+                <img src="images/gate-modal-focus.jpg" alt="The HERCESSI entry gate modal after tabbing to the Yes button, with no visible focus ring around either button">
+                <div class="callout-dot" style="left:44.2%; top:44.1%;"></div>
+                <div class="callout-line" style="left:44.2%; top:44.1%; width:1px; height:70px; transform-origin:top; transform:rotate(28deg);"></div>
+                <div class="callout-num" style="left:57%; top:75%;">2</div>
+              </div>
+            </div>
+            <div class="evidence-label">Exhibit B &middot; hercessihcp.com entry gate</div>
+            <p class="fig-cap">Focus is on "Yes" here. No ring, no border change, nothing a keyboard user can see.</p>
+          </div>
+          <p><b>Recommendation:</b> restore <code>outline: 2px solid #2F2F2F</code> on <code>:focus-visible</code>. Color and width were already defined, only the style was disabled.</p>
+        </div>
+      </div>
+
+      <div class="finding-block">
+        <div class="finding-head"><span class="finding-id">F-03</span><span class="finding-title">Registration form has no field labels</span><span class="sev sev--high">High</span></div>
+        <div class="finding-body">
+          <div class="finding-meta">
+            <span><b>WCAG</b>3.3.2 Labels or Instructions, A</span>
+            <span><b>Location</b>Patient Support registration form</span>
+          </div>
+          <p>The Patient Support page carries a real seven field form: name, business email, ZIP, profession, organization, and request type. Every field is labeled with placeholder text only. Placeholder text disappears the moment someone starts typing, so a user who pauses mid form loses the one thing telling them what the field was for.</p>
+          <div class="exhibit-frame">
+            <div class="exhibit-frame-pad">
+              <div class="exhibit-frame-inner">
+                <img src="images/patient-support-form.jpg" alt="The AccordCares Patient Support registration form, showing First Name, Last Name, Business Email, ZIP Code, Profession, Organization Name and request type fields with placeholder text as the only label">
+                <div class="callout-dot" style="left:22%; top:20%;"></div>
+                <div class="callout-line" style="left:22%; top:20%; width:1px; height:55px; transform-origin:top; transform:rotate(-20deg);"></div>
+                <div class="callout-num" style="left:12%; top:47%;">3</div>
+              </div>
+            </div>
+            <div class="evidence-label">Exhibit C &middot; AccordCares registration form</div>
+            <p class="fig-cap">Seven fields, zero &lt;label&gt; elements. Placeholder is standing in as the only instruction.</p>
+          </div>
+          <p><b>Recommendation:</b> add persistent visible <code>&lt;label for&gt;</code> elements for every field. Keep placeholder text as a supplementary hint only, never the sole label.</p>
+        </div>
+      </div>
+
+      <p style="margin-top:8px;">The remaining seven findings, listed in full below, don't need a dedicated exhibit to verify, each is a direct DOM or keyboard check with a clear pass/fail result.</p>
+
+      <div class="rd-table-wrap">
+        <table class="rd-table">
+          <thead><tr><th>Issue</th><th>WCAG</th><th>Severity</th><th>Recommendation</th></tr></thead>
+          <tbody>
+            <tr><td>Skip to content link exists but sits at keyboard stop 18, behind the cookie widget and full header</td><td class="crit">2.4.1 A</td><td><span class="sev sev--high">High</span></td><td>Move it to the first DOM node, ahead of the cookie consent widget</td></tr>
+            <tr><td>"Ordering Details" submenu opens on mouse hover only. Its one link stays hidden even when the trigger has real keyboard focus</td><td class="crit">2.1.1 A</td><td><span class="sev sev--high">High</span></td><td>Show the submenu on :focus-within as well as :hover, or rebuild it as a proper disclosure with aria-expanded</td></tr>
+            <tr><td>Two nav dropdown arrows have no accessible name</td><td class="crit">4.1.2 A</td><td><span class="sev sev--high">High</span></td><td>Add aria-label, aria-expanded and aria-controls to expose state</td></tr>
+            <tr><td>5 of 26 images site wide are missing alt text</td><td class="crit">1.1.1 A</td><td><span class="sev sev--high">High</span></td><td>Descriptive alt on informational images, explicit alt="" on decorative ones</td></tr>
+            <tr><td>Entry gate buttons are &lt;a href="javascript:void(0)"&gt;, not real buttons</td><td class="crit">4.1.2 A</td><td><span class="sev sev--med">Medium</span></td><td>Convert to &lt;button type="button"&gt;, or add role="button" and Space key support</td></tr>
+            <tr><td>Two links with no text and no aria-label</td><td class="crit">2.4.4 A</td><td><span class="sev sev--med">Medium</span></td><td>Add visible text or an aria-label describing the destination</td></tr>
+            <tr><td>Heading hierarchy skips H4 in four places, jumping H3 to H5</td><td class="crit">1.3.1 A</td><td><span class="sev sev--med">Medium</span></td><td>Renumber headings sequentially, use CSS for visual size, not semantic level</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="fig">
+        <img src="images/nav-dropdown.png" alt="The HERCESSI main navigation bar, showing the Ordering Details item with an unlabeled dropdown arrow">
+        <div class="fig-cap">The Ordering Details dropdown arrow, no text, no aria-label, just a decorative span.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="priority" aria-labelledby="h-priority">
+    <div class="section-head"><span class="section-num">04</span><h2 id="h-priority">Prioritization</h2></div>
+    <div class="section-body">
+      <p>Findings are grouped by impact against effort to fix, not severity alone, so the order reflects what's worth doing first.</p>
+      <div class="priority-grid">
+        <div class="priority-col">
+          <h4>Fix first, low effort</h4>
+          <ul>
+            <li>Restore the focus outline on the entry gate (F-02), a one-line CSS fix</li>
+            <li>Move the skip link ahead of the cookie widget</li>
+            <li>Add alt text to the 5 missing images</li>
+            <li>Add text or aria-label to the 2 empty links</li>
+            <li>Fix the heading hierarchy skip</li>
+          </ul>
+        </div>
+        <div class="priority-col">
+          <h4>Fix next, higher effort</h4>
+          <ul>
+            <li>Wire up the Order Now button (F-01), highest impact on the site, requires the actual ordering integration</li>
+            <li>Add real labels to the registration form (F-03)</li>
+            <li>Rebuild the Ordering Details dropdown as a keyboard-operable disclosure</li>
+            <li>Convert the gate buttons from links to real buttons</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="remediation" aria-labelledby="h-remediation">
+    <div class="section-head"><span class="section-num">05</span><h2 id="h-remediation">Remediation &amp; Handoff Format</h2></div>
+    <div class="section-body">
+      <p>The three highest-severity findings are written below in the format I'd hand to an engineering team: steps to reproduce, the fix, and acceptance criteria. This is the format I would use for a handoff, it was not filed as an actual ticket with Accord BioPharma or Asentech.</p>
+
+      <div class="ticket">
+        <div class="ticket-head"><span class="ticket-id">TICKET F-01</span><span class="ticket-title">Order Now button has no destination</span></div>
+        <div class="ticket-body">
+          <div class="ticket-row"><span class="ticket-label">Steps to reproduce</span>
+            <ol><li>Open any page on hercessihcp.com</li><li>Click, tap, or keyboard-activate the "Order Now" button</li><li>Observe: no navigation, no modal, no console error</li></ol>
+          </div>
+          <div class="ticket-row"><span class="ticket-label">Fix</span><p style="margin:0;">Point the href at the real ordering flow, or attach the intended click handler. If the flow doesn't exist yet, remove the button or replace it with a working contact path until it does.</p></div>
+          <div class="ticket-row"><span class="ticket-label">Acceptance criteria</span>
+            <ul class="accept-list">
+              <li>Clicking "Order Now" on every page navigates to a real ordering destination</li>
+              <li>The same result is reachable by keyboard (Tab + Enter)</li>
+              <li>No console errors on activation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-head"><span class="ticket-id">TICKET F-02</span><span class="ticket-title">No visible focus state on entry gate</span></div>
+        <div class="ticket-body">
+          <div class="ticket-row"><span class="ticket-label">Steps to reproduce</span>
+            <ol><li>Load hercessihcp.com</li><li>Press Tab until focus reaches the "Yes" or "No" button on the gate modal</li><li>Observe: no visible ring, border, or shadow change</li></ol>
+          </div>
+          <div class="ticket-row"><span class="ticket-label">Fix</span><p style="margin:0;">Set <code>outline: 2px solid #2F2F2F; outline-offset: 2px</code> on <code>:focus-visible</code> for both buttons.</p></div>
+          <div class="ticket-row"><span class="ticket-label">Acceptance criteria</span>
+            <ul class="accept-list">
+              <li>Tabbing to either button shows a visible, high-contrast focus indicator</li>
+              <li>Indicator meets 3:1 contrast against the surrounding background</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-head"><span class="ticket-id">TICKET F-03</span><span class="ticket-title">Registration form fields have no labels</span></div>
+        <div class="ticket-body">
+          <div class="ticket-row"><span class="ticket-label">Steps to reproduce</span>
+            <ol><li>Open the Patient Support page</li><li>Inspect any form field</li><li>Observe: no <code>&lt;label&gt;</code>, no aria-label, placeholder text only</li></ol>
+          </div>
+          <div class="ticket-row"><span class="ticket-label">Fix</span><p style="margin:0;">Add a visible <code>&lt;label for="field-id"&gt;</code> for each of the seven fields. Keep placeholder text as a secondary hint, not the only instruction.</p></div>
+          <div class="ticket-row"><span class="ticket-label">Acceptance criteria</span>
+            <ul class="accept-list">
+              <li>Every field has a persistent visible label, on screen before and during input</li>
+              <li>Each label is programmatically associated via <code>for</code>/<code>id</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="conformance" aria-labelledby="h-conformance">
+    <div class="section-head"><span class="section-num">06</span><h2 id="h-conformance">Conformance Notes</h2></div>
+    <div class="section-body">
+      <p>Seven checks passed outright, listed here so this reads as a balanced assessment:</p>
+      <div class="a11y-list">
+        <div class="a11y-item"><span class="a11y-crit">3.1.1</span> &nbsp;<b>&lt;html lang="en-US"&gt;</b> is set correctly site wide.</div>
+        <div class="a11y-item"><span class="a11y-crit">1.3.1</span> &nbsp;All four landmark regions are present: main, nav, banner, and contentinfo.</div>
+        <div class="a11y-item"><span class="a11y-crit">2.4.2</span> &nbsp;Page titles are descriptive and unique on every page checked, not a repeated template string.</div>
+        <div class="a11y-item"><span class="a11y-crit">1.4.3</span> &nbsp;Entry gate button text contrast measures <b>8.81:1</b>, well past the 4.5:1 AA minimum.</div>
+        <div class="a11y-item"><span class="a11y-crit">2.5.8</span> &nbsp;Entry gate button target size measures <b>93 by 29px</b>, past the 24 by 24 AA minimum.</div>
+        <div class="a11y-item"><span class="a11y-crit">1.4.3</span> &nbsp;Boxed warning body text contrast measures <b>13.39:1</b>.</div>
+        <div class="a11y-item"><span class="a11y-crit">1.4.3</span> &nbsp;Main nav links and the "Contact a Rep" tab both measure <b>13.39:1</b> too, the contrast holds outside the gate modal.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="appendix" aria-labelledby="h-appendix">
+    <div class="section-head"><span class="section-num">07</span><h2 id="h-appendix">Appendix &amp; Notes</h2></div>
+    <div class="section-body">
+      <ul class="note-list">
+        <li>A criterion-by-criterion pass alone would have caught F-02 and F-03. It would not have caught F-01, there is no WCAG line item for "the main call to action does nothing." That was only found by attempting the real task end to end.</li>
+        <li>Every number in this report came from the live DOM: <code>getComputedStyle</code>, <code>getBoundingClientRect</code>, a real click, and a check of what happened after. Nothing was estimated by eye.</li>
+        <li>The skip link on the homepage exists but sits behind seventeen other tab stops before it, which fails its purpose as completely as no skip link at all. That's only visible by tabbing through it directly, not by confirming the element exists in the DOM.</li>
+        <li>The site's real Patient Support form was not submitted during this audit, to avoid sending fabricated data into a production system that isn't mine to test that way.</li>
+      </ul>
+    </div>
+  </section>
+</div>
