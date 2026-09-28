@@ -43,6 +43,54 @@
   .eyebrow{font-family:"IBM Plex Mono",monospace; font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--neon); margin-bottom:10px}
   .caption{font-family:"IBM Plex Mono",monospace; font-size:0.78rem; line-height:1.55; color:var(--mute); margin-top:12px}
 
+  /* colour sheet, laid out like a Figma style sheet */
+  .sheet{margin-top:10px; border:1px solid var(--line-strong); border-radius:14px; overflow:hidden; background:var(--paper)}
+  .sheet-head{padding:22px 28px; background:linear-gradient(90deg,#392E4E,#1a1424); border-bottom:1px solid var(--line-strong); font-family:"Rajdhani",sans-serif; font-weight:700; font-size:1.9rem; letter-spacing:0.03em; text-transform:uppercase; color:#fff}
+  .sheet-body{padding:8px 28px 28px}
+  .sheet-group{margin:24px 0 12px; font-family:"Rajdhani",sans-serif; font-weight:700; font-size:1.15rem; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink)}
+  .sheet-group small{display:block; margin-top:2px; font-family:"IBM Plex Mono",monospace; font-size:0.72rem; font-weight:400; letter-spacing:0; text-transform:none; color:var(--mute)}
+  .cards{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
+  .card{border-radius:10px; overflow:hidden; background:#151119; border:1px solid rgba(255,255,255,0.06)}
+  .card .chip{height:96px}
+  .card .chip.duo{display:grid; grid-template-columns:1fr 1fr}
+  .card .meta-c{padding:12px 14px 14px; display:flex; flex-direction:column; gap:3px}
+  .card .meta-c b{font-family:"Inter",sans-serif; font-weight:600; font-size:0.9rem; color:var(--ink)}
+  .card .meta-c span{font-family:"IBM Plex Mono",monospace; font-size:0.76rem; color:var(--ink-2); padding-top:6px; border-top:1px solid rgba(255,255,255,0.12)}
+  .card .meta-c em{font-style:normal; font-size:0.76rem; color:var(--mute)}
+  @media (max-width:760px){.cards{grid-template-columns:repeat(2,1fr)} .sheet-body{padding:6px 16px 18px} .sheet-head{padding:16px 18px}}
+  /* client photo mosaic */
+  .mosaic{display:grid; grid-template-columns:2fr 1fr 1fr; grid-template-rows:230px 230px; gap:12px}
+  .mosaic figure{position:relative; margin:0; overflow:hidden; border-radius:10px; border:1px solid var(--line)}
+  .mosaic img{width:100%; height:100%; object-fit:cover}
+  .mosaic .m-big{grid-row:1 / 3}
+  .mosaic .m-tall{grid-row:1 / 3}
+  .mosaic .m-tall img{object-position:50% 20%}
+  .mosaic figcaption{position:absolute; left:0; right:0; bottom:0; padding:22px 12px 9px; background:linear-gradient(transparent, rgba(0,0,0,0.75)); font-family:"IBM Plex Mono",monospace; font-size:0.74rem; color:#fff}
+  @media (max-width:760px){.mosaic{grid-template-columns:1fr 1fr; grid-template-rows:200px 170px 170px} .mosaic .m-big{grid-column:1 / 3; grid-row:auto} .mosaic .m-tall{grid-row:2 / 4}}
+  .legend-row{display:flex; flex-wrap:wrap; gap:12px 28px; margin-top:18px; font-family:"Inter",sans-serif; font-size:1rem; font-weight:500; color:var(--ink)}
+  .legend-row span{display:inline-flex; align-items:center; gap:10px}
+  .legend-row i{width:22px; height:22px; border-radius:3px; box-shadow:0 2px 6px rgba(0,0,0,0.35); transform:rotate(-3deg)}
+  .legend-row .sw-y{background:var(--sticky-y)} .legend-row .sw-g{background:var(--sticky-g)} .legend-row .sw-p{background:var(--sticky-p)} .legend-row .sw-b{background:var(--sticky-b)}
+  /* low-fi board as pencil sketches in a sketchbook */
+  body .board.figjam{background-color:#F5F1E7; background-image:radial-gradient(ellipse at 20% 10%, rgba(255,255,255,0.7), transparent 55%), radial-gradient(ellipse at 90% 90%, rgba(120,100,70,0.08), transparent 60%); background-size:100% 100%; background-repeat:no-repeat; border:1px solid #d8d1c2}
+  body .figjam .col .label{color:#3d3d3d !important}
+  .figjam .col .label b{font-family:"Caveat",cursive; font-size:1.9rem; font-weight:600; letter-spacing:0}
+  .figjam .wf{background:transparent; border:1.6px solid #4d4d4d; border-radius:3px; box-shadow:1.2px 1px 0 rgba(77,77,77,0.28); filter:url(#graphite)}
+  .figjam .wf .b{background:transparent !important; border:1.3px solid #5a5a5a; box-shadow:1px 0.8px 0 rgba(90,90,90,0.25)}
+  .figjam .wf .d{background:repeating-linear-gradient(-48deg, rgba(70,70,70,0.75) 0 1.1px, transparent 1.1px 5px) !important; border:1.4px solid #4d4d4d}
+  .figjam .wf .ln{background:#6a6a6a !important; height:2.5px; border-radius:2px; opacity:0.85}
+  .figjam .wf .ph{background:transparent; border:1.3px solid #5a5a5a; box-shadow:1px 0.8px 0 rgba(90,90,90,0.25)}
+  .figjam .wf .ph::after{background:linear-gradient(to top right, transparent calc(50% - 0.6px), #6a6a6a, transparent calc(50% + 0.6px)), linear-gradient(to top left, transparent calc(50% - 0.6px), #6a6a6a, transparent calc(50% + 0.6px))}
+  .figjam .wf .pill{border-color:#4d4d4d !important}
+  .figjam .wf .t{font-family:"Caveat",cursive; font-size:15px; color:#4d4d4d; letter-spacing:0}
+  .figjam .wf [style*="e9c6e7"], .figjam .wf [style*="f6eef5"]{background:transparent !important; border:1.3px dashed #5a5a5a !important}
+  .figjam .wf [style*="clip-path"]{background:#4d4d4d !important}
+  /* closing: thank you + video + live link */
+  .thanks-laptop{max-width:860px; margin:0 auto}
+  .thanks-laptop video{display:block; width:100%; height:auto; border-radius:3px; background:#000}
+  .live-btn{display:inline-flex; align-items:center; gap:10px; padding:16px 30px; background:var(--neon); color:#050505; font-family:"Rajdhani",sans-serif; font-weight:700; font-size:1.15rem; letter-spacing:0.12em; text-transform:uppercase; text-decoration:none; clip-path:polygon(0 0, 100% 0, 100% 72%, calc(100% - 12px) 100%, 0 100%); box-shadow:0 0 30px rgba(255,159,252,0.35); transition:transform .2s ease, box-shadow .2s ease}
+  .live-btn:hover{transform:translateY(-2px); box-shadow:0 0 44px rgba(255,159,252,0.55)}
+  .live-btn:focus-visible{outline:3px solid #00e5ff; outline-offset:4px}
   /* device mockups */
   .laptop{position:relative}
   .laptop .lid{background:#141217; border:1px solid #2c2733; border-radius:16px 16px 4px 4px; padding:2.4% 2.4% 2.8%; box-shadow:0 30px 80px rgba(0,0,0,0.6), 0 0 60px rgba(255,159,252,0.08)}
@@ -109,7 +157,8 @@
   .board-head{display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap; margin-bottom:10px}
   .board-head h3{margin:0}
   .scroll-hint{font-family:"IBM Plex Mono",monospace; font-size:0.75rem; color:var(--mute)}
-  .board{position:relative; overflow-x:auto; overflow-y:hidden; border-radius:12px; -webkit-overflow-scrolling:touch}
+  .board{position:relative; overflow:hidden; border-radius:12px}
+  .board .canvas{transform-origin:0 0}
   .board:focus-visible{outline:3px solid var(--focus); outline-offset:3px}
   .canvas{position:relative}
   .board.taproom{background:#120a12 url("images/neon-rapter/taproom-bg.jpg") center/cover}
@@ -124,6 +173,7 @@
   .sticky{position:absolute; width:118px; min-height:84px; padding:9px 10px; font-family:"Caveat",cursive; font-size:1.12rem; line-height:1.12; color:#1c1c1c; box-shadow:0 6px 14px rgba(0,0,0,0.28); transform:rotate(var(--r,-1.5deg))}
   .sticky.y{background:var(--sticky-y)} .sticky.p{background:var(--sticky-p)} .sticky.g{background:var(--sticky-g)} .sticky.b{background:var(--sticky-b)}
   .sticky.wide{width:170px}
+  .sticky .fix{display:block; margin-top:7px; padding-top:5px; border-top:1px dashed rgba(0,0,0,0.3); font-family:"IBM Plex Mono",monospace; font-size:0.66rem; line-height:1.3; font-weight:600; color:#6b0a66}
   .board-note{position:absolute; font-family:"IBM Plex Mono",monospace; font-size:0.72rem; color:rgba(255,255,255,0.8)}
   .figjam .board-note{color:var(--mute)}
   .legend{display:flex; flex-wrap:wrap; gap:14px 22px; margin-top:12px; font-family:"IBM Plex Mono",monospace; font-size:0.76rem; color:var(--mute)}
@@ -206,6 +256,9 @@
   .log blockquote{margin:6px 0 8px; font-family:"IBM Plex Mono",monospace; font-size:0.9rem; background:#000; border:1px solid var(--line); color:#f1f1f1; border-radius:8px; padding:12px 14px; line-height:1.55}
   .log blockquote::before{content:'> '; color:var(--neon)}
   .log p{margin:0; font-size:0.98rem}
+  .log blockquote.tool-card{font-family:"Inter",system-ui,sans-serif; font-size:0.95rem; line-height:1.6}
+  .log blockquote.tool-card::before{content:none}
+  .log blockquote.tool-card b{display:block; margin-bottom:4px; font-family:"Rajdhani",sans-serif; font-size:1.25rem; font-weight:700; letter-spacing:0.02em; text-transform:uppercase; color:var(--neon)}
 
   .outcome-quote{font-family:"Rajdhani",sans-serif; font-weight:600; font-size:clamp(1.5rem,2.8vw,2.1rem); line-height:1.3; border-top:1px solid var(--neon); border-bottom:1px solid var(--neon); padding:26px 0; margin:30px 0}
   .more{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:20px}
@@ -220,6 +273,7 @@
 </head>
 <body>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="graphite" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="noise"/><feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.9 1.3" result="grain"/><feComposite in="SourceGraphic" in2="grain" operator="in"/></filter></svg>
 <div class="topbar">
   <div class="wide">
     <a href="../index.html#work">&larr; Back to portfolio</a>
@@ -257,33 +311,38 @@
     <p class="eyebrow">01</p>
     <h2>The <span class="hl">challenge</span></h2>
     <p class="lede">Neon Raptor is an independent brewery in Sneinton Market, Nottingham, with its own bar next door, the Rap Taproom. Their brand is a whole world: retro arcade, synthwave neon, beers named like video game levels. Their website did not feel like any of that.</p>
-    <p>The old site was a stock Shopify store. On a first visit, a cookie consent banner and an 18+ age check landed on top of each other before you could see a single beer. The homepage was a promo banner, a "New in" grid and a footer. The neon palms and retro grid, the most recognisable part of the brand, only showed up as decoration at the very bottom of the page, and there was nothing on the homepage about the taproom at all.</p>
+    <p>The old site was a Shopify store. On a first visit, two stacked modals, a cookie consent banner and an 18+ age check, covered the page before visitors saw a single beer. The homepage was a promo banner, a "New in" grid and a footer. The neon palms and retro grid, the most recognisable part of the brand, appeared only as decoration at the very bottom of the page, and the homepage said nothing about the taproom.</p>
     <p>The brewery wanted a site that sells beer easily and feels like being in their taproom. My job was to work out what that means for a website, design it, and get it built and live.</p>
     <div class="facts">
       <div class="fact"><span class="mono">My role</span><p>Research, information architecture, UI design, building the site with AI tools, deployment</p></div>
       <div class="fact"><span class="mono">Scope</span><p>Home, Rap Taproom, Shop with cart and checkout, Info and FAQs. Desktop and mobile.</p></div>
-      <div class="fact"><span class="mono">Timeline</span><p>The main build ran over two days in December 2025, after research and sketching</p></div>
+      <div class="fact"><span class="mono">Process</span><p>Research and sketching first, then an AI-assisted build</p></div>
     </div>
   </div>
 </section>
 
-<div class="wide photo-band">
-  <img src="images/neon-rapter/client-team.jpg" alt="The Neon Raptor brewing team standing in the brewery in branded t-shirts and hoodies" loading="lazy" width="700" height="824">
-  <p class="caption">The Neon Raptor team in the brewery. Photo supplied by the client.</p>
+<div class="wide">
+  <div class="mosaic">
+    <figure class="m-big"><img src="images/neon-rapter/client-outdoor.jpg" alt="Customers at picnic benches outside the brewery in Sneinton Market, with a Neon Raptor A-board and barrels in front" loading="lazy" width="1600" height="1068"><figcaption>Outside the Rap Taproom, Sneinton Market</figcaption></figure>
+    <figure class="m-tall"><img src="images/neon-rapter/client-team.jpg" alt="The Neon Raptor brewing team in branded t-shirts and hoodies" loading="lazy" width="700" height="824"><figcaption>The team</figcaption></figure>
+    <figure><img src="images/neon-rapter/client-bar.jpg" alt="Behind the bar: a neon Beers sign above the tap list, with a bartender pouring" loading="lazy" width="301" height="240"><figcaption>Behind the bar</figcaption></figure>
+    <figure><img src="images/neon-rapter/client-brewhouse.jpg" alt="The brewhouse: stainless steel fermentation tanks with red hoses and ladders" loading="lazy" width="1000" height="754"><figcaption>The brewhouse</figcaption></figure>
+  </div>
+  <p class="caption">Photos supplied by the client.</p>
 </div>
 
 <section id="approach">
   <div class="wrap">
     <p class="eyebrow">02</p>
     <h2>The <span class="hl">approach</span></h2>
-    <p class="lede">I started by looking at how other taproom breweries sell beer online and pull people into their bars, then pulled apart the brewery's existing site. From that I sketched a structure on paper and in Figma, and only then moved into building.</p>
-    <p>I used AI at every stage, but for different jobs. Perplexity helped me research breweries and patterns quickly. Pen and paper and Figma were for thinking. Google AI Studio did the heavy lifting on code, while I directed every decision.</p>
+    <p class="lede">I started with a competitor scan of UK and US taproom breweries that sell online, then audited the brewery's existing site. From those findings I sketched the information architecture on paper and in Figma, and only then started building.</p>
+    <p>I used a different tool at each stage. Perplexity sped up the research. Pen, paper and Figma were for working out the structure. Claude Code and Google AI Studio wrote the code, while I made the design decisions and reviewed everything they produced.</p>
 
     <div class="chain" role="list" aria-label="Toolchain from research to deployment">
       <div role="listitem"><div class="step">1 · Research</div><div class="tool">Perplexity</div><div class="what">Brewery and taproom research, what UK and US breweries do online</div></div>
       <div role="listitem"><div class="step">2 · Brainstorm</div><div class="tool">Pen, paper &amp; Figma</div><div class="what">Page structure, content order, first layout ideas</div></div>
       <div role="listitem"><div class="step">3 · Components</div><div class="tool">React Bits</div><div class="what">Grid Scan background, Circular Gallery, Sticker Peel logo</div></div>
-      <div role="listitem"><div class="step">4 · Build</div><div class="tool">Google AI Studio</div><div class="what">React + TypeScript site, built and refined over 27 prompts</div></div>
+      <div role="listitem"><div class="step">4 · Build</div><div class="tool">Claude Code + Google AI Studio</div><div class="what">React + TypeScript site, built and refined with both, including 27 prompts in AI Studio</div></div>
       <div role="listitem"><div class="step">5 · Assets</div><div class="tool">ImageKit</div><div class="what">Hosting and serving the brewery's photos and can images</div></div>
       <div role="listitem"><div class="step">6 · Ship</div><div class="tool">Netlify + Supabase</div><div class="what">Site hosted on Netlify, products the shop sells stored in Supabase</div></div>
     </div>
@@ -293,70 +352,81 @@
   <div class="wide board-wrap">
     <div class="board-head">
       <h3>Research board: the old site and the brewery landscape</h3>
-      <span class="scroll-hint" aria-hidden="true">Scroll the board sideways &rarr;</span>
+      
     </div>
-    <div class="board taproom" tabindex="0" role="region" aria-label="Research whiteboard, scrollable">
-      <div class="canvas" style="width:1720px; height:640px">
+    <div class="board taproom" tabindex="0" role="region" aria-label="Research whiteboard">
+      <div class="canvas" style="width:2020px; height:640px">
 
         <div class="col" style="left:30px">
           <div class="label"><b>Neon Raptor (original site)</b>Shopify store, before</div>
           <img class="shot" style="width:200px" src="images/neon-rapter/original-home.jpg" alt="The brewery's original Shopify homepage with cookie banner and age gate over the hero" loading="lazy">
         </div>
-        <div class="sticky y" style="left:222px; top:78px; --r:2deg">Cookie banner and 18+ gate stack on top of each other on arrival</div>
-        <div class="sticky y" style="left:238px; top:190px; --r:-2deg">Hero is a promo image with the words baked in</div>
-        <div class="sticky y" style="left:222px; top:298px; --r:1.5deg">4 controls per product card: size, minus, plus, add to cart</div>
-        <div class="sticky p" style="left:236px; top:408px; --r:-1deg">The brand's neon world only lives in the footer art</div>
-        <div class="sticky p" style="left:224px; top:514px; --r:2deg">Nothing about the taproom on the homepage</div>
+        <div class="sticky p" style="left:222px; top:78px; --r:2deg">Cookie banner and 18+ gate stack on top of each other on arrival<span class="fix">Fixed: No stacked modals on arrival</span></div>
+        <div class="sticky p" style="left:238px; top:190px; --r:-2deg">Hero is a promo image with the words baked in<span class="fix">Fixed: Live text headline, readable on any screen</span></div>
+        <div class="sticky p" style="left:222px; top:298px; --r:1.5deg">4 controls per product card: size, minus, plus, add to cart<span class="fix">Fixed: One "+" per card</span></div>
+        <div class="sticky p" style="left:236px; top:408px; --r:-1deg">The brand's neon world only lives in the footer art<span class="fix">Fixed: Neon grid behind every page</span></div>
+        <div class="sticky p" style="left:224px; top:514px; --r:2deg">Nothing about the taproom on the homepage<span class="fix">Fixed: Rap Taproom page + hero CTA</span></div>
+        <div class="sticky p" style="left:352px; top:78px; --r:-1.5deg">Shop, Trade and Information hide behind dropdowns<span class="fix">Fixed: flat 4-item nav</span></div>
+        <div class="sticky p" style="left:366px; top:250px; --r:2deg">Only an email address to get in touch<span class="fix">Fixed: email, phone and trade contact on Info</span></div>
+        <div class="sticky p" style="left:354px; top:420px; --r:-1deg">Shipping details live in a thin top banner and a footer link<span class="fix">Fixed: shipping FAQs on Info</span></div>
+        <div class="sticky b" style="left:502px; top:78px; --r:-2deg">How might we show the taproom before the shop?</div>
+        <div class="sticky b" style="left:514px; top:190px; --r:1.5deg">Can the age check feel less like a wall?</div>
+        <div class="sticky b" style="left:502px; top:300px; --r:-1deg">What would make someone visit the bar, not just order online?</div>
+        <div class="sticky b" style="left:514px; top:410px; --r:2deg">How few taps from the homepage to the basket?</div>
+        <div class="sticky b" style="left:502px; top:520px; --r:-1.5deg">Where should the arcade brand live, if not the footer?</div>
 
-        <div class="col" style="left:420px">
+        <div class="col" style="left:720px">
           <div class="label"><b>Cloudwater</b>Manchester, UK</div>
           <img class="shot" src="images/neon-rapter/comp-cloudwater.jpg" alt="Cloudwater homepage screenshot" loading="lazy">
         </div>
-        <div class="sticky y" style="left:572px; top:74px; --r:-2deg">Same stacked age gate + privacy popup</div>
-        <div class="sticky y" style="left:588px; top:176px; --r:1.5deg">"Fresh in" first: newest beers lead</div>
-        <div class="sticky g" style="left:574px; top:280px; --r:-1deg">Tours &amp; tasting with times and a Book button</div>
-        <div class="sticky g" style="left:590px; top:386px; --r:2deg">Lists its taprooms by city</div>
+        <div class="sticky y" style="left:872px; top:74px; --r:-2deg">Same stacked age gate + privacy popup</div>
+        <div class="sticky y" style="left:888px; top:176px; --r:1.5deg">"Fresh in" first: newest beers lead</div>
+        <div class="sticky g" style="left:874px; top:280px; --r:-1deg">Tours &amp; tasting with times and a Book button</div>
+        <div class="sticky g" style="left:890px; top:386px; --r:2deg">Lists its taprooms by city</div>
+        <div class="sticky b" style="left:890px; top:500px; --r:1deg">Could a "Book a tour" button work for the Rap Taproom?</div>
 
-        <div class="col" style="left:760px">
+        <div class="col" style="left:1060px">
           <div class="label"><b>Verdant</b>Cornwall, UK</div>
           <img class="shot" src="images/neon-rapter/comp-verdant.jpg" alt="Verdant Brewing homepage screenshot" loading="lazy">
         </div>
-        <div class="sticky y" style="left:912px; top:74px; --r:1.5deg">Age check + a big cookie panel. 2 decisions before any beer</div>
-        <div class="sticky g" style="left:928px; top:188px; --r:-2deg">Add to basket right on the homepage cards, ABV shown</div>
-        <div class="sticky g" style="left:912px; top:300px; --r:1deg">Shop by collection tiles</div>
-        <div class="sticky g" style="left:928px; top:398px; --r:-1.5deg">"Discover our venues" uses a busy taproom photo</div>
+        <div class="sticky y" style="left:1212px; top:74px; --r:1.5deg">Age check + a big cookie panel. 2 decisions before any beer</div>
+        <div class="sticky g" style="left:1228px; top:188px; --r:-2deg">Add to basket right on the homepage cards, ABV shown</div>
+        <div class="sticky g" style="left:1212px; top:300px; --r:1deg">Shop by collection tiles</div>
+        <div class="sticky g" style="left:1228px; top:398px; --r:-1.5deg">"Discover our venues" uses a busy taproom photo</div>
+        <div class="sticky b" style="left:1228px; top:510px; --r:1deg">Do people want ABV on the product card?</div>
 
-        <div class="col" style="left:1100px">
+        <div class="col" style="left:1400px">
           <div class="label"><b>Other Half</b>Brooklyn, US</div>
           <img class="shot" src="images/neon-rapter/comp-otherhalf.jpg" alt="Other Half Brewing homepage screenshot" loading="lazy">
         </div>
-        <div class="sticky y" style="left:1252px; top:74px; --r:-1deg">Mailing list popup doubles as the age check</div>
-        <div class="sticky g" style="left:1268px; top:180px; --r:2deg">"Visit us" over a tap handle photo. The bar is the pitch</div>
-        <div class="sticky g" style="left:1252px; top:292px; --r:-2deg">Find us near you</div>
+        <div class="sticky y" style="left:1552px; top:74px; --r:-1deg">Mailing list popup doubles as the age check</div>
+        <div class="sticky g" style="left:1568px; top:180px; --r:2deg">"Visit us" over a tap handle photo. The bar is the pitch</div>
+        <div class="sticky g" style="left:1552px; top:292px; --r:-2deg">Find us near you</div>
+        <div class="sticky b" style="left:1552px; top:400px; --r:1deg">Is an age check inside a signup form fair to users?</div>
 
-        <div class="col" style="left:1440px">
+        <div class="col" style="left:1740px">
           <div class="label"><b>Trillium</b>Boston area, US</div>
           <img class="shot" src="images/neon-rapter/comp-trillium.jpg" alt="Trillium Brewing homepage screenshot" loading="lazy">
           <div class="label" style="position:static; margin-top:30px; margin-bottom:8px"><b>Northern Monk</b>Leeds, UK</div>
           <img class="shot" src="images/neon-rapter/comp-northernmonk.jpg" alt="Northern Monk age gate over full-bleed can artwork" loading="lazy">
         </div>
-        <div class="sticky y" style="left:1592px; top:74px; --r:1.5deg">21+ gate, then shipping explained by region</div>
-        <div class="sticky g" style="left:1604px; top:184px; --r:-1.5deg">Taproom sold as an event venue</div>
-        <div class="sticky p" style="left:1592px; top:420px; --r:2deg">Northern Monk: even the age gate is brand art</div>
-
-        <p class="board-note" style="left:30px; bottom:14px">Yellow: what I noticed · Green: patterns worth taking · Pink: gaps and brand opportunities</p>
+        <div class="sticky y" style="left:1892px; top:74px; --r:1.5deg">21+ gate, then shipping explained by region</div>
+        <div class="sticky g" style="left:1904px; top:184px; --r:-1.5deg">Taproom sold as an event venue</div>
+        <div class="sticky b" style="left:1904px; top:296px; --r:1deg">Would events and private hire bring more people in?</div>
+        <div class="sticky p" style="left:1892px; top:420px; --r:2deg">Northern Monk: even the age gate is brand art</div>
+        <div class="sticky b" style="left:1892px; top:540px; --r:1deg">Could our age gate be brand art too?</div>
       </div>
     </div>
-    <p class="caption">The original shortlist of competitor sites from the project wasn't kept, so this board re-runs the same scan on UK and US taproom breweries that sell online. Screenshots taken September 2026. Board background: the Rap Taproom, from the brewery's own photos.</p>
+    <div class="legend-row"><span><i class="sw-y"></i>What I noticed</span><span><i class="sw-g"></i>Patterns worth taking</span><span><i class="sw-p"></i>Problems on the old site, with the fix</span><span><i class="sw-b"></i>Open questions</span></div>
   </div>
 
   <div class="wrap">
     <h3>What the research told me</h3>
     <div class="insights">
-      <div class="insight"><h4>The taproom is the product</h4><p>The strongest brewery sites sell the bar as much as the beer: visit buttons, venue photos, opening hours, events.</p><span class="to">&rarr; Rap Taproom gets its own top-level page and a hero button</span></div>
-      <div class="insight"><h4>Don't make people leave the grid</h4><p>Adding beer straight from the product grid keeps people browsing. Four controls per card on the old site was too much.</p><span class="to">&rarr; One "+" per card that adds without opening the cart</span></div>
-      <div class="insight"><h4>Browse the way the brewery thinks</h4><p>Collection tiles work because breweries organise beer by series and range, not by filters.</p><span class="to">&rarr; A collections sidebar using Neon Raptor's own ranges</span></div>
-      <div class="insight"><h4>The brand should be the experience, not the footer</h4><p>Almost every site looked like a tidy store. Neon Raptor's arcade world was their edge, and the old site hid it.</p><span class="to">&rarr; Interactive neon grid, a peelable logo sticker, neon type throughout</span></div>
+      <div class="insight"><h4>The taproom is the product</h4><p>The strongest brewery sites sell the bar as much as the beer, with visit buttons, venue photos, opening hours and events.</p><span class="to">&rarr; Rap Taproom gets its own place in the primary navigation and a secondary CTA in the hero</span></div>
+      <div class="insight"><h4>Keep people in the browsing flow</h4><p>Adding beer straight from the product grid keeps people shopping. The old site put four controls on every card (size, minus, plus, add to cart), which added a decision to every product.</p><span class="to">&rarr; One "+" per card. It adds the beer without opening the cart, and a count on the cart button confirms it</span></div>
+      <div class="insight"><h4>Browse the way the brewery thinks</h4><p>Collection tiles mirror how breweries organise their beer, by series and range.</p><span class="to">&rarr; A collections sidebar in Neon Raptor's own range names (Nielsen heuristic #2, match between the system and the real world)</span></div>
+      <div class="insight"><h4>Put the brand into the experience</h4><p>Almost every site looked like a tidy store. Neon Raptor's arcade world set them apart, and the old site kept it in the footer.</p><span class="to">&rarr; Interactive neon grid, a peelable logo sticker, neon type throughout</span></div>
     </div>
   </div>
 
@@ -364,10 +434,10 @@
   <div class="wide board-wrap" style="margin-top:56px">
     <div class="board-head">
       <h3>Low-fi structure board</h3>
-      <span class="scroll-hint" aria-hidden="true">Scroll the board sideways &rarr;</span>
+      
     </div>
-    <div class="board figjam" tabindex="0" role="region" aria-label="Low fidelity wireframe board, scrollable">
-      <div class="canvas" style="width:1640px; height:760px">
+    <div class="board figjam" tabindex="0" role="region" aria-label="Low fidelity wireframe board">
+      <div class="canvas" style="width:1980px; height:760px">
 
         <!-- HOME -->
         <div class="col" style="left:30px; top:26px"><div class="label" style="position:static; color:var(--ink)"><b>Home</b></div></div>
@@ -388,10 +458,14 @@
         <div class="sticky y" style="left:280px; top:380px; --r:-1.5deg">About us with the real team photo</div>
         <div class="sticky y" style="left:272px; top:478px; --r:2deg">Current brews, 4 cans, link to shop</div>
         <div class="sticky b" style="left:280px; top:576px; --r:-1deg">Gallery of real brewery photos</div>
+        <div class="sticky y" style="left:412px; top:66px; --r:-2deg">"Est. 2016 · Nottingham, UK" above the headline</div>
+        <div class="sticky g" style="left:420px; top:176px; --r:1.5deg">Primary CTA in solid pink, secondary outlined: one clear first action</div>
+        <div class="sticky b" style="left:412px; top:296px; --r:-1deg">Floating cart button, always in reach</div>
+        <div class="sticky y" style="left:420px; top:396px; --r:2deg">Customer testimonial before the gallery</div>
 
         <!-- TAPROOM -->
-        <div class="col" style="left:450px; top:26px"><div class="label" style="position:static; color:var(--ink)"><b>Rap Taproom</b></div></div>
-        <div class="wf" style="left:450px">
+        <div class="col" style="left:590px; top:26px"><div class="label" style="position:static; color:var(--ink)"><b>Rap Taproom</b></div></div>
+        <div class="wf" style="left:590px">
           <div class="b" style="height:8px; background:#e9c6e7"></div>
           <div class="row" style="align-items:center"><div class="d" style="width:34px; height:28px; clip-path:polygon(0 0,100% 0,50% 100%)"></div><div class="row" style="flex:1; justify-content:center; gap:8px"><div class="ln" style="width:22px"></div><div class="ln" style="width:30px; background:#9d978c"></div><div class="ln" style="width:18px"></div><div class="ln" style="width:18px"></div></div></div>
           <div class="row" style="align-items:flex-start">
@@ -407,14 +481,17 @@
           </div>
           <div class="d" style="height:40px; border-radius:3px"></div>
         </div>
-        <div class="sticky g" style="left:692px; top:92px; --r:-2deg">Its own page in the main nav, not buried</div>
-        <div class="sticky y" style="left:700px; top:200px; --r:1.5deg">Location, hours, events in one card</div>
-        <div class="sticky g" style="left:692px; top:304px; --r:-1deg">One clear action: Get directions</div>
-        <div class="sticky p" style="left:700px; top:406px; --r:2deg">Photos of the taps and the space</div>
+        <div class="sticky g" style="left:832px; top:92px; --r:-2deg">Its own page in the main nav, not buried</div>
+        <div class="sticky y" style="left:840px; top:200px; --r:1.5deg">Location, hours, events in one card</div>
+        <div class="sticky g" style="left:832px; top:304px; --r:-1deg">One clear action: Get directions</div>
+        <div class="sticky p" style="left:840px; top:406px; --r:2deg">Photos of the taps and the space</div>
+        <div class="sticky y" style="left:832px; top:510px; --r:-2deg">Opening hours laid out day by day</div>
+        <div class="sticky y" style="left:840px; top:610px; --r:1.5deg">Events: quizzes, food pop-ups, tap takeovers</div>
+        <div class="sticky g" style="left:832px; top:710px; --r:-1deg">Answers "can I go tonight?" in one glance</div>
 
         <!-- SHOP -->
-        <div class="col" style="left:870px; top:26px"><div class="label" style="position:static; color:var(--ink)"><b>Shop</b></div></div>
-        <div class="wf" style="left:870px">
+        <div class="col" style="left:1010px; top:26px"><div class="label" style="position:static; color:var(--ink)"><b>Shop</b></div></div>
+        <div class="wf" style="left:1010px">
           <div class="b" style="height:8px; background:#e9c6e7"></div>
           <div class="row" style="align-items:center"><div class="d" style="width:34px; height:28px; clip-path:polygon(0 0,100% 0,50% 100%)"></div><div class="row" style="flex:1; justify-content:center; gap:8px"><div class="ln" style="width:22px"></div><div class="ln" style="width:30px"></div><div class="ln" style="width:18px; background:#9d978c"></div><div class="ln" style="width:18px"></div></div></div>
           <div class="row" style="align-items:flex-start">
@@ -431,15 +508,18 @@
           <div class="d" style="height:40px; border-radius:3px"></div>
           <div class="t" style="margin-top:4px">+ Cart drawer · Checkout</div>
         </div>
-        <div class="sticky g" style="left:1112px; top:66px; --r:1.5deg">Collections sidebar in the brewery's own ranges</div>
-        <div class="sticky y" style="left:1120px; top:176px; --r:-2deg">Bundle &amp; save: free shipping on 12+ cans</div>
-        <div class="sticky g" style="left:1112px; top:284px; --r:1deg">"+" adds to cart. Count shows on the cart button</div>
-        <div class="sticky p" style="left:1120px; top:394px; --r:-1.5deg">Cart drawer opens only when you tap the cart</div>
-        <div class="sticky b" style="left:1112px; top:500px; --r:2deg">Full checkout through to payment</div>
+        <div class="sticky g" style="left:1252px; top:66px; --r:1.5deg">Collections sidebar in the brewery's own ranges</div>
+        <div class="sticky y" style="left:1260px; top:176px; --r:-2deg">Bundle &amp; save: free shipping on 12+ cans</div>
+        <div class="sticky g" style="left:1252px; top:284px; --r:1deg">"+" adds to cart. Count shows on the cart button</div>
+        <div class="sticky p" style="left:1260px; top:394px; --r:-1.5deg">Cart drawer opens only when you tap the cart</div>
+        <div class="sticky b" style="left:1252px; top:500px; --r:2deg">Full checkout through to payment</div>
+        <div class="sticky b" style="left:1392px; top:66px; --r:-2deg">Item count next to the title: "15 items"</div>
+        <div class="sticky y" style="left:1400px; top:176px; --r:1.5deg">Style and price under every can</div>
+        <div class="sticky y" style="left:1392px; top:286px; --r:-1deg">Merch and gift packs in the same shop</div>
 
         <!-- INFO -->
-        <div class="col" style="left:1290px; top:26px"><div class="label" style="position:static; color:var(--ink)"><b>Info</b></div></div>
-        <div class="wf" style="left:1290px">
+        <div class="col" style="left:1570px; top:26px"><div class="label" style="position:static; color:var(--ink)"><b>Info</b></div></div>
+        <div class="wf" style="left:1570px">
           <div class="b" style="height:8px; background:#e9c6e7"></div>
           <div class="row" style="align-items:center"><div class="d" style="width:34px; height:28px; clip-path:polygon(0 0,100% 0,50% 100%)"></div><div class="row" style="flex:1; justify-content:center; gap:8px"><div class="ln" style="width:22px"></div><div class="ln" style="width:30px"></div><div class="ln" style="width:18px"></div><div class="ln" style="width:18px; background:#9d978c"></div></div></div>
           <div class="ln" style="width:55%; height:14px; background:#9d978c; margin:8px auto 2px"></div>
@@ -447,13 +527,15 @@
           <div class="b" style="height:20px"></div><div class="b" style="height:20px"></div><div class="b" style="height:20px"></div><div class="b" style="height:20px"></div>
           <div class="d" style="height:40px; border-radius:3px"></div>
         </div>
-        <div class="sticky y" style="left:1532px; top:92px; --r:-1.5deg">Email, phone and trade contact together</div>
-        <div class="sticky b" style="left:1540px; top:200px; --r:2deg">Shipping FAQs as tap-to-open cards</div>
-
-        <p class="board-note" style="left:30px; bottom:14px">Yellow: content · Green: research-led decision · Pink: brand moment · Blue: interaction</p>
+        <div class="sticky y" style="left:1812px; top:92px; --r:-1.5deg">Email, phone and trade contact together</div>
+        <div class="sticky b" style="left:1820px; top:200px; --r:2deg">Shipping FAQs as tap-to-open cards</div>
+        <div class="sticky g" style="left:1812px; top:300px; --r:-2deg">FAQs answer the real questions: delivery time, UK-only shipping, crowdfunder perks</div>
+        <div class="sticky y" style="left:1820px; top:420px; --r:1.5deg">Trade enquiries get their own email</div>
+        <div class="sticky y" style="left:1812px; top:520px; --r:-1deg">Same footer on every page: address, contact, socials</div>
       </div>
     </div>
-    <p class="caption">Low-fi structure, reconstructed from the final build for this case study. My original sketches were on paper and in Figma.</p>
+    <div class="legend-row"><span><i class="sw-y"></i>Content</span><span><i class="sw-g"></i>Research-led decision</span><span><i class="sw-p"></i>Brand moment</span><span><i class="sw-b"></i>Interaction</span></div>
+    <p class="caption">Low-fi page structure for Home, Rap Taproom, Shop and Info, drawn in pencil-sketch style.</p>
   </div>
 </section>
 
@@ -463,23 +545,29 @@
   <div class="wrap">
     <p class="eyebrow">03</p>
     <h2>The <span class="hl">design</span></h2>
-    <p class="lede">Two ideas drove the design: make the site feel like the taproom at night, and keep the path to buying beer short and obvious.</p>
-    <p>Everything is dark, like the bar, with the brewery's neon pink doing the talking. The background is a live neon grid that tilts with your mouse and cycles through four colour moods. The type is a condensed, techy display face for headings, which reads like an arcade cabinet, with a plain sans for everything you actually need to read.</p>
+    <p class="lede">I worked to two principles: make the site feel like the taproom at night, and keep the path to buying beer short and obvious.</p>
+    <p>The interface is dark like the bar, and neon pink carries the actions and highlights. Behind every page runs a live neon grid that tilts with the cursor and cycles through four colour moods. Headings use Rajdhani, a condensed display face that reads like an arcade cabinet, and body copy uses Inter for legibility.</p>
 
     <h3>Colour</h3>
-    <div class="swatches">
-      <div class="sw"><div class="c" style="background:#FF9FFC"></div><div class="n"><b>Neon pink</b>#FF9FFC · actions, highlights</div></div>
-      <div class="sw"><div class="c" style="background:#392e4e"></div><div class="n"><b>Grape</b>#392E4E · grid lines, surfaces</div></div>
-      <div class="sw"><div class="c" style="background:#050505"></div><div class="n"><b>Taproom black</b>#050505 · background</div></div>
-      <div class="sw"><div class="c" style="background:#ffffff"></div><div class="n"><b>White</b>#FFFFFF · text</div></div>
+    <div class="sheet">
+      <div class="sheet-head">Colours</div>
+      <div class="sheet-body">
+        <p class="sheet-group">Brand</p>
+        <div class="cards">
+          <div class="card"><div class="chip" style="background:#FF9FFC"></div><div class="meta-c"><b>Neon Pink</b><span>#FF9FFC</span><em>Buttons, highlights, active states</em></div></div>
+          <div class="card"><div class="chip" style="background:#392E4E"></div><div class="meta-c"><b>Grape</b><span>#392E4E</span><em>Grid lines, panels</em></div></div>
+          <div class="card"><div class="chip" style="background:#050505"></div><div class="meta-c"><b>Taproom Black</b><span>#050505</span><em>Page background</em></div></div>
+          <div class="card"><div class="chip" style="background:#FFFFFF"></div><div class="meta-c"><b>White</b><span>#FFFFFF</span><em>Text</em></div></div>
+        </div>
+        <p class="sheet-group">Background moods <small>The neon grid cycles through these, grid line colour + scan glow</small></p>
+        <div class="cards">
+          <div class="card"><div class="chip duo"><i style="background:#392E4E"></i><i style="background:#FF9FFC"></i></div><div class="meta-c"><b>Purple / Pink</b><span>#392E4E · #FF9FFC</span><em>Default mood</em></div></div>
+          <div class="card"><div class="chip duo"><i style="background:#1A237E"></i><i style="background:#00E5FF"></i></div><div class="meta-c"><b>Blue / Cyan</b><span>#1A237E · #00E5FF</span><em>Mood 2</em></div></div>
+          <div class="card"><div class="chip duo"><i style="background:#4A0000"></i><i style="background:#FF3D00"></i></div><div class="meta-c"><b>Red / Orange</b><span>#4A0000 · #FF3D00</span><em>Mood 3</em></div></div>
+          <div class="card"><div class="chip duo"><i style="background:#003300"></i><i style="background:#76FF03"></i></div><div class="meta-c"><b>Green / Lime</b><span>#003300 · #76FF03</span><em>Mood 4</em></div></div>
+        </div>
+      </div>
     </div>
-    <div class="themes" aria-label="Background colour moods the neon grid cycles through">
-      <span class="theme"><i style="background:linear-gradient(90deg,#392e4e,#FF9FFC)"></i>Purple / pink</span>
-      <span class="theme"><i style="background:linear-gradient(90deg,#1a237e,#00e5ff)"></i>Blue / cyan</span>
-      <span class="theme"><i style="background:linear-gradient(90deg,#4a0000,#ff3d00)"></i>Red / orange</span>
-      <span class="theme"><i style="background:linear-gradient(90deg,#003300,#76ff03)"></i>Green / lime</span>
-    </div>
-    <p class="caption">The neon grid background cycles through these four moods, so the site never looks quite the same twice.</p>
 
     <h3>Typography</h3>
     <div class="type">
@@ -492,7 +580,7 @@
       <div class="comp"><img src="images/neon-rapter/comp-ui-sidebar.jpg" alt="Shop collections sidebar with All products selected in neon pink" loading="lazy" style="max-width:220px"><p class="cap"><b>Collections sidebar.</b> Active state in solid neon pink with a soft glow.</p></div>
       <div class="comp"><img src="images/neon-rapter/comp-ui-card.jpg" alt="Product card: Centaur Army PB and J imperial stout, 6.50 pounds, plus button" loading="lazy" style="max-width:200px"><p class="cap"><b>Product card.</b> Can, name, style, price and a single "+" to add.</p></div>
       <div style="display:flex; flex-direction:column; gap:16px">
-        <div class="comp"><img src="images/neon-rapter/comp-ui-buttons.jpg" alt="Primary button Discover beers in pink and secondary button Visit Rap Taproom outlined" loading="lazy"><p class="cap"><b>Buttons.</b> Primary is solid pink with a clipped corner. Secondary is outlined.</p></div>
+        <div class="comp"><img src="images/neon-rapter/comp-ui-buttons.jpg" alt="Primary button Discover beers in pink and secondary button Visit Rap Taproom outlined" loading="lazy"><p class="cap"><b>Buttons.</b> A clear hierarchy: the primary is solid pink with a clipped corner, the secondary is outlined.</p></div>
         <div class="comp"><img src="images/neon-rapter/comp-ui-bundle.jpg" alt="Bundle and save banner: free shipping when you order 12 cans or more" loading="lazy"><p class="cap"><b>Promo banner.</b> One offer, one button, neon border.</p></div>
       </div>
     </div>
@@ -544,7 +632,7 @@
       <figure class="pair"><div class="stage">
         <div class="laptop"><div class="lid"><img src="images/neon-rapter/final-home-fold.jpg" alt="Home page on a laptop" loading="lazy" width="1440" height="900"></div><div class="base"></div></div>
         <div class="phone"><img src="images/neon-rapter/mobile-home.jpg" alt="Home page on a phone" loading="lazy" width="520" height="1125"></div>
-      </div><figcaption><b>Home.</b> Two doors in: shop the beer or visit the taproom.</figcaption></figure>
+      </div><figcaption><b>Home.</b> Two clear entry points: shop the beer or visit the taproom.</figcaption></figure>
       <figure class="pair"><div class="stage">
         <div class="laptop"><div class="lid"><img src="images/neon-rapter/final-shop-fold.jpg" alt="Shop page on a laptop" loading="lazy" width="1440" height="900"></div><div class="base"></div></div>
         <div class="phone"><img src="images/neon-rapter/mobile-shop.jpg" alt="Shop collections on a phone" loading="lazy" width="520" height="1125"></div>
@@ -556,7 +644,7 @@
       <figure class="pair"><div class="stage">
         <div class="laptop"><div class="lid"><img src="images/neon-rapter/final-info-fold.jpg" alt="Information page on a laptop" loading="lazy" width="1440" height="900"></div><div class="base"></div></div>
         <div class="phone"><img src="images/neon-rapter/mobile-info.jpg" alt="Information page on a phone" loading="lazy" width="520" height="1125"></div>
-      </div><figcaption><b>Info.</b> Contact and shipping answers without hunting.</figcaption></figure>
+      </div><figcaption><b>Info.</b> Contact details and shipping FAQs in one place.</figcaption></figure>
     </div>
   </div>
 </section>
@@ -566,15 +654,15 @@
 <section id="ai">
   <div class="wrap">
     <p class="eyebrow">04</p>
-    <h2>How I directed <span class="hl">the AI</span></h2>
-    <p class="lede">The build happened in Google AI Studio over 27 prompts across 16 and 17 December 2025. The AI wrote the code. The decisions were mine, and a lot of the work was catching what it got wrong.</p>
-    <p>These are real excerpts from the prompt log, lightly tidied for typos.</p>
+    <h2>How I used <span class="hl">AI</span></h2>
+    <p class="lede">Each stage had its own tool and a clear job for it. The tools produced the research summaries and the code. I set the direction, made the design decisions and reviewed their output, which often meant catching and fixing what they got wrong.</p>
     <div class="log">
-      <div class="entry"><span class="when">16 Dec · 13:47</span><blockquote>Let's redesign the website for Neon Raptor brewery. Go through the website first, pick up all the information and copy it onto the new one.</blockquote><p>Started from the brewery's real content, not placeholder copy, so the structure was designed around what they actually say.</p></div>
-      <div class="entry"><span class="when">16 Dec · 15:53</span><blockquote>No, revert back, the layout has changed.</blockquote><p>Asking for a full checkout broke the page layout. I rolled it back instead of patching on top of a broken state, then rebuilt the checkout in smaller steps.</p></div>
-      <div class="entry"><span class="when">16 Dec · 17:28</span><blockquote>In the shop, when I press + don't open the cart. Add it and show the number on the cart button, then open the side panel when the cart button is clicked.</blockquote><p>The single most important UX call in the build. The AI's default opened the cart on every add, which pulls people out of browsing. This is the "don't leave the grid" pattern from the research.</p></div>
-      <div class="entry"><span class="when">16 Dec · 17:40 and 17:47</span><blockquote>Can you reduce the opacity of the background please? It's too bright.</blockquote><blockquote>You made the background opacity too low, increase it a bit.</blockquote><p>Tuning the neon grid until it set the mood without fighting the text. Two rounds to land it.</p></div>
-      <div class="entry"><span class="when">16 Dec · 18:34 to 18:44</span><blockquote>It's merging, separate them please. The purple thing is overlaying the logo.</blockquote><p>Fixing layering between the header, banner and logo, and keeping the nav small while making the logo more prominent.</p></div>
+      <div class="entry"><span class="when">Research</span><blockquote class="tool-card"><b>Perplexity</b>Researching how UK and US taproom breweries sell beer online: how their shops are organised, how they handle age checks, and how they promote their taprooms and events.</blockquote><p>Surfaced the patterns on the research board: the taproom as a destination, adding beer straight from the grid, and shopping by collection.</p></div>
+      <div class="entry"><span class="when">Brainstorming</span><blockquote class="tool-card"><b>Pen &amp; paper + Figma</b>Sketching the page structure and content order, then first layout ideas for Home, Rap Taproom, Shop and Info.</blockquote><p>Settled the four-page structure and the two entry points on the homepage before any code was written.</p></div>
+      <div class="entry"><span class="when">Components</span><blockquote class="tool-card"><b>React Bits</b>Choosing ready-made interactive components that fit the brewery's retro arcade feel: Grid Scan, Sticker Peel and Circular Gallery.</blockquote><p>These became the neon grid background, the peelable logo sticker and the curved photo gallery.</p></div>
+      <div class="entry"><span class="when">Build</span><blockquote class="tool-card"><b>Google AI Studio</b>Building the React and TypeScript site from the brewery's real content, then refining it over 27 prompts: the shop, cart and checkout, the background, and the header layout.</blockquote><p>By default the cart drawer opened on every add, which broke the browsing flow. I changed it so the beer is added, the cart button shows the new count, and the drawer opens only when you tap the cart (Nielsen heuristic #1, visibility of system status).</p></div>
+      <div class="entry"><span class="when">Build</span><blockquote class="tool-card"><b>Claude Code</b>Worked directly in the site's codebase alongside AI Studio.</blockquote><p>Used with AI Studio to finish the site and prepare it for launch.</p></div>
+      <div class="entry"><span class="when">Assets &amp; shipping</span><blockquote class="tool-card"><b>ImageKit, Netlify + Supabase</b>ImageKit serves the brewery's photos and can images. Netlify hosts the site. Supabase stores the products the shop sells.</blockquote><p>Live on Netlify, waiting to move onto the brewery's own domain.</p></div>
     </div>
   </div>
 </section>
@@ -588,11 +676,27 @@
     <p class="lede">The site is live on Netlify, with the brewery's products served from Supabase, and it's waiting to move onto their own domain.</p>
     <p class="eyebrow" style="margin-top:30px">What the brewery reported back</p>
     <p class="outcome-quote" style="margin-top:0">The team started using it and loved it. The feedback from customers ordering through it came down to two things: how easy it is to order beer, and how much it feels like being in the taproom.</p>
-    <p>That second point was the whole brief, so it was the best feedback I could have hoped for.</p>
+    <p>Feeling like the taproom was the original brief.</p>
     <h3>What I learned</h3>
-    <p>AI made it possible to go from research to a working shop in days, but it doesn't have taste or context. Every useful result came from knowing what I wanted before I asked, and spotting quickly when it went wrong. The research mattered more, not less, because it gave me clear decisions to direct the build with.</p>
+    <p>AI took the project from research to a working shop in days. It has no taste or context of its own, so every useful result came from knowing what I wanted before I asked and spotting quickly when it went wrong. That made the research more valuable, because it gave me clear decisions to direct the build with.</p>
     <h3>Given more time</h3>
     <p>I'd add age verification into checkout, which matters for selling alcohol online in the UK. I'd photograph every beer, because some products in the shop still share one can image. And once the site is on its own domain, I'd set up analytics to see where people drop off between the product grid and payment, then test the checkout with real customers in the taproom.</p>
+  </div>
+</section>
+
+<hr>
+
+<section id="thanks" class="thanks">
+  <div class="wrap" style="text-align:center">
+    <p class="eyebrow">See it live</p>
+    <h2>Thank <span class="hl">you</span></h2>
+    <p class="lede" style="max-width:620px; margin:0 auto 34px">Thanks for reading. Here's the site in action, and you can try it yourself on the live link.</p>
+  </div>
+  <div class="wrap">
+    <div class="laptop thanks-laptop"><div class="lid"><video src="../showcase-neon.mp4" poster="images/neon-rapter/video-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Screen recording of the live Neon Raptor home page: the neon grid shifting colour behind the Brewing the future headline"></video></div><div class="base"></div></div>
+    <div style="text-align:center; margin-top:40px">
+      <a class="live-btn" href="https://neonrapterbrewery.netlify.app/" target="_blank" rel="noopener">Visit the live site <span aria-hidden="true">&nearr;</span></a>
+    </div>
   </div>
 </section>
 
@@ -632,7 +736,18 @@ function layoutBoards(){ document.querySelectorAll('.board .canvas').forEach(fun
     maxBottom = Math.max(maxBottom, el.offsetTop + (el.closest('.col') ? el.closest('.col').offsetTop : 0) + el.offsetHeight);
   });
   if (maxBottom + 56 > canvas.offsetHeight) canvas.style.height = (maxBottom + 56) + 'px';
-}); }
+}); fitBoards(); }
+/* Scale each whiteboard down to the page width so nothing scrolls sideways */
+function fitBoards(){
+  document.querySelectorAll('.board').forEach(function(board){
+    var canvas = board.querySelector('.canvas');
+    var scale = Math.min(1, board.clientWidth / canvas.offsetWidth);
+    canvas.style.transform = 'scale(' + scale + ')';
+    board.style.height = Math.ceil(canvas.offsetHeight * scale) + 'px';
+  });
+}
+window.addEventListener('resize', fitBoards);
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('video[autoplay]').forEach(function(v){ v.removeAttribute('autoplay'); v.pause(); v.controls = true; });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutBoards); else window.addEventListener('load', layoutBoards);
 </script>
 
