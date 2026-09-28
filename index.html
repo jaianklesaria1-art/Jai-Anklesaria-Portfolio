@@ -88,7 +88,9 @@ a{color:inherit}
 }
 
 /* ── NAV — PillNav ───────────────────────────────── */
-.pill-nav-container{position:fixed; top:20px; left:56px; right:56px; z-index:100; display:flex; justify-content:center}
+.pill-nav-container{position:fixed; top:20px; left:56px; right:56px; z-index:100; display:flex; justify-content:center; transition:opacity .4s ease, transform .4s cubic-bezier(.22,1,.36,1), visibility .4s}
+/* Hidden over the ScrollGallery hero; shown once Showcase scrolls into view */
+.pill-nav-container.nav-hidden{opacity:0; visibility:hidden; pointer-events:none; transform:translateY(-16px)}
 .pill-nav{
   --nav-h:44px; --pill-pad-x:20px; --pill-gap:3px;
   --base:#ffffff; --pill-bg:#0a0a0c; --hover-text:#0a0a0c; --pill-text:#f5f3ee;
@@ -448,6 +450,127 @@ a{color:inherit}
   .reveal{transition:opacity .3s linear; transform:none}
   .mh-text,.mh-title,.mh-socials,.mh-location{animation:none; opacity:1; transform:none}
 }
+
+/* ── HERO — ScrollGallery (ported from ScrollGallery.tsx, "studio" variant) ── */
+#hero.sg{display:block; height:100svh; min-height:0; padding:0; overflow:hidden; background:#05010a; content-visibility:visible; contain:none}
+.sg-images,.sg-frame{position:absolute; inset:0; width:100%; height:100%}
+.sg-images img{width:100%; height:100%; object-fit:cover; transform-origin:center center; backface-visibility:hidden}
+.sg-shade{position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(to bottom, rgba(5,1,10,0.55), rgba(5,1,10,0.3) 35%, rgba(5,1,10,0.62) 55%, rgba(5,1,10,0.82))}
+.sg-info{position:absolute; top:50%; left:0; z-index:2; width:100%; transform:translateY(-50%); border-bottom:1px solid rgba(255,255,255,0.2)}
+.sg-info-inner{display:flex; gap:32px; padding:0 36px 12px}
+.sg-prefix{flex:1}
+.sg-title{position:relative; flex:2; height:56px; overflow:hidden}
+.sg-link{flex:1; display:flex; justify-content:flex-end}
+.sg-text{margin:0; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:48px; text-shadow:0 2px 18px rgba(0,0,0,0.55); line-height:1; letter-spacing:-0.02rem; color:#fff; text-decoration:none; -webkit-font-smoothing:antialiased; will-change:transform}
+.sg-title .sg-text{clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.sg-link .sg-text:hover{text-decoration:underline; text-underline-offset:6px}
+@media (max-width:1000px){
+  .sg-prefix{display:none}
+  .sg-title{height:30px}
+  .sg-text{font-size:24px}
+  .sg-info-inner{padding:0 20px 8px; gap:16px}
+}
+/* About blurb shown only while the "Subject Identified" slide is active */
+.sg-about{position:absolute; top:calc(50% + 52px); left:0; z-index:2; width:100%; display:flex; gap:32px; padding:0 36px; opacity:0; visibility:hidden; transform:translateY(12px); transition:opacity .4s ease, transform .4s cubic-bezier(.22,1,.36,1), visibility .4s}
+.sg-about.is-visible{opacity:1; visibility:visible; transform:none}
+.sg-about-body strong{font-weight:800}
+/* Name moves into the blurb on the Subject Identified slide, so hide it in the band there */
+#sgPrefix{transition:opacity .35s ease}
+#hero[data-panel="sgAbout"] #sgPrefix{opacity:0}
+/* ...and slide the title + blurb over into the left column */
+.sg-info .sg-prefix,#sgAbout .sg-prefix{transition:flex-grow .6s cubic-bezier(.22,1,.36,1), flex-basis .6s cubic-bezier(.22,1,.36,1)}
+#hero[data-panel="sgAbout"] .sg-info .sg-prefix,#sgAbout .sg-prefix{flex-grow:0; flex-basis:4vw; min-width:0; margin-right:0}
+.sg-about-body{flex:2; max-width:640px}
+.sg-about-body p{margin:0; font-size:1.3rem; font-weight:500; line-height:1.6; color:#fff; text-shadow:0 1px 12px rgba(0,0,0,0.7)}
+.sg-about-more{display:inline-block; margin-top:16px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.15rem; color:#fff; text-decoration:underline; text-underline-offset:4px}
+/* Dossier 09 — case study index */
+.sg-cases{flex:2; max-width:780px; background:rgba(5,1,10,0.45); margin:0; padding:0; list-style:none; border-top:1px solid rgba(255,255,255,0.14)}
+.sg-cases a{display:grid; grid-template-columns:48px 180px 1fr 24px; text-shadow:0 1px 10px rgba(0,0,0,0.7); align-items:baseline; gap:12px; padding:12px 4px; border-bottom:1px solid rgba(255,255,255,0.14); color:#fff; text-decoration:none; transition:background .25s ease, padding .25s ease}
+.sg-cases a:hover,.sg-cases a:focus-visible{background:rgba(255,255,255,0.07); padding-left:12px}
+.sg-case-num{font-family:ui-monospace,'SFMono-Regular',Menlo,monospace; font-size:0.95rem; font-weight:700; color:rgba(255,255,255,0.8)}
+.sg-case-name{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.35rem}
+.sg-case-desc{font-size:1.05rem; font-weight:500; color:#fff}
+.sg-case-arrow{text-align:right; transition:transform .25s ease}
+.sg-cases a:hover .sg-case-arrow{transform:translateX(4px)}
+.sg-panel.is-visible .sg-cases li{animation:sgRowIn .5s cubic-bezier(.22,1,.36,1) both}
+.sg-panel.is-visible .sg-cases li:nth-child(2){animation-delay:.07s}
+.sg-panel.is-visible .sg-cases li:nth-child(3){animation-delay:.14s}
+.sg-panel.is-visible .sg-cases li:nth-child(4){animation-delay:.21s}
+@keyframes sgRowIn{from{opacity:0; transform:translateY(10px)}to{opacity:1; transform:none}}
+/* Stairwell C7 — case status readout + stamp */
+.sg-terminal{margin:0; min-height:8.3em; font-family:ui-monospace,'SFMono-Regular',Menlo,monospace; font-size:1.12rem; font-weight:700; line-height:1.65; color:#fff; text-shadow:0 1px 10px rgba(0,0,0,0.8); white-space:pre-wrap}
+.sg-terminal .sg-caret{display:inline-block; width:0.6em; height:1.05em; margin-left:2px; vertical-align:-0.15em; background:#fff; animation:sgBlink 1s steps(1) infinite}
+@keyframes sgBlink{50%{opacity:0}}
+.sg-status-actions{display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-top:18px}
+.sg-btn{display:inline-block; padding:12px 22px; border:1.5px solid #fff; border-radius:999px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.05rem; background:rgba(5,1,10,0.35); color:#fff; text-decoration:none; transition:background .25s ease, color .25s ease}
+.sg-btn:hover,.sg-btn--solid{background:#fff; color:#0a0a0c}
+.sg-btn--solid:hover{background:rgba(255,255,255,0.85)}
+.sg-stairs{margin-left:8px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.05rem; color:#fff; text-decoration:underline; text-underline-offset:4px}
+.sg-stairs span{display:inline-block; animation:sgStep 1.4s ease-in-out infinite}
+@keyframes sgStep{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+.sg-stamp{position:absolute; top:16%; right:9%; z-index:2; padding:6px 22px; border:4px solid #ec4899; border-radius:6px; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:2.5rem; letter-spacing:0.1em; white-space:nowrap; text-transform:uppercase; color:#ec4899; mix-blend-mode:screen; opacity:0; visibility:hidden; transform:rotate(-12deg) scale(2.4); pointer-events:none}
+.sg-stamp.is-visible{visibility:visible; animation:sgStamp .45s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes sgStamp{0%{opacity:0; transform:rotate(-4deg) scale(2.4)}60%{opacity:1; transform:rotate(-13deg) scale(0.94)}100%{opacity:0.92; transform:rotate(-12deg) scale(1)}}
+/* HUD */
+.sg-hud{position:absolute; inset:0; z-index:3; pointer-events:none; font-family:ui-monospace,'SFMono-Regular',Menlo,monospace; font-size:0.92rem; font-weight:700; letter-spacing:0.08em; color:#fff; text-shadow:0 1px 8px rgba(0,0,0,0.8)}
+.sg-hud-corner{position:absolute; width:26px; height:26px; border:0 solid rgba(255,255,255,0.7)}
+.sg-hud-corner--tl{top:24px; left:24px; border-top-width:1.5px; border-left-width:1.5px}
+.sg-hud-corner--tr{top:24px; right:24px; border-top-width:1.5px; border-right-width:1.5px}
+.sg-hud-corner--bl{bottom:24px; left:24px; border-bottom-width:1.5px; border-left-width:1.5px}
+.sg-hud-corner--br{bottom:24px; right:24px; border-bottom-width:1.5px; border-right-width:1.5px}
+.sg-hud-rec{position:absolute; top:34px; left:62px; display:flex; align-items:center; gap:8px}
+.sg-hud-dot{width:8px; height:8px; border-radius:50%; background:#ef4444; box-shadow:0 0 8px #ef4444; animation:sgBlink 1.2s steps(1) infinite}
+.sg-hud-cam{margin-left:6px; padding:2px 6px; border:1px solid rgba(255,255,255,0.35)}
+.sg-hud-clock{position:absolute; top:34px; right:62px}
+.sg-hud-clock span:first-child{color:rgba(255,255,255,0.75)}
+.sg-hud-count{position:absolute; bottom:34px; left:62px; display:flex; align-items:center; gap:6px}
+.sg-hud-bar{display:flex; gap:4px; margin-left:12px}
+.sg-hud-bar i{position:relative; display:block; width:28px; height:2px; background:rgba(255,255,255,0.25); overflow:hidden}
+.sg-hud-bar i b{position:absolute; inset:0; background:#fff; transform-origin:left; transform:scaleX(0)}
+.sg-hud-hint{position:absolute; bottom:34px; left:50%; transform:translateX(-50%); transition:opacity .4s ease}
+.sg-hud-hint span{display:inline-block; margin-left:4px; animation:sgStep 1.4s ease-in-out infinite}
+.sg-hud-hint.is-gone{opacity:0}
+/* Dossier 09 — redaction bars pull away from each description */
+.sg-case-desc{position:relative}
+.sg-case-desc::after{content:''; position:absolute; top:-1px; bottom:-1px; left:-3px; right:-3px; background:#0a0a0c; transform-origin:right center}
+#hero[data-panel="sgCases"] .sg-case-desc::after{animation:sgUnredact .45s cubic-bezier(.65,0,.35,1) .4s both}
+#hero[data-panel="sgCases"] .sg-cases li:nth-child(2) .sg-case-desc::after{animation-delay:.55s}
+#hero[data-panel="sgCases"] .sg-cases li:nth-child(3) .sg-case-desc::after{animation-delay:.7s}
+#hero[data-panel="sgCases"] .sg-cases li:nth-child(4) .sg-case-desc::after{animation-delay:.85s}
+@keyframes sgUnredact{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+@media (max-width:1000px){
+  .sg-hud-corner--tl,.sg-hud-corner--tr{top:14px}
+  .sg-hud-corner--bl,.sg-hud-corner--br{bottom:14px}
+  .sg-hud-corner--tl,.sg-hud-corner--bl{left:14px}
+  .sg-hud-corner--tr,.sg-hud-corner--br{right:14px}
+  .sg-hud-rec,.sg-hud-clock{top:22px}
+  .sg-hud-rec,.sg-hud-count{left:44px}
+  .sg-hud-clock{right:44px}
+  .sg-hud-count{bottom:22px}
+  .sg-hud-hint{bottom:56px}
+}
+@media (max-width:600px){.sg-hud-clock span:first-child{display:none}}
+/* Room 14B intro — CRT overlay pinned to the monitor in the photo */
+.sg-frame{transform-origin:center center; backface-visibility:hidden}
+.sg-monitor{position:absolute; overflow:hidden; border-radius:9%/12%; background:#030806; opacity:0; pointer-events:none}
+.sg-monitor::after{content:''; position:absolute; inset:0; background:repeating-linear-gradient(to bottom, rgba(0,0,0,0.28) 0 1px, transparent 1px 3px); pointer-events:none}
+.sg-monitor.is-on{opacity:1; background:radial-gradient(ellipse at center, #0d2a1c 0%, #04110b 75%); box-shadow:0 0 1.2em 0.25em rgba(124,255,178,0.35); animation:sgCrtOn .45s cubic-bezier(.2,.9,.3,1) both}
+@keyframes sgCrtOn{0%{transform:scale(1,0.02); filter:brightness(3)}45%{transform:scale(1,0.02); filter:brightness(3)}100%{transform:scale(1,1); filter:brightness(1)}}
+.sg-monitor-text{margin:0; padding:9% 8%; font-family:ui-monospace,'SFMono-Regular',Menlo,monospace; font-weight:700; line-height:1.3; color:#8dffbf; text-shadow:0 0 0.35em rgba(124,255,178,0.9); white-space:pre}
+.sg-monitor-text .sg-caret{display:inline-block; width:0.55em; height:1em; vertical-align:-0.12em; background:#8dffbf; animation:sgBlink 1s steps(1) infinite}
+/* band + HUD wait for the intro to finish */
+.sg-info,.sg-hud{transition:opacity .7s ease}
+#hero.sg-intro .sg-info,#hero.sg-intro .sg-hud{opacity:0}
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+@media (max-width:1000px){
+  .sg-about{top:calc(50% + 34px); padding:0 20px; gap:16px}
+  .sg-about-body p{font-size:1.02rem}
+  .sg-cases a{grid-template-columns:30px 1fr 20px; padding:10px 2px}
+  .sg-case-desc{display:none}
+  .sg-terminal{font-size:0.86rem}
+  .sg-stamp{top:18%; right:6%; font-size:1.3rem; border-width:3px}
+}
+@media (max-width:1024px){#hero.sg{height:100dvh}}
 </style>
 </head>
 <body>
@@ -462,7 +585,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <!-- NAV — PillNav -->
-<div class="pill-nav-container">
+<div class="pill-nav-container nav-hidden">
   <nav class="pill-nav" aria-label="Primary">
     <div class="pill-nav-items desktop-only" id="pillNavItems">
       <ul class="pill-list" id="pillList" role="menubar"></ul>
@@ -477,33 +600,63 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <ul class="mobile-menu-list" id="pillMobileList"></ul>
 </div>
 
-<!-- HERO — Minimalist Hero -->
-<section id="hero">
-  <div id="crtWarpContainer" class="crt-warp-container" aria-hidden="true"></div>
-  <div id="lanyardContainer" aria-hidden="true"></div>
-  <div class="mh-grid wrap">
-    <div class="mh-title">
-      <h1 style="margin:0">
-        <span class="depth-text" id="heroTitleLine1"><span class="depth-text__stage" id="heroTitleLine1Stage"></span></span><br/>
-        <span class="depth-text" id="heroTitleLine2"><span class="depth-text__stage" id="heroTitleLine2Stage"></span></span><br/>
-        <span class="depth-text" id="heroTitleLine3"><span class="depth-text__stage" id="heroTitleLine3Stage"></span></span>
-      </h1>
-    </div>
-    <div class="mh-text">
-      <div class="mh-lede">
-        <div class="split-flap" id="heroFlap" role="text" aria-label="Solves, Designs, Codes, Validates, Ships"></div>
-      </div>
-      <a href="#about" class="mh-more">Read More</a>
+<!-- HERO — ScrollGallery: pinned image stack, strip-mask wipe between slides, animated title band.
+     Slides are filled in by initScrollGallery() from HERO_SLIDES. -->
+<section id="hero" class="sg">
+  <div class="sg-images" id="sgImages">
+    <div class="sg-frame" id="sgFirstFrame"><img id="sgFirstImg" alt=""/><div class="sg-monitor" id="sgMonitor" aria-hidden="true"><pre class="sg-monitor-text"></pre></div></div>
+  </div>
+  <div class="sg-shade" aria-hidden="true"></div>
+  <div class="sg-info">
+    <div class="sg-info-inner">
+      <div class="sg-prefix"><p class="sg-text" id="sgPrefix">Jai Anklesaria</p></div>
+      <div class="sg-title"><p class="sg-text" id="sgTitle"></p></div>
+      <div class="sg-link"><a class="sg-text" id="sgLink" href="#work">Case Studies</a></div>
     </div>
   </div>
-  <div class="mh-footer wrap">
-    <div class="mh-socials">
-      <a class="mh-social" href="mailto:jaianklesaria.jobs@gmail.com" aria-label="Email">@</a>
-      <a class="mh-social" href="https://behance.net/uxjaianklesaria" target="_blank" rel="noopener" aria-label="Behance">Bē</a>
-      <a class="mh-social" href="https://linkedin.com/in/jaiuxdesigner" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
-      <a class="mh-social" href="https://github.com/jaianklesaria1-art" target="_blank" rel="noopener" aria-label="GitHub">Gh</a>
+  <div class="sg-about" id="sgAbout" aria-hidden="true">
+    <div class="sg-prefix"></div>
+    <div class="sg-about-body">
+      <p><strong>Jai Anklesaria</strong> is a UX Analyst and Product Designer with 2+ years of full-time experience, plus freelance work since 2021, turning user research and behavioural data into product decisions teams can act on, and holds an MSc in Human-Computer Interaction from the University of Nottingham.</p>
+      <a href="#about" class="sg-about-more" tabindex="-1">Read More</a>
     </div>
-    <div class="mh-location">Based in Nottingham, UK</div>
+    <div class="sg-link"></div>
+  </div>
+  <div class="sg-about sg-panel" id="sgCases" aria-hidden="true">
+    <div class="sg-prefix"></div>
+    <ol class="sg-cases">
+      <li><a href="case-studies/pharmeasy.html" tabindex="-1"><span class="sg-case-num">01</span><span class="sg-case-name">PharmEasy</span><span class="sg-case-desc">Checkout audit &amp; redesign</span><span class="sg-case-arrow" aria-hidden="true">&rarr;</span></a></li>
+      <li><a href="case-studies/hercessi.html" tabindex="-1"><span class="sg-case-num">02</span><span class="sg-case-name">HERCESSI</span><span class="sg-case-desc">WCAG 2.2 AA accessibility audit</span><span class="sg-case-arrow" aria-hidden="true">&rarr;</span></a></li>
+      <li><a href="https://www.behance.net/gallery/232393963/ARFinViz-App-Data-Visualization-in-Augmented-Reality" target="_blank" rel="noopener" tabindex="-1"><span class="sg-case-num">03</span><span class="sg-case-name">ARFinViz</span><span class="sg-case-desc">AR data visualisation &middot; University of Nottingham &times; KPMG</span><span class="sg-case-arrow" aria-hidden="true">&nearr;</span></a></li>
+      <li><a href="https://www.behance.net/gallery/232397651/Growth-Book-Child-Growth-Tracking-App" target="_blank" rel="noopener" tabindex="-1"><span class="sg-case-num">04</span><span class="sg-case-name">Growth Book</span><span class="sg-case-desc">Child growth tracking app</span><span class="sg-case-arrow" aria-hidden="true">&nearr;</span></a></li>
+    </ol>
+    <div class="sg-link"></div>
+  </div>
+  <!-- Surveillance HUD: frames every slide, camera label / counter follow the active slide -->
+  <div class="sg-hud" aria-hidden="true">
+    <span class="sg-hud-corner sg-hud-corner--tl"></span><span class="sg-hud-corner sg-hud-corner--tr"></span>
+    <span class="sg-hud-corner sg-hud-corner--bl"></span><span class="sg-hud-corner sg-hud-corner--br"></span>
+    <div class="sg-hud-rec"><span class="sg-hud-dot"></span>REC <span class="sg-hud-cam" id="sgHudCam">CAM 14B</span></div>
+    <div class="sg-hud-clock"><span>NOTTINGHAM</span> <span id="sgHudClock">--:--:--</span></div>
+    <div class="sg-hud-count">
+      <span id="sgHudIndex">01</span> / <span id="sgHudTotal">04</span>
+      <div class="sg-hud-bar" id="sgHudBar"></div>
+    </div>
+    <div class="sg-hud-hint" id="sgHudHint">Scroll to open the file <span>&darr;</span></div>
+  </div>
+  <div class="sg-stamp" id="sgStamp" aria-hidden="true">Open to work</div>
+  <div class="sg-about sg-panel" id="sgStatus" aria-hidden="true">
+    <div class="sg-prefix"></div>
+    <div class="sg-about-body">
+      <p class="sr-only">Case status: open to work. Based in Nottingham, UK. Open to UX Analyst and Product Designer roles. Specialising in research, analytics, accessibility and product design. Currently working at Asentech LLC.</p>
+      <pre class="sg-terminal" aria-hidden="true"></pre>
+      <div class="sg-status-actions">
+        <a href="mailto:jaianklesaria.jobs@gmail.com" class="sg-btn sg-btn--solid" tabindex="-1">Email me</a>
+        <a href="https://linkedin.com/in/jaiuxdesigner" target="_blank" rel="noopener" class="sg-btn" tabindex="-1">LinkedIn</a>
+        <a href="Jai-Anklesaria-CV.pdf" target="_blank" rel="noopener" class="sg-stairs" tabindex="-1">Download CV <span aria-hidden="true">&darr;</span></a>
+      </div>
+    </div>
+    <div class="sg-link"></div>
   </div>
 </section>
 
@@ -533,6 +686,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<!-- WORK -->
+<section id="work" class="sc-section">
+  <h2 class="chrome section-label">WORK</h2>
+  <div class="wrap">
+    <div class="wk-subhead"><h3 class="wk-sublabel">UI/UX Case Studies</h3></div>
+    <div class="wk-grid" id="workGridCaseStudies"></div>
+
+    <div class="wk-subhead"><h3 class="wk-sublabel">Freelancing Projects / AI Vibe Coded Projects</h3></div>
+    <div class="wk-grid" id="workGridVibeCoded"></div>
+  </div>
+</section>
+
 <!-- SKILLS -->
 <section id="skills">
   <h2 class="chrome section-label">SKILLS</h2>
@@ -559,18 +724,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="skills-group">
     <div class="skills-label">Programming (Working Knowledge)</div>
     <div class="marquee-row"><div class="marquee-track" id="mtrack5"></div></div>
-  </div>
-</section>
-
-<!-- WORK -->
-<section id="work" class="sc-section">
-  <h2 class="chrome section-label">WORK</h2>
-  <div class="wrap">
-    <div class="wk-subhead"><h3 class="wk-sublabel">UI/UX Case Studies</h3></div>
-    <div class="wk-grid" id="workGridCaseStudies"></div>
-
-    <div class="wk-subhead"><h3 class="wk-sublabel">Freelancing Projects / AI Vibe Coded Projects</h3></div>
-    <div class="wk-grid" id="workGridVibeCoded"></div>
   </div>
 </section>
 
@@ -1291,6 +1444,409 @@ if (!prefersReducedMotion) {
   gsap.ticker.lagSmoothing(0);
 }
 
+/* Hero — ScrollGallery, ported from ScrollGallery.tsx (React + @gsap/react) to vanilla JS.
+   The first slide sits in the markup; every later slide is stacked on top with a fully
+   transparent mask, then wiped in bottom-up in horizontal strips as the pinned hero scrolls.
+   PLACEHOLDER slides: the component's own demo slides (21st.dev/@soralabs/components/scroll-gallery),
+   hot-linked from cdn.21st.dev until the real hero content is supplied. */
+const HERO_SLIDES = [
+  { title: 'Product Designer', cam: 'CAM 14B', alt: 'Room 14B', image: 'https://cdn.21st.dev/assets/localized/422a9d079a86d6b410b41fbb0090427811811c3ae4a155b10f8d15a3c0a58a28.webp', url: '#work' },
+  { title: 'Subject Identified', cam: 'ID SCAN', panel: 'sgAbout', alt: 'Subject Identified', image: 'https://cdn.21st.dev/assets/localized/999a6f1ea688f9a5773a2c87a1b0bba9ab1883540bb8c076cc05f0bbd020e8f5.webp', url: '#work' },
+  { title: 'Case Studies 101', cam: 'FILE 101', panel: 'sgCases', alt: 'Dossier 09', image: 'https://cdn.21st.dev/assets/localized/3be3b5cf7b711fac32e9ac2f8d9f3376257351fd892080d24efb9b6d76f6e4b6.webp', url: '#work' },
+  { title: 'Stairwell C7', cam: 'CAM C7', panel: 'sgStatus', alt: 'Stairwell C7', image: 'https://cdn.21st.dev/assets/localized/70740344cc7e98e830662f223995a973464ddb53d449e1da1ec28aca1a205c55.webp', url: '#work' }
+];
+
+(function initScrollGallery(){
+  const section = document.getElementById('hero');
+  const slideImages = document.getElementById('sgImages');
+  const firstImg = document.getElementById('sgFirstImg');
+  const firstFrame = document.getElementById('sgFirstFrame');
+  const titleEl = document.getElementById('sgTitle');
+  const linkEl = document.getElementById('sgLink');
+  const slides = HERO_SLIDES;
+  if (!section || !slideImages || !firstImg || !slides.length) return;
+
+  const STRIPS = 20;
+  const SCROLL_PER_TRANSITION = 100; /* vh (component default is 1000, far too long for a hero) */
+  const INITIAL_DELAY = 30, FINAL_DELAY = 30; /* vh */
+  const SCRUB = 1;
+  const SCALE_FROM = 1.25, SCALE_TO = 1, SCALE_STEP = (SCALE_FROM - SCALE_TO) / 2;
+  const STRIP_REVEAL_SPEED = 2;
+  const TITLE_THRESHOLD = 0.3, TITLE_DURATION = 0.3, TITLE_EASE = 'power2.out', TITLE_OFFSET = '120%';
+  const LINK_LABEL = 'Case Studies';
+  const MASK_HIDDEN = 'linear-gradient(to bottom, transparent 0%, transparent 100%)';
+  const MASK_REVEALED = 'linear-gradient(to bottom, black 0%, black 100%)';
+
+  firstImg.src = slides[0].image;
+  firstImg.alt = slides[0].alt || slides[0].title;
+  titleEl.textContent = slides[0].title;
+  function updateLink(i){
+    linkEl.href = slides[i].url || '#';
+    linkEl.textContent = slides[i].linkLabel || LINK_LABEL;
+  }
+  updateLink(0);
+
+  const setScale = (el, v) => { el.style.transform = `translate3d(0,0,0) scale(${v})`; };
+  const setMask = (el, v) => { el.style.maskImage = v; el.style.webkitMaskImage = v; };
+
+  if (prefersReducedMotion || slides.length < 2) { setScale(firstImg, SCALE_TO); return; }
+  setScale(firstFrame, SCALE_FROM);
+
+  const stripBounds = Array.from({ length: STRIPS }, (_, j) => {
+    const step = 100 / STRIPS, fromBottom = STRIPS - j - 1;
+    return { lower: (fromBottom + 1) * step, upperGap: fromBottom * step - 0.1, delay: (j / STRIPS) * 0.5 };
+  });
+
+  function buildStripMask(progress){
+    const intervals = [];
+    for (const b of stripBounds) {
+      const adj = Math.max(0, Math.min(1, (progress - b.delay) * STRIP_REVEAL_SPEED));
+      if (adj <= 0) continue;
+      intervals.push({ top: b.lower - adj * (b.lower - b.upperGap), bottom: b.lower });
+    }
+    if (!intervals.length) return MASK_HIDDEN;
+    intervals.sort((a, b) => a.top - b.top);
+    const merged = [{ ...intervals[0] }];
+    for (let i = 1; i < intervals.length; i++) {
+      const last = merged[merged.length - 1], next = intervals[i];
+      if (next.top <= last.bottom) last.bottom = Math.max(last.bottom, next.bottom);
+      else merged.push({ ...next });
+    }
+    const stops = [];
+    let cursor = 0;
+    for (const { top, bottom } of merged) {
+      if (top > cursor) stops.push(`transparent ${cursor}%`, `transparent ${top}%`);
+      stops.push(`black ${top}%`, `black ${bottom}%`);
+      cursor = bottom;
+    }
+    if (cursor < 100) stops.push(`transparent ${cursor}%`, 'transparent 100%');
+    return `linear-gradient(to bottom, ${stops.join(', ')})`;
+  }
+
+  const layers = slides.slice(1).map((slide, i) => {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;transform:translateZ(0);backface-visibility:hidden;';
+    const img = document.createElement('img');
+    img.style.cssText = 'mask-size:100% 100%;-webkit-mask-size:100% 100%;mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat;will-change:transform,mask-image;';
+    img.src = slide.image;
+    img.alt = slide.alt || slide.title;
+    img.decoding = 'async';
+    setMask(img, MASK_HIDDEN);
+    setScale(img, SCALE_FROM);
+    wrap.appendChild(img);
+    slideImages.appendChild(wrap);
+    return { img, transitionIndex: i, state: 'hidden' };
+  });
+
+  const transitionCount = slides.length - 1;
+  const totalScroll = transitionCount * SCROLL_PER_TRANSITION + INITIAL_DELAY + FINAL_DELAY;
+  const ranges = [];
+  for (let i = 0, pos = INITIAL_DELAY; i < transitionCount; i++, pos += SCROLL_PER_TRANSITION) {
+    ranges.push({ start: pos / totalScroll, end: (pos + SCROLL_PER_TRANSITION) / totalScroll });
+  }
+
+  function imageProgressFor(p){
+    if (p < ranges[0].start) return 0;
+    if (p > ranges[ranges.length - 1].end) return ranges.length;
+    for (let i = 0; i < ranges.length; i++) {
+      const { start, end } = ranges[i];
+      if (p >= start && p <= end) return i + (p - start) / (end - start);
+    }
+    return ranges.length;
+  }
+
+  function scaleFor(imageIndex, current, progress){
+    const diff = current + progress - imageIndex;
+    if (diff <= 0) return SCALE_FROM;
+    if (diff >= 2) return SCALE_TO;
+    return SCALE_FROM - SCALE_STEP * diff;
+  }
+
+  let currentTitle = 0, queuedTitle = null, animating = false, lastProgress = 0;
+  let introTl = null;
+
+  /* Slide 1 role decrypt: once the room is lit, "Product Designer" decodes into place,
+     then re-scrambles through the other roles every few seconds while slide 1 is showing. */
+  const ROLES = ['Product Designer', 'UX Analyst', 'User Researcher', 'Accessibility Auditor'];
+  const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&/<>_=+';
+  const ROLE_HOLD_MS = 3200;
+  let roleIdx = 0, roleTimer = null, scrambleRaf = null, rolesOn = false, rolesArmed = false, shownIndex = 0;
+
+  function scrambleTo(target, dur){
+    cancelAnimationFrame(scrambleRaf);
+    const len = Math.max(titleEl.textContent.length, target.length);
+    const t0 = performance.now();
+    (function frame(now){
+      const k = Math.min(1, (now - t0) / dur);
+      let out = '';
+      for (let i = 0; i < len; i++) {
+        if (k >= 0.25 + 0.75 * (i / len)) out += target[i] || '';
+        else out += target[i] === ' ' ? ' ' : SCRAMBLE_CHARS[(Math.random() * SCRAMBLE_CHARS.length) | 0];
+      }
+      titleEl.textContent = k >= 1 ? target : out;
+      if (k < 1) scrambleRaf = requestAnimationFrame(frame);
+    })(t0);
+  }
+  function nextRole(){
+    if (!rolesOn) return;
+    if (animating || !heroInViewport) { roleTimer = setTimeout(nextRole, 800); return; }
+    roleIdx = (roleIdx + 1) % ROLES.length;
+    scrambleTo(ROLES[roleIdx], 900);
+    roleTimer = setTimeout(nextRole, ROLE_HOLD_MS);
+  }
+  function setRoles(on){
+    if (!rolesArmed || on === rolesOn) return;
+    rolesOn = on;
+    clearTimeout(roleTimer);
+    cancelAnimationFrame(scrambleRaf);
+    if (on) { roleIdx = 0; roleTimer = setTimeout(nextRole, ROLE_HOLD_MS); }
+  }
+  function armRoles(){
+    if (rolesArmed) return;
+    rolesArmed = true;
+    if (shownIndex === 0) scrambleTo(ROLES[0], 1100);
+    setRoles(shownIndex === 0);
+  }
+
+  /* Per-slide overlay panels (about blurb, case index, status readout) */
+  const stampEl = document.getElementById('sgStamp');
+  const terminalEl = section.querySelector('.sg-terminal');
+  const STATUS_LINES = [
+    'CASE STATUS ...... OPEN TO WORK',
+    'LOCATION ......... Nottingham, UK',
+    'SEEKING .......... UX Analyst / Product Designer roles',
+    'SPECIALISM ....... Research, analytics, accessibility, product design',
+    'CURRENTLY ........ Working at Asentech LLC'
+  ];
+  let typeTimer = null;
+  function typeStatus(){
+    clearTimeout(typeTimer);
+    const full = STATUS_LINES.join('\n');
+    let i = 0;
+    (function tick(){
+      terminalEl.innerHTML = full.slice(0, i).replace(/&/g, '&amp;').replace(/</g, '&lt;') + '<span class="sg-caret"></span>';
+      if (i++ < full.length) typeTimer = setTimeout(tick, full[i - 1] === '.' ? 6 : 22);
+    })();
+  }
+  /* HUD: camera label, slide counter, segmented progress, live Nottingham clock */
+  const hudCam = document.getElementById('sgHudCam');
+  const hudIndex = document.getElementById('sgHudIndex');
+  const hudHint = document.getElementById('sgHudHint');
+  const hudBar = document.getElementById('sgHudBar');
+  const pad2 = (n) => String(n).padStart(2, '0');
+  document.getElementById('sgHudTotal').textContent = pad2(slides.length);
+  const hudFills = slides.map(() => {
+    const seg = document.createElement('i');
+    const fill = document.createElement('b');
+    seg.appendChild(fill);
+    hudBar.appendChild(seg);
+    return fill;
+  });
+  let hudSlide = -1;
+  function updateHud(imageProgress, slideIndex, p){
+    hudFills.forEach((fill, k) => {
+      fill.style.transform = `scaleX(${Math.max(0, Math.min(1, imageProgress + 1 - k))})`;
+    });
+    hudHint.classList.toggle('is-gone', p > 0.02);
+    if (slideIndex === hudSlide) return;
+    hudSlide = slideIndex;
+    hudIndex.textContent = pad2(slideIndex + 1);
+    hudCam.textContent = slides[slideIndex].cam || '';
+  }
+  const hudClock = document.getElementById('sgHudClock');
+  const clockFmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  const tickClock = () => { if (heroInViewport) hudClock.textContent = clockFmt.format(new Date()); };
+  tickClock();
+  setInterval(tickClock, 1000);
+
+  let activePanel = null;
+  function setPanel(id){
+    if (id === activePanel) return;
+    if (activePanel) {
+      const prev = document.getElementById(activePanel);
+      prev.classList.remove('is-visible');
+      prev.setAttribute('aria-hidden', 'true');
+      prev.querySelectorAll('a').forEach(a => { a.tabIndex = -1; });
+    }
+    activePanel = id;
+    if (id) section.dataset.panel = id; else delete section.dataset.panel;
+    const isStatus = id === 'sgStatus';
+    if (stampEl) stampEl.classList.toggle('is-visible', isStatus);
+    if (terminalEl) {
+      if (isStatus) typeStatus();
+      else { clearTimeout(typeTimer); terminalEl.textContent = ''; }
+    }
+    if (!id) return;
+    const el = document.getElementById(id);
+    el.classList.add('is-visible');
+    el.setAttribute('aria-hidden', 'false');
+    el.querySelectorAll('a').forEach(a => { a.tabIndex = 0; });
+  }
+
+  function animateTitle(index, direction){
+    if (index === currentTitle || index < 0 || index >= slides.length) return;
+    if (animating) { queuedTitle = index; return; }
+    if (slides[index].title === titleEl.textContent) { currentTitle = index; updateLink(index); return; } /* same text: no swap */
+    animating = true;
+    const outY = direction === 'down' ? `-${TITLE_OFFSET}` : TITLE_OFFSET;
+    const inY = direction === 'down' ? TITLE_OFFSET : `-${TITLE_OFFSET}`;
+    gsap.killTweensOf(titleEl);
+    updateLink(index);
+    gsap.to(titleEl, { y: outY, duration: TITLE_DURATION, ease: TITLE_EASE, onComplete: () => {
+      titleEl.textContent = slides[index].title;
+      gsap.set(titleEl, { y: inY });
+      gsap.to(titleEl, { y: '0%', duration: TITLE_DURATION, ease: TITLE_EASE, onComplete: () => {
+        currentTitle = index;
+        animating = false;
+        if (queuedTitle !== null && queuedTitle !== currentTitle) {
+          const next = queuedTitle;
+          queuedTitle = null;
+          animateTitle(next, direction);
+        }
+      }});
+    }});
+  }
+
+  function update(p){
+    if (introTl && p > 0.002) { introTl.progress(1); introTl = null; }
+    const imageProgress = imageProgressFor(p);
+    const direction = imageProgress > lastProgress ? 'down' : 'up';
+    const current = Math.floor(imageProgress);
+    const local = imageProgress - current;
+
+    const titleIndex = local >= TITLE_THRESHOLD ? Math.min(current + 1, slides.length - 1) : current;
+    setPanel(slides[titleIndex].panel || null);
+    shownIndex = titleIndex;
+    setRoles(titleIndex === 0);
+    updateHud(imageProgress, titleIndex, p);
+    if (titleIndex !== currentTitle) {
+      queuedTitle = titleIndex;
+      if (!animating) animateTitle(titleIndex, direction);
+    }
+
+    setScale(firstFrame, scaleFor(0, current, local));
+    for (const layer of layers) {
+      setScale(layer.img, scaleFor(layer.transitionIndex, current, local));
+      if (layer.transitionIndex < current) {
+        if (layer.state !== 'revealed') { setMask(layer.img, MASK_REVEALED); layer.state = 'revealed'; }
+      } else if (layer.transitionIndex === current) {
+        layer.state = 'animating';
+        setMask(layer.img, buildStripMask(local));
+      } else if (layer.state !== 'hidden') {
+        setMask(layer.img, MASK_HIDDEN);
+        layer.state = 'hidden';
+      }
+    }
+    lastProgress = imageProgress;
+  }
+
+  const trigger = ScrollTrigger.create({
+    trigger: section,
+    start: 'top top',
+    end: () => `+=${window.innerHeight * totalScroll / 100}`,
+    pin: true,
+    pinSpacing: true,
+    scrub: SCRUB,
+    invalidateOnRefresh: true,
+    refreshPriority: 1, /* first pin on the page: measure before the sticky card decks below it */
+    onUpdate: (self) => update(self.progress)
+  });
+  update(trigger.progress);
+
+  /* Room 14B intro: open zoomed in on the dark room's monitor, boot the CRT and type the
+     name, flicker the ceiling lights on while the camera pulls back, then reveal the band.
+     Monitor screen measured on the 1800×1013 source image. */
+  const IMG_W = 1800, IMG_H = 1013;
+  const SCREEN = { x: 827, y: 473, w: 84, h: 64 };
+  const monitor = document.getElementById('sgMonitor');
+  const monitorText = monitor.querySelector('.sg-monitor-text');
+  const MONITOR_LINES = '> ROOM_14B ONLINE\n\nJAI ANKLESARIA\nUX ANALYST &\nPRODUCT DESIGNER';
+
+  function placeMonitor(){
+    const W = firstFrame.offsetWidth, H = firstFrame.offsetHeight;
+    const k = Math.max(W / IMG_W, H / IMG_H);
+    const ox = (W - IMG_W * k) / 2, oy = (H - IMG_H * k) / 2;
+    const r = { left: SCREEN.x * k + ox, top: SCREEN.y * k + oy, width: SCREEN.w * k, height: SCREEN.h * k };
+    Object.assign(monitor.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px', fontSize: (r.width * 0.068) + 'px' });
+    return { W, H, cx: r.left + r.width / 2, cy: r.top + r.height / 2, w: r.width };
+  }
+  placeMonitor();
+  /* any size change of the frame (scrollbar appearing, pin re-measure, mobile toolbar), not just window resize */
+  if ('ResizeObserver' in window) new ResizeObserver(() => placeMonitor()).observe(firstFrame);
+  window.addEventListener('resize', placeMonitor);
+
+  function typeMonitor(n){
+    monitorText.innerHTML = MONITOR_LINES.slice(0, n).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') + '<span class="sg-caret"></span>';
+  }
+
+  (function startIntro(){
+    /* close-up on the monitor: its centre after the frame's own SCALE_FROM zoom about the viewport centre */
+    function camTarget(){
+      const m = placeMonitor();
+      const mx = m.W / 2 + SCALE_FROM * (m.cx - m.W / 2);
+      const my = m.H / 2 + SCALE_FROM * (m.cy - m.H / 2);
+      const Z = Math.min(6, (m.W * 0.3) / (m.w * SCALE_FROM));
+      return { scale: Z, x: m.W / 2 - Z * mx, y: m.H / 2 - Z * my };
+    }
+
+    section.classList.add('sg-intro');
+    gsap.set(slideImages, { transformOrigin: '0 0', ...camTarget() });
+    gsap.set(firstImg, { filter: 'brightness(0.12)' });
+
+    const counter = { n: 0 };
+    introTl = gsap.timeline({
+      paused: true,
+      onComplete: () => {
+        section.classList.remove('sg-intro');
+        gsap.set(slideImages, { clearProps: 'transform,transformOrigin' });
+        gsap.set(firstImg, { clearProps: 'filter' });
+        typeMonitor(MONITOR_LINES.length);
+        monitor.classList.add('is-on');
+        introTl = null;
+        armRoles();
+      }
+    });
+    introTl
+      .call(() => monitor.classList.add('is-on'), null, 0.35)
+      .to(counter, { n: MONITOR_LINES.length, duration: 1.5, ease: 'none', onUpdate: () => typeMonitor(Math.round(counter.n)) }, 0.85)
+      /* ceiling tubes stutter on */
+      .to(firstImg, { filter: 'brightness(0.85)', duration: 0.04 }, 2.65)
+      .to(firstImg, { filter: 'brightness(0.15)', duration: 0.06 }, 2.73)
+      .to(firstImg, { filter: 'brightness(0.7)', duration: 0.04 }, 2.9)
+      .to(firstImg, { filter: 'brightness(0.25)', duration: 0.08 }, 2.97)
+      .to(firstImg, { filter: 'brightness(1)', duration: 0.25 }, 3.15)
+      /* camera pulls back to the full room */
+      .to(slideImages, { scale: 1, x: 0, y: 0, duration: 1.7, ease: 'power3.inOut' }, 2.8)
+      .call(() => { section.classList.remove('sg-intro'); armRoles(); }, null, 4.2);
+
+    /* wait for the HELLO preloader to finish before rolling */
+    const t0 = performance.now();
+    (function waitForPreloader(){
+      if (!introTl) return;
+      if (!document.getElementById('preloader') || performance.now() - t0 > 9000) {
+        /* the scrollbar is back now: re-measure the pinned hero and re-aim the close-up before rolling */
+        ScrollTrigger.refresh();
+        gsap.set(slideImages, camTarget());
+        introTl.play();
+      }
+      else setTimeout(waitForPreloader, 100);
+    })();
+  })();
+})();
+
+/* Nav stays hidden over the hero and slides in as Showcase enters the viewport */
+(function revealNavAtShowcase(){
+  const nav = document.querySelector('.pill-nav-container');
+  const showcase = document.getElementById('showcase');
+  if (!nav || !showcase) return;
+  ScrollTrigger.create({
+    trigger: showcase,
+    start: 'top bottom',
+    onEnter: () => nav.classList.remove('nav-hidden'),
+    onLeaveBack: () => nav.classList.add('nav-hidden')
+  });
+})();
+
 /* Hero — CRTWarp WebGL background (ported from React/three.js component) */
 (function initCRTWarp(){
   const container = document.getElementById('crtWarpContainer');
@@ -1527,8 +2083,8 @@ if (!prefersReducedMotion) {
 const NAV_ITEMS=[
   {label:'About',href:'#about'},
   {label:'Experience',href:'#experience'},
-  {label:'Skills',href:'#skills'},
   {label:'Work',href:'#work'},
+  {label:'Skills',href:'#skills'},
   {label:'Services',href:'#services'},
   {label:'Contact', cta:true, contactMenu:true}
 ];
