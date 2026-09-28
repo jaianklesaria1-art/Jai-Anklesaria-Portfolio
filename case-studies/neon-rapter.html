@@ -269,6 +269,43 @@
   @media (max-width:760px){.more{grid-template-columns:1fr}}
   footer{padding:40px 0 70px; font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--mute)}
   hr{border:0; border-top:1px solid var(--line); margin:0}
+
+  /* realistic phone mockup: even bezel, proper radius, camera island, side buttons */
+  .phone{padding:clamp(5px,0.62vw,10px) !important; border-radius:clamp(26px,3.1vw,46px) !important; background:#111 !important; border:1px solid #2a2a2a !important;
+    box-shadow:inset 0 0 0 1.5px #3a3a3a, 0 24px 60px rgba(0,0,0,0.35) !important}
+  .phone img{border-radius:clamp(21px,2.55vw,38px) !important; display:block}
+  .phone::before{top:clamp(10px,1.15vw,17px) !important; width:26% !important; height:clamp(7px,0.75vw,11px) !important; background:#050505 !important}
+  .phone::after{content:''; position:absolute; right:-3px; top:22%; width:3px; height:11%; border-radius:0 2px 2px 0; background:#2a2a2a}
+
+  /* phone status bar: the screenshot starts below it, like a real device */
+  .phone{container-type:inline-size; display:flex; flex-direction:column}
+  .phone .sb{display:flex; justify-content:space-between; align-items:center; height:11cqw; padding:0 10cqw 0 11cqw; background:#0b0b0b; border-radius:clamp(21px,2.55vw,38px) clamp(21px,2.55vw,38px) 0 0; font:600 4.6cqw/1 "Inter",system-ui,sans-serif; color:#fff; letter-spacing:0.01em}
+  .phone .sb .bat{position:relative; width:7.5cqw; height:3.6cqw; border:1px solid rgba(255,255,255,0.85); border-radius:1.2cqw}
+  .phone .sb .bat::after{content:''; position:absolute; inset:1px; right:28%; background:#fff; border-radius:0.6cqw}
+  .phone img{border-radius:0 0 clamp(21px,2.55vw,38px) clamp(21px,2.55vw,38px) !important}
+  .phone::before{top:clamp(9px,1.05vw,15px) !important; height:clamp(8px,0.85vw,12px) !important; width:24% !important; z-index:2}
+  
+  /* ── iPhone 15 Pro mockup ── */
+  .iphone{container-type:inline-size}
+  .stage .iphone{position:absolute; right:0; bottom:0; width:21%}
+  .pair .stage .iphone{width:24%}
+  .iphone .frame{position:relative; padding:4.4cqw; border-radius:17cqw; background:#0a0a0a;
+    box-shadow:0 0 0 0.9cqw #8a8680, 0 0 0 1.25cqw #4a4744, inset 0 0 0 0.5cqw #1c1c1c, 0 6cqw 14cqw rgba(20,18,16,0.38)}
+  .iphone .btn{position:absolute; width:1.3cqw; background:linear-gradient(90deg, #5d5955, #9a958f); border-radius:0.6cqw}
+  .iphone .act{left:-2.3cqw; top:22%; height:8cqw}
+  .iphone .vu{left:-2.3cqw; top:31%; height:15cqw}
+  .iphone .vd{left:-2.3cqw; top:40%; height:15cqw}
+  .iphone .pw{right:-2.3cqw; top:32%; height:24cqw; background:linear-gradient(270deg, #5d5955, #9a958f)}
+  .iphone .scr{position:relative; overflow:hidden; aspect-ratio:393/852; border-radius:12.6cqw; background:#0b0b0b; display:flex; flex-direction:column}
+  .iphone .sb{position:relative; flex:none; height:12.8cqw; display:flex; align-items:center; justify-content:space-between; padding:1.4cqw 7.5cqw 0 10cqw; background:#0b0b0b; color:#fff; font:600 3.2cqw/1 "Inter",system-ui,sans-serif; letter-spacing:0.01em}
+  .iphone .island{position:absolute; left:50%; top:2.6cqw; width:29cqw; height:8.4cqw; transform:translateX(-50%); background:#000; border-radius:5cqw}
+  .iphone .ic{display:flex; align-items:center; gap:1.4cqw}
+  .iphone .ic svg{height:2.9cqw; width:auto; fill:#fff}
+  .iphone .bat{position:relative; display:block; width:6.2cqw; height:2.9cqw; border:0.35cqw solid rgba(255,255,255,0.55); border-radius:0.9cqw; margin-right:0.6cqw}
+  .iphone .bat::after{content:''; position:absolute; right:-0.9cqw; top:0.7cqw; width:0.5cqw; height:1cqw; background:rgba(255,255,255,0.55); border-radius:0 0.3cqw 0.3cqw 0}
+  .iphone .bat i{position:absolute; inset:0.3cqw; right:1.3cqw; background:#fff; border-radius:0.4cqw}
+  .iphone .scr img{flex:1; min-height:0; width:100%; object-fit:cover; object-position:top; border-radius:0 !important; display:block}
+  .iphone .home{position:absolute; left:50%; bottom:1.8cqw; width:34cqw; height:1.3cqw; transform:translateX(-50%); background:rgba(255,255,255,0.85); border-radius:1cqw}
 </style>
 </head>
 <body>
@@ -299,7 +336,7 @@
   <div class="wide">
     <div class="stage" style="margin-top:44px">
       <div class="laptop"><div class="lid"><img src="images/neon-rapter/final-home-fold.jpg" alt="Redesigned home page on a laptop: neon grid background, peelable logo sticker and the headline Brewing the future" width="1440" height="900"></div><div class="base"></div></div>
-      <div class="phone"><img src="images/neon-rapter/mobile-home.jpg" alt="The same home page on a phone" width="520" height="1125"></div>
+      <div class="iphone"><div class="frame"><i class="btn act"></i><i class="btn vu"></i><i class="btn vd"></i><i class="btn pw"></i><div class="scr"><span class="sb" aria-hidden="true"><b>9:41</b><i class="island"></i><span class="ic"><svg viewBox="0 0 18 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg><svg viewBox="0 0 16 12" aria-hidden="true"><path d="M8 11.6 5.6 9.2a3.4 3.4 0 0 1 4.8 0z"/><path d="M3.4 7a6.6 6.6 0 0 1 9.2 0l-1.4 1.4a4.6 4.6 0 0 0-6.4 0z"/><path d="M1.2 4.8a9.7 9.7 0 0 1 13.6 0l-1.4 1.4a7.7 7.7 0 0 0-10.8 0z"/></svg><i class="bat"><i></i></i></span></span><img src="images/neon-rapter/mobile-home.jpg" alt="The same home page on a phone" width="520" height="1125"><i class="home" aria-hidden="true"></i></div></div></div>
     </div>
   </div>
 </header>
@@ -631,19 +668,19 @@
     <div class="pairs">
       <figure class="pair"><div class="stage">
         <div class="laptop"><div class="lid"><img src="images/neon-rapter/final-home-fold.jpg" alt="Home page on a laptop" loading="lazy" width="1440" height="900"></div><div class="base"></div></div>
-        <div class="phone"><img src="images/neon-rapter/mobile-home.jpg" alt="Home page on a phone" loading="lazy" width="520" height="1125"></div>
+        <div class="iphone"><div class="frame"><i class="btn act"></i><i class="btn vu"></i><i class="btn vd"></i><i class="btn pw"></i><div class="scr"><span class="sb" aria-hidden="true"><b>9:41</b><i class="island"></i><span class="ic"><svg viewBox="0 0 18 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg><svg viewBox="0 0 16 12" aria-hidden="true"><path d="M8 11.6 5.6 9.2a3.4 3.4 0 0 1 4.8 0z"/><path d="M3.4 7a6.6 6.6 0 0 1 9.2 0l-1.4 1.4a4.6 4.6 0 0 0-6.4 0z"/><path d="M1.2 4.8a9.7 9.7 0 0 1 13.6 0l-1.4 1.4a7.7 7.7 0 0 0-10.8 0z"/></svg><i class="bat"><i></i></i></span></span><img src="images/neon-rapter/mobile-home.jpg" alt="Home page on a phone" loading="lazy" width="520" height="1125"><i class="home" aria-hidden="true"></i></div></div></div>
       </div><figcaption><b>Home.</b> Two clear entry points: shop the beer or visit the taproom.</figcaption></figure>
       <figure class="pair"><div class="stage">
         <div class="laptop"><div class="lid"><img src="images/neon-rapter/final-shop-fold.jpg" alt="Shop page on a laptop" loading="lazy" width="1440" height="900"></div><div class="base"></div></div>
-        <div class="phone"><img src="images/neon-rapter/mobile-shop.jpg" alt="Shop collections on a phone" loading="lazy" width="520" height="1125"></div>
+        <div class="iphone"><div class="frame"><i class="btn act"></i><i class="btn vu"></i><i class="btn vd"></i><i class="btn pw"></i><div class="scr"><span class="sb" aria-hidden="true"><b>9:41</b><i class="island"></i><span class="ic"><svg viewBox="0 0 18 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg><svg viewBox="0 0 16 12" aria-hidden="true"><path d="M8 11.6 5.6 9.2a3.4 3.4 0 0 1 4.8 0z"/><path d="M3.4 7a6.6 6.6 0 0 1 9.2 0l-1.4 1.4a4.6 4.6 0 0 0-6.4 0z"/><path d="M1.2 4.8a9.7 9.7 0 0 1 13.6 0l-1.4 1.4a7.7 7.7 0 0 0-10.8 0z"/></svg><i class="bat"><i></i></i></span></span><img src="images/neon-rapter/mobile-shop.jpg" alt="Shop collections on a phone" loading="lazy" width="520" height="1125"><i class="home" aria-hidden="true"></i></div></div></div>
       </div><figcaption><b>Shop.</b> Collections first, one tap to add a beer.</figcaption></figure>
       <figure class="pair"><div class="stage">
         <div class="laptop"><div class="lid"><img src="images/neon-rapter/final-taproom-fold.jpg" alt="Rap Taproom page on a laptop" loading="lazy" width="1440" height="900"></div><div class="base"></div></div>
-        <div class="phone"><img src="images/neon-rapter/mobile-taproom.jpg" alt="Rap Taproom page on a phone" loading="lazy" width="520" height="1125"></div>
+        <div class="iphone"><div class="frame"><i class="btn act"></i><i class="btn vu"></i><i class="btn vd"></i><i class="btn pw"></i><div class="scr"><span class="sb" aria-hidden="true"><b>9:41</b><i class="island"></i><span class="ic"><svg viewBox="0 0 18 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg><svg viewBox="0 0 16 12" aria-hidden="true"><path d="M8 11.6 5.6 9.2a3.4 3.4 0 0 1 4.8 0z"/><path d="M3.4 7a6.6 6.6 0 0 1 9.2 0l-1.4 1.4a4.6 4.6 0 0 0-6.4 0z"/><path d="M1.2 4.8a9.7 9.7 0 0 1 13.6 0l-1.4 1.4a7.7 7.7 0 0 0-10.8 0z"/></svg><i class="bat"><i></i></i></span></span><img src="images/neon-rapter/mobile-taproom.jpg" alt="Rap Taproom page on a phone" loading="lazy" width="520" height="1125"><i class="home" aria-hidden="true"></i></div></div></div>
       </div><figcaption><b>Rap Taproom.</b> Location, hours and events in one place.</figcaption></figure>
       <figure class="pair"><div class="stage">
         <div class="laptop"><div class="lid"><img src="images/neon-rapter/final-info-fold.jpg" alt="Information page on a laptop" loading="lazy" width="1440" height="900"></div><div class="base"></div></div>
-        <div class="phone"><img src="images/neon-rapter/mobile-info.jpg" alt="Information page on a phone" loading="lazy" width="520" height="1125"></div>
+        <div class="iphone"><div class="frame"><i class="btn act"></i><i class="btn vu"></i><i class="btn vd"></i><i class="btn pw"></i><div class="scr"><span class="sb" aria-hidden="true"><b>9:41</b><i class="island"></i><span class="ic"><svg viewBox="0 0 18 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8"/><rect x="5" y="5.5" width="3" height="6.5" rx="0.8"/><rect x="10" y="3" width="3" height="9" rx="0.8"/><rect x="15" y="0" width="3" height="12" rx="0.8"/></svg><svg viewBox="0 0 16 12" aria-hidden="true"><path d="M8 11.6 5.6 9.2a3.4 3.4 0 0 1 4.8 0z"/><path d="M3.4 7a6.6 6.6 0 0 1 9.2 0l-1.4 1.4a4.6 4.6 0 0 0-6.4 0z"/><path d="M1.2 4.8a9.7 9.7 0 0 1 13.6 0l-1.4 1.4a7.7 7.7 0 0 0-10.8 0z"/></svg><i class="bat"><i></i></i></span></span><img src="images/neon-rapter/mobile-info.jpg" alt="Information page on a phone" loading="lazy" width="520" height="1125"><i class="home" aria-hidden="true"></i></div></div></div>
       </div><figcaption><b>Info.</b> Contact details and shipping FAQs in one place.</figcaption></figure>
     </div>
   </div>
