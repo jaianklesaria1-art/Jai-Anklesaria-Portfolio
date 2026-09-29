@@ -702,28 +702,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section id="skills">
   <h2 class="chrome section-label">SKILLS</h2>
   <div class="skills-group">
-    <div class="skills-label">Product Design & UX</div>
+    <div class="skills-label">Product Design &amp; UX</div>
     <div class="marquee-row"><div class="marquee-track" id="mtrack1"></div></div>
   </div>
   <div class="skills-group">
-    <div class="skills-label">Research Techniques &amp; Analytics Tools</div>
-    <div class="marquee-row r2"><div class="marquee-track" id="mtrack2" style="animation-direction:reverse"></div></div>
-  </div>
-  <div class="skills-group">
-    <div class="skills-label">Accessibility &amp; Design Systems</div>
-    <div class="marquee-row"><div class="marquee-track" id="mtrack6"></div></div>
-  </div>
-  <div class="skills-group">
-    <div class="skills-label">Design Tools &amp; Prototyping</div>
-    <div class="marquee-row"><div class="marquee-track" id="mtrack3"></div></div>
-  </div>
-  <div class="skills-group">
-    <div class="skills-label">AI Automation &amp; Vibe Coding</div>
+    <div class="skills-label">AI Product Design</div>
     <div class="marquee-row r2"><div class="marquee-track" id="mtrack4" style="animation-direction:reverse"></div></div>
   </div>
   <div class="skills-group">
-    <div class="skills-label">Programming (Working Knowledge)</div>
-    <div class="marquee-row"><div class="marquee-track" id="mtrack5"></div></div>
+    <div class="skills-label">Product Analytics</div>
+    <div class="marquee-row"><div class="marquee-track" id="mtrack2"></div></div>
+  </div>
+  <div class="skills-group">
+    <div class="skills-label">UX Research &amp; Accessibility</div>
+    <div class="marquee-row r2"><div class="marquee-track" id="mtrack6" style="animation-direction:reverse"></div></div>
+  </div>
+  <div class="skills-group">
+    <div class="skills-label">Tools &amp; Code</div>
+    <div class="marquee-row"><div class="marquee-track" id="mtrack3"></div></div>
   </div>
 </section>
 
@@ -1169,12 +1165,11 @@ window.addEventListener('resize', () => {
 });
 
 /* Skills marquee */
-const SKILLS_DESIGN=['End-to-end product design','Human-centred design','Ideation & concept development','Wireframing & sketching','Storyboarding','Survey design','Visual / UI design','Typography & colour systems','Design rationale & critique','Data-driven design decisions','Systems thinking'];
-const SKILLS_RESEARCH=['Google Analytics 4','Google Tag Manager','Power BI','Mixpanel','Amplitude','Digital & web analytics','Product metrics & KPIs','Funnel & retention analysis','Data visualisation','User interviews & surveys','Moderated & unmoderated usability testing','Ethnographic & contextual research','Eye-tracking & heatmap analysis','Quantitative & qualitative research methods','Affinity mapping','Journey mapping','User flows & task analysis','Competitive & heuristic analysis (heuristic evaluation)','JTBD framework','Research synthesis & storytelling','Focus groups','Stakeholder engagement','Business & behavioural analysis','Market research'];
-const SKILLS_ACCESSIBILITY=['WCAG 2.1 AA accessibility design & auditing','Inclusive design','Information architecture','Interaction design','Wireframing & prototyping (low-high fidelity)','Design systems (creation & governance)','Figma variables & design tokens','Mobile design (iOS HIG, Material Design 3)','A/B testing','Product analytics'];
-const SKILLS_TOOLS=['Figma (advanced components, variables, dev mode)','Adobe XD (Photoshop, video editing, Adobe Illustrator, InDesign, Canva)','Axure','ProtoPie','Unity 3D','InVision','Miro','FigJam','Maze','Notion','JIRA','Slack','Product development'];
-const SKILLS_AI=['AI-native workflows & prompt engineering','Vibe coding (Figma Make, v0, Cursor, Claude Code, Google Stitch)','Designing for AI products & conversational UI','Workflow automation (n8n)','Claude Code','Google Stitch','AI-assisted research synthesis','AR/MR design (mixed reality systems)','Machine learning fundamentals (applied)','SQL','Front-end development'];
-const SKILLS_CODE=['HTML5','CSS','Python','JavaScript','Git/GitHub','APIs (REST)','Front-end development','REST APIs'];
+const SKILLS_DESIGN=['End-to-end product design','Human-centred design','Interaction design','Information architecture','Wireframing & prototyping (low to high fidelity)','Visual / UI design','Design systems (creation & governance)','Figma variables & design tokens','Mobile design (iOS HIG, Material Design 3)','Data-driven design decisions','Systems thinking'];
+const SKILLS_AI=['Designing for AI products & conversational UI','AI-native workflows & prompt engineering','AI-assisted research synthesis','Vibe coding (Figma Make, v0, Cursor, Claude Code, Google Stitch)','Workflow automation (n8n)','Machine learning fundamentals (applied)'];
+const SKILLS_RESEARCH=['Google Analytics 4','Google Tag Manager','Product analytics','Product metrics & KPIs','Funnel & retention analysis','A/B testing','Digital & web analytics','Data visualisation','SQL','Eye-tracking & heatmap analysis'];
+const SKILLS_ACCESSIBILITY=['User interviews & surveys','Moderated & unmoderated usability testing','Heuristic evaluation & competitive analysis','Journey mapping','User flows & task analysis','JTBD framework','Affinity mapping','Research synthesis & storytelling','Stakeholder engagement','WCAG 2.2 AA auditing','Inclusive design'];
+const SKILLS_TOOLS=['Figma (advanced components, variables, dev mode)','FigJam','ProtoPie','Maze','Miro','Notion','JIRA','HTML5','CSS','JavaScript','Python','Git/GitHub','REST APIs'];
 function fillMarquee(id, arr){
   const el=document.getElementById(id);
   const set=[...arr,...arr].map(s=>`<span class="pill">${s}</span>`).join('');
@@ -1185,7 +1180,6 @@ fillMarquee('mtrack1', SKILLS_DESIGN);
 fillMarquee('mtrack2', SKILLS_RESEARCH);
 fillMarquee('mtrack3', SKILLS_TOOLS);
 fillMarquee('mtrack4', SKILLS_AI);
-fillMarquee('mtrack5', SKILLS_CODE);
 fillMarquee('mtrack6', SKILLS_ACCESSIBILITY);
 
 /* Gate DepthText's per-frame work behind hero visibility — 3 instances (PRODUCT /
