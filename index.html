@@ -899,19 +899,24 @@ function initScrollVelocity(trackId, baseVelocity, opts){
     parallax.addEventListener('focusout', () => { hovered = false; });
   }
 
+  // Track scroll everywhere so re-entering the section never reads one huge jump,
+  // clamp the reading, and let it fall back to zero once scrolling stops.
+  let lastScrollTime = performance.now();
   window.addEventListener('scroll', () => {
-    if (!showcaseInViewport) return;
     const now = performance.now();
-    const dt = Math.max((now - lastTime) / 1000, 1 / 240);
-    rawVelocity = (window.scrollY - lastScrollY) / dt;
+    const dt = Math.max((now - lastScrollTime) / 1000, 1 / 60);
+    const v = (window.scrollY - lastScrollY) / dt;
     lastScrollY = window.scrollY;
+    lastScrollTime = now;
+    rawVelocity = showcaseInViewport ? Math.max(-1500, Math.min(1500, v)) : 0;
   }, { passive: true });
 
   function tick(now){
     requestAnimationFrame(tick);
-    if (!showcaseInViewport || hovered) { lastTime = now; return; }
+    if (!showcaseInViewport || hovered) { lastTime = now; springValue = 0; springVel = 0; return; }
     const dt = Math.min((now - lastTime) / 1000, 0.05);
     lastTime = now;
+    if (now - lastScrollTime > 120) rawVelocity = 0;
 
     // Critically-damped spring smoothing the raw scroll velocity (framer-motion useSpring analogue)
     const force = -stiffness * (springValue - rawVelocity) - damping * springVel;
@@ -920,10 +925,9 @@ function initScrollVelocity(trackId, baseVelocity, opts){
 
     const velocityFactor = mapOut[0] + ((springValue - mapIn[0]) / (mapIn[1] - mapIn[0])) * (mapOut[1] - mapOut[0]);
 
-    let moveBy = direction * baseVelocity * dt;
-    if (velocityFactor < 0) direction = -1;
-    else if (velocityFactor > 0) direction = 1;
-    moveBy += direction * moveBy * velocityFactor;
+    // Scrolling gives a small, temporary boost; it never reverses or runs away
+    const boost = Math.min(Math.abs(velocityFactor), mapOut[1]);
+    const moveBy = direction * baseVelocity * dt * (1 + boost);
 
     baseX += moveBy;
     const copyWidth = track.scrollWidth / SV_NUM_COPIES;
