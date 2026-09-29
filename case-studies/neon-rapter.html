@@ -220,7 +220,10 @@
   .comp img{border-radius:4px; margin:0 auto}
   .comp .cap{font-family:"IBM Plex Mono",monospace; font-size:0.72rem; color:#bbb; margin-top:10px; line-height:1.5}
   .comp .cap b{color:var(--neon)}
+  .comps > *, .comp{min-width:0}
+  .comp img{width:100%; height:auto}
   @media (max-width:860px){.comps{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.comps{grid-template-columns:1fr}}
   .rb{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px}
   .rb div{background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:14px 16px; font-size:0.94rem; line-height:1.5}
   .rb b{display:block; font-family:"IBM Plex Mono",monospace; font-size:0.78rem; margin-bottom:4px}
@@ -306,6 +309,22 @@
   .iphone .bat i{position:absolute; inset:0.3cqw; right:1.3cqw; background:#fff; border-radius:0.4cqw}
   .iphone .scr img{flex:1; min-height:0; width:100%; object-fit:cover; object-position:top; border-radius:0 !important; display:block}
   .iphone .home{position:absolute; left:50%; bottom:1.8cqw; width:34cqw; height:1.3cqw; transform:translateX(-50%); background:rgba(255,255,255,0.85); border-radius:1cqw}
+
+  /* ── decisions made during the build: a build log in the site's neon ── */
+  .buildlog{margin-top:26px; position:relative; padding-left:34px}
+  .buildlog::before{content:''; position:absolute; left:9px; top:6px; bottom:6px; width:2px; background:linear-gradient(var(--neon), rgba(255,159,252,0.1))}
+  .bl{position:relative; display:grid; grid-template-columns:1fr 0.95fr; gap:30px; align-items:center; padding:26px 0; border-bottom:1px solid var(--line)}
+  .bl:last-child{border-bottom:0}
+  .bl.noimg{grid-template-columns:1fr}
+  .bl::before{content:''; position:absolute; left:-31px; top:34px; width:14px; height:14px; border-radius:50%; background:#050505; border:2px solid var(--neon); box-shadow:0 0 12px var(--neon)}
+  .bl .tag{font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--neon)}
+  .bl h4{font-family:"Rajdhani","Arial Narrow",sans-serif; font-weight:700; font-size:1.7rem; line-height:1.1; letter-spacing:0.01em; text-transform:uppercase; margin:4px 0 12px; color:var(--ink)}
+  .bl p{margin:0 0 10px; font-size:1rem; color:var(--ink-2)}
+  .bl p b{color:var(--ink); font-weight:600}
+  .bl p.because{padding:10px 14px; background:rgba(255,159,252,0.06); border:1px solid var(--line); border-radius:8px; color:var(--ink)}
+  .bl > *{min-width:0}
+  .bl img{width:100%; max-width:100%; height:auto; display:block; border-radius:8px; border:1px solid var(--line-strong); box-shadow:0 18px 40px rgba(0,0,0,0.5)}
+  @media (max-width:860px){.bl{grid-template-columns:1fr; gap:16px} .buildlog{padding-left:26px} .bl::before{left:-23px}}
 </style>
 </head>
 <body>
@@ -625,6 +644,73 @@
       <div><b>Grid Scan · React Bits</b>The interactive neon grid behind every page</div>
       <div><b>Sticker Peel · React Bits</b>The logo you can peel off the page like a sticker</div>
       <div><b>Circular Gallery · React Bits</b>The curved, draggable gallery of brewery photos</div>
+    </div>
+
+    <h3>Decisions made during the build</h3>
+    <p style="max-width:720px; color:var(--ink-2)">I built the site over 27 prompts in AI Studio, reviewing each version in the browser before the next. These are the design decisions that came out of those reviews, in the order I made them.</p>
+    <div class="buildlog">
+      <div class="bl">
+        <div>
+          <p class="tag">Content</p>
+          <h4>Carry everything over before improving it</h4>
+          <p><b>What I did:</b> The first instruction was to go through the old site and bring every piece of content across. When the first version missed some, I added them back: the About us story, a customer review, the shipping and delivery FAQs, and the contact and trade details in the footer.</p>
+          <p class="because">Why: a redesign that quietly drops content breaks things existing customers rely on, like delivery times and who to email for trade. Reaching parity first meant every later change was an improvement, not a loss.</p>
+        </div>
+        <img src="images/neon-rapter/final-info-fold.jpg" alt="The Info page with shipping FAQs and contact details" loading="lazy" width="1440" height="900">
+      </div>
+      <div class="bl">
+        <div>
+          <p class="tag">Legibility</p>
+          <h4>Readable text first, atmosphere second</h4>
+          <p><b>What I did:</b> The animated grid made text hard to read, so I made the text larger and lowered the background's opacity. I tuned it over several rounds: down when it competed with the copy, then back up a little when the grid disappeared.</p>
+          <p class="because">Why: the grid carries the brand, but nobody orders beer from copy they can't read. The final balance keeps the grid visible behind every page without lowering text contrast.</p>
+        </div>
+        <img src="images/neon-rapter/final-home-fold.jpg" alt="The home page with the neon grid behind readable text" loading="lazy" width="1440" height="900">
+      </div>
+      <div class="bl">
+        <div>
+          <p class="tag">Motion</p>
+          <h4>Put motion where people choose</h4>
+          <p><b>What I did:</b> An early version had 3D bouncing cans on the home page. I moved the effect into the shop, where it replaced the flat square product cards.</p>
+          <p class="because">Why: on the home page the motion competed with the brand story. In the shop it draws the eye to products at the moment someone is choosing, which is where it earns its place.</p>
+        </div>
+        <img src="images/neon-rapter/final-shop-fold.jpg" alt="The shop with cans in the product grid" loading="lazy" width="1440" height="900">
+      </div>
+      <div class="bl">
+        <div>
+          <p class="tag">Interaction</p>
+          <h4>A cart that doesn't interrupt browsing</h4>
+          <p><b>What I did:</b> Adding a beer updates the count on the cart button instead of opening the cart. The cart opens only when someone asks for it, as a side panel over the shop, with quantities, a total and the checkout button.</p>
+          <p class="because">Why: people usually buy several cans. Opening the cart after every add would pull them out of browsing each time. A side panel lets them check the basket and return to the same place in the shop.</p>
+        </div>
+        <img src="images/neon-rapter/dec-cart.jpg" alt="The cart side panel open over the shop" loading="lazy" width="1440" height="900">
+      </div>
+      <div class="bl">
+        <div>
+          <p class="tag">Labels</p>
+          <h4>"Rap Tap" became "Rap Taproom"</h4>
+          <p><b>What I did:</b> I renamed the taproom link and heading from "Rap Tap" to "Rap Taproom".</p>
+          <p class="because">Why: regulars know the pun, but a first-time visitor doesn't. Adding "Taproom" keeps the brewery's name for the bar and tells new visitors it's a place they can visit.</p>
+        </div>
+        <img src="images/neon-rapter/final-taproom-fold.jpg" alt="The Rap Taproom page" loading="lazy" width="1440" height="900">
+      </div>
+      <div class="bl">
+        <div>
+          <p class="tag">Hierarchy</p>
+          <h4>A bigger logo in a smaller header</h4>
+          <p><b>What I did:</b> I made the logo larger, then kept the navigation bar compact when the first attempt made the whole header grow. I also enlarged the "Join the Neon Raptor pack" ticker and fixed the purple bar overlapping the logo.</p>
+          <p class="because">Why: the logo is the most recognisable part of the brand, but a tall header pushes content down on every page. Scaling only the logo gives it presence without costing screen space.</p>
+        </div>
+        <img src="images/neon-rapter/dec-header.jpg" alt="The header: ticker, large logo and compact navigation" loading="lazy" width="1440" height="810">
+      </div>
+      <div class="bl noimg">
+        <div>
+          <p class="tag">Ownership</p>
+          <h4>Products the brewery can update itself</h4>
+          <p><b>What I did:</b> The products the shop sells are stored in Supabase rather than written into the site's code.</p>
+          <p class="because">Why: breweries change their range often, and Neon Raptor releases new beers on Fridays. With products in a database, the range can be updated by editing the data, without rebuilding the site.</p>
+        </div>
+      </div>
     </div>
 
     <h3>The home page, annotated</h3>

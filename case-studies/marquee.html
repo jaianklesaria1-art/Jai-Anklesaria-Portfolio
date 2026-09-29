@@ -489,6 +489,27 @@
   .iphone .bat i{position:absolute; inset:0.3cqw; right:1.3cqw; background:#fff; border-radius:0.4cqw}
   .iphone .scr img{flex:1; min-height:0; width:100%; object-fit:cover; object-position:top; border-radius:0 !important; display:block}
   .iphone .home{position:absolute; left:50%; bottom:1.8cqw; width:34cqw; height:1.3cqw; transform:translateX(-50%); background:rgba(255,255,255,0.85); border-radius:1cqw}
+
+  /* ── decision schedule, set out like a drawing schedule ── */
+  .schedule{margin-top:24px; border:1.5px solid var(--ink); background:rgba(255,255,255,0.55)}
+  .sch-row{display:grid; grid-template-columns:78px 150px 1fr 1fr 220px; border-top:1px solid var(--line-strong)}
+  .sch-row > div{padding:16px 16px; font-size:0.95rem; line-height:1.55; color:var(--ink-2); border-left:1px solid var(--line)}
+  .sch-row > div:first-child{border-left:0}
+  .sch-head{border-top:0; background:var(--ink)}
+  .sch-head > div{font-family:"IBM Plex Mono",monospace; font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:#EFEBE4; padding:10px 16px; border-color:rgba(239,235,228,0.2)}
+  .sch-ref{font-family:"IBM Plex Mono",monospace; font-size:0.82rem; color:var(--neon) !important; font-weight:600}
+  .sch-el{font-family:"Outfit",sans-serif; font-weight:600; font-size:1.02rem !important; color:var(--ink) !important; line-height:1.3 !important}
+  .sch-row img{width:100%; max-width:100%; height:auto; border:1px solid var(--line-strong); border-radius:3px}
+  .sch-row > div{min-width:0; overflow-wrap:anywhere}
+  .sch-row .noimg{font-family:"IBM Plex Mono",monospace; font-size:0.72rem; color:var(--mute)}
+  .titleblock{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; border-top:1.5px solid var(--ink); padding:10px 16px; font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-2)}
+  @media (max-width:980px){
+    .sch-head{display:none}
+    .sch-row{grid-template-columns:1fr; padding:16px 0}
+    .sch-row > div{border-left:0; padding:4px 16px}
+    .sch-row > div[data-l]::before{content:attr(data-l); display:block; font-family:"IBM Plex Mono",monospace; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--neon); margin-top:8px}
+    .sch-row img{max-width:420px; width:100%}
+  }
 </style>
 </head>
 <body>
@@ -779,6 +800,41 @@
       <figure><img src="images/marquee/comp-dimensions.jpg" alt="Profile Dimensions table listing profile shapes and sizes" loading="lazy"><figcaption><b>Profile dimensions.</b> Page 57 of the PDF, now a table on the home page, no download needed.</figcaption></figure>
       <figure><img src="images/marquee/comp-projects.jpg" alt="Signature Projects grid of six building photos" loading="lazy"><figcaption><b>Signature projects.</b> Six finished buildings, with a link to all 45.</figcaption></figure>
       <figure><img src="images/marquee/comp-contact.jpg" alt="Enquiry form with name, email, phone, company, nature of enquiry and message fields" loading="lazy"><figcaption><b>Enquiry form.</b> Sorted by type and delivered to the client's inbox through Formspree.</figcaption></figure>
+    </div>
+
+    <h3>Decision schedule</h3>
+    <p style="max-width:760px">Beyond the research decisions above, these are the interface decisions that shaped the build. Each one is in the live site's code.</p>
+    <div class="schedule" role="table" aria-label="Decision schedule">
+      <div class="sch-row sch-head" role="row"><div role="columnheader">Ref</div><div role="columnheader">Element</div><div role="columnheader">Decision</div><div role="columnheader">Rationale</div><div role="columnheader">Where</div></div>
+      <div class="sch-row" role="row">
+        <div class="sch-ref" role="cell">D-01</div>
+        <div class="sch-el" role="cell">Background</div>
+        <div role="cell" data-l="Decision">The hero is a greyscale video made with Google Flow. Over the first 600px of scrolling it fades out, a greyscale building photograph fades in behind the content, and a dark overlay deepens.</div>
+        <div role="cell" data-l="Rationale">The product is part of a building, so architecture stays in view on every section. Keeping it greyscale and fading it back lets the copper accent, the project photos and the specifications carry the page.</div>
+        <div role="cell"><img src="images/marquee/final-home-fold.jpg" alt="The home page hero with the greyscale video" loading="lazy" width="1440" height="900"></div>
+      </div>
+      <div class="sch-row" role="row">
+        <div class="sch-ref" role="cell">D-02</div>
+        <div class="sch-el" role="cell">Profile shapes</div>
+        <div role="cell" data-l="Decision">Each of the seven profile shapes is drawn as a small vector cross-section next to its sizes, instead of a scanned image from the catalogue.</div>
+        <div role="cell" data-l="Rationale">Specifiers read profiles as sections, the way they appear on drawings. Vector shapes stay sharp at any size, including on a phone, and let people recognise a profile at a glance rather than read its name.</div>
+        <div role="cell"><img src="images/marquee/comp-dimensions.jpg" alt="The Profile Dimensions table with drawn profile shapes" loading="lazy"></div>
+      </div>
+      <div class="sch-row" role="row">
+        <div class="sch-ref" role="cell">D-03</div>
+        <div class="sch-el" role="cell">Enquiry form</div>
+        <div role="cell" data-l="Decision">Alongside name and email, the form asks for phone number and company. If a submission fails, the message names the likely cause: an ad blocker or privacy extension blocking the form service.</div>
+        <div role="cell" data-l="Rationale">Marquee sells to firms, so knowing the company tells the team who is asking before they reply. A generic "something went wrong" leaves a visitor stuck; naming the cause gives them a way to fix it.</div>
+        <div role="cell"><img src="images/marquee/comp-contact.jpg" alt="The enquiry form with company and phone fields" loading="lazy"></div>
+      </div>
+      <div class="sch-row" role="row">
+        <div class="sch-ref" role="cell">D-04</div>
+        <div class="sch-el" role="cell">Shared links</div>
+        <div role="cell" data-l="Decision">The site has a proper page title and Open Graph metadata, so a shared link shows "Marquee uPVC Architectural Fins" and a description instead of a bare URL.</div>
+        <div role="cell" data-l="Rationale">Suppliers get passed around between architects, contractors and clients as links in emails and messages. A labelled preview looks like an established company; a bare link doesn't.</div>
+        <div role="cell" class="noimg">No screen: page metadata</div>
+      </div>
+      <div class="titleblock"><span>Marquee · Decision schedule</span><span>4 items</span></div>
     </div>
 
     <h3>The home page, annotated</h3>
