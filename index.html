@@ -958,7 +958,7 @@ const MOVED_TO_VIBE_VIDEOS = { 'Neon Rapter':'showcase-neon.mp4', 'Master Stroke
 
 /* Case studies now show just the project name + a punchy one-line description
    (no client/eyebrow/tags clutter) */
-const CASE_STUDIES_WORK = PROJECTS.filter(p => !MOVED_TO_VIBE_LABELS.includes(p.label)).map(p => ({
+const CASE_STUDIES_WORK_ALL = PROJECTS.filter(p => !MOVED_TO_VIBE_LABELS.includes(p.label)).map(p => ({
   title: p.label, desc: p.tagline || p.sub, thumb: p.images[0], link: p.link
 })).concat([
   {title:"Where PharmEasy's Checkout Breaks Trust", desc:'Five real checkout breakdowns, audited and redesigned, so an order can actually be placed', thumb:'pharmeasy-thumb.png', link:'case-studies/pharmeasy.html'},
@@ -968,6 +968,7 @@ const CASE_STUDIES_WORK = PROJECTS.filter(p => !MOVED_TO_VIBE_LABELS.includes(p.
   {title:'Singh Vanity', desc:'The first website for a Mumbai luxury vanity van company, for film crews and for families booking their own celebration', thumb:'vanity-thumb.jpg', link:'case-studies/singh-vanity.html'},
   {title:'HERCESSI Site, WCAG 2.2 AA Conformance Audit', desc:'A real accessibility audit of a live oncology biosimilar site, 10 verified findings with handoff-ready tickets', thumb:'hercessi-thumb.png', link:'case-studies/hercessi.html'}
 ]);
+const CASE_STUDIES_WORK = CASE_STUDIES_WORK_ALL.filter(c => !['case-studies/neon-rapter.html','case-studies/marquee.html','case-studies/liquid-light.html','case-studies/singh-vanity.html'].includes(c.link));
 
 const MOVED_WORK = PROJECTS.filter(p => MOVED_TO_VIBE_LABELS.includes(p.label)).map(p => {
   const detailed = WORK.find(w => w.link === p.link);
@@ -987,7 +988,14 @@ const COMING_SOON_WORK = [
 const githubWork = GITHUB_PROJECTS.map(g => ({eyebrow:'CODE', title:g.name, sub:g.lang, desc:g.desc, tags:[g.lang], video:g.video || null, link:g.link}));
 const multiAgentWork = githubWork.filter(w => w.title === 'Multi-Agent-Website-Chatbot');
 const otherGithubWork = githubWork.filter(w => w.title !== 'Multi-Agent-Website-Chatbot');
-const VIBE_CODED_WORK = otherGithubWork.concat(MOVED_WORK).concat(COMING_SOON_WORK).concat(multiAgentWork);
+/* Client website case studies lead the freelancing section; their plain build cards are dropped so each project appears once */
+const CLIENT_CASE_STUDY_LINKS = ['case-studies/neon-rapter.html','case-studies/marquee.html','case-studies/liquid-light.html','case-studies/singh-vanity.html'];
+const CLIENT_CASE_STUDIES = CLIENT_CASE_STUDY_LINKS.map(l => CASE_STUDIES_WORK_ALL.find(c => c.link === l)).filter(Boolean);
+const HAS_CASE_STUDY = ['Singhvanity','Marquee-','Liquid-Light-website-','Neon Rapter'];
+const VIBE_CODED_WORK = CLIENT_CASE_STUDIES
+  .concat(otherGithubWork.filter(w => !HAS_CASE_STUDY.includes(w.title)))
+  .concat(MOVED_WORK.filter(w => !HAS_CASE_STUDY.includes(w.title) && w.link !== 'case-studies/neon-rapter.html'))
+  .concat(COMING_SOON_WORK).concat(multiAgentWork);
 
 function renderWorkGrid(id, list, opts){
   const simple = opts && opts.simple;
