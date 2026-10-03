@@ -627,7 +627,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <ol class="sg-cases">
       <li><a href="case-studies/pharmeasy.html" tabindex="-1"><span class="sg-case-num">01</span><span class="sg-case-name">PharmEasy</span><span class="sg-case-desc">Checkout audit &amp; redesign</span><span class="sg-case-arrow" aria-hidden="true">&rarr;</span></a></li>
       <li><a href="case-studies/hercessi.html" tabindex="-1"><span class="sg-case-num">02</span><span class="sg-case-name">HERCESSI</span><span class="sg-case-desc">WCAG 2.2 AA accessibility audit</span><span class="sg-case-arrow" aria-hidden="true">&rarr;</span></a></li>
-      <li><a href="https://www.behance.net/gallery/232393963/ARFinViz-App-Data-Visualization-in-Augmented-Reality" target="_blank" rel="noopener" tabindex="-1"><span class="sg-case-num">03</span><span class="sg-case-name">ARFinViz</span><span class="sg-case-desc">AR data visualisation &middot; University of Nottingham &times; KPMG</span><span class="sg-case-arrow" aria-hidden="true">&nearr;</span></a></li>
+      <li><a href="case-studies/arfinviz.html" tabindex="-1"><span class="sg-case-num">03</span><span class="sg-case-name">ARFinViz</span><span class="sg-case-desc">AR research study &middot; University of Nottingham &times; KPMG</span><span class="sg-case-arrow" aria-hidden="true">&rarr;</span></a></li>
       <li><a href="https://www.behance.net/gallery/232397651/Growth-Book-Child-Growth-Tracking-App" target="_blank" rel="noopener" tabindex="-1"><span class="sg-case-num">04</span><span class="sg-case-name">Growth Book</span><span class="sg-case-desc">Child growth tracking app</span><span class="sg-case-arrow" aria-hidden="true">&nearr;</span></a></li>
     </ol>
     <div class="sg-link"></div>
@@ -774,9 +774,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 /* ══ PROJECT DATA (sourced from behance.net/uxjaianklesaria) ══ */
 const PROJECTS=[
-  {num:'01',label:'ARFinViz App',sub:'AR Data Visualization',tagline:'Visualize more with Augmented Reality',tags:['Augmented Reality','UX Design','Mobile','Figma','A/B Testing'],
+  {num:'01',label:'ARFinViz App',sub:'AR Data Visualization',tagline:'My MSc dissertation with KPMG: does augmented reality help people read financial data better than a spreadsheet?', thumb:'arfinviz-thumb.jpg',tags:['Augmented Reality','UX Design','Mobile','Figma','A/B Testing'],
    images:['https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/ea8492232393963.689b66d178d29.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/02d281232393963.689b66d17f3d4.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/59fbc9232393963.689b66d17b4f6.png'],
-   link:'https://www.behance.net/gallery/232393963/ARFinViz-App-Data-Visualization-in-Augmented-Reality'},
+   link:'case-studies/arfinviz.html'},
   {num:'02',label:'Shadow Fax',sub:'Courier Service Redesign',tagline:'Faster deliveries, clearer tracking',tags:['UX Design','Figma','Mobile','User Research'],
    images:['https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/af1a67232395541.689b6c0f8804b.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/926ed9232395541.689b6c0f83d71.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/8bb6dd232395541.689b6c0f7fe50.png'],
    link:'https://www.behance.net/gallery/232395541/Shadow-Fax-Courier-Service'},
@@ -965,7 +965,7 @@ const MOVED_TO_VIBE_VIDEOS = { 'Neon Rapter':'showcase-neon.mp4', 'Master Stroke
 /* Case studies now show just the project name + a punchy one-line description
    (no client/eyebrow/tags clutter) */
 const CASE_STUDIES_WORK_ALL = PROJECTS.filter(p => !MOVED_TO_VIBE_LABELS.includes(p.label)).map(p => ({
-  title: p.label, desc: p.tagline || p.sub, thumb: p.images[0], link: p.link
+  title: p.label, desc: p.tagline || p.sub, thumb: p.thumb || p.images[0], link: p.link
 })).concat([
   {title:"Where PharmEasy's Checkout Breaks Trust", desc:'Five real checkout breakdowns, audited and redesigned, so an order can actually be placed', thumb:'pharmeasy-thumb.png', link:'case-studies/pharmeasy.html'},
   {title:'Neon Raptor Brewing Co.', desc:"A Nottingham brewery's website, redesigned so ordering beer online feels like walking into the taproom", thumb:'neon-thumb.jpg', link:'case-studies/neon-rapter.html'},
