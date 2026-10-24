@@ -315,7 +315,6 @@ a{color:inherit}
 /* ── SERVICES (white section) ───────────────────── */
 #services{background:var(--white); color:var(--ink); border-radius:48px 48px 0 0; padding:110px 0; position:relative; z-index:2}
 #services .section-label{background:linear-gradient(180deg,#111,#555); -webkit-background-clip:text; background-clip:text; color:transparent}
-#achievements .section-label{font-size:clamp(2rem,6vw,4.6rem)}
 .svc-row{
   display:grid; grid-template-columns:140px 1fr; gap:28px; align-items:start; padding:34px 0;
   border-top:1px solid rgba(14,14,16,0.1);
@@ -349,6 +348,9 @@ a{color:inherit}
 .wk-sub{font-size:0.95rem; color:var(--text3); margin-top:-6px}
 .wk-desc{font-size:1.05rem; line-height:1.62; color:var(--text2); flex-grow:1}
 .wk-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px}
+.wk-role,.wk-result{font-size:0.95rem; line-height:1.55; color:var(--text2)}
+.wk-role b,.wk-result b{display:block; font-family:ui-monospace,'SFMono-Regular',Menlo,monospace; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text3); font-weight:600; margin-bottom:2px}
+.wk-result{padding-top:10px; border-top:1px solid var(--border2)}
 .sticky-cards{
   position:relative; height:100vh; width:100%; overflow:hidden;
   display:flex; align-items:center; justify-content:center; padding:24px;
@@ -399,9 +401,6 @@ a{color:inherit}
 #expDeck .ic-title{font-size:2.1rem}
 #expDeck .ic-badge{font-size:0.9rem; padding:11px 20px}
 #expDeck .ic-desc{font-size:1.25rem; line-height:1.8; max-width:100%; margin:28px 0 18px 64px}
-#achDeck .ic-num{font-size:clamp(2.8rem,4.6vw,4.8rem)}
-#achDeck .ic-title{font-size:1.2rem}
-#achDeck .ic-desc{font-size:0.9rem}
 #expDeck .ic-bullets{gap:20px; max-width:100%; margin-right:24px}
 #expDeck .ic-bullets li{font-size:1.25rem; line-height:1.8; padding-left:24px}
 .ic-bullets li::before{content:'';position:absolute;left:0;top:0.65em;width:5px;height:5px;border-radius:50%;background:var(--pink)}
@@ -740,22 +739,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
-<!-- EDUCATION -->
-<section id="education" class="sc-section">
-  <h2 class="chrome section-label">EDUCATION</h2>
-  <div class="sticky-cards" id="eduCards">
-    <div class="sc-deck" id="eduDeck"></div>
-  </div>
-</section>
-
-<!-- LEADERSHIP & RECOGNITION -->
-<section id="achievements" class="sc-section">
-  <h2 class="chrome section-label">LEADERSHIP &amp; RECOGNITION</h2>
-  <div class="sticky-cards" id="achCards">
-    <div class="sc-deck" id="achDeck"></div>
-  </div>
-</section>
-
 <!-- CONTACT / FOOTER -->
 <section id="contact">
   <div class="wrap">
@@ -979,6 +962,19 @@ const CASE_STUDIES_WORK_ALL = PROJECTS.filter(p => !MOVED_TO_VIBE_LABELS.include
   {title:'Singh Vanity', desc:'The first website for a Mumbai luxury vanity van company, for film crews and for families booking their own celebration', thumb:'vanity-thumb.jpg', link:'case-studies/singh-vanity.html'},
   {title:'HERCESSI Site, WCAG 2.2 AA Conformance Audit', desc:'A real accessibility audit of a live oncology biosimilar site, 10 verified findings with handoff-ready tickets', thumb:'hercessi-thumb.png', link:'case-studies/hercessi.html'}
 ]);
+/* Recruiter summary per case study card: project type, what it is, my role, and one real result
+   (results only where they appear in the case study or CV) */
+const CARD_INFO = {
+  'case-studies/pharmeasy.html': {type:'Independent redesign · solo', desc:"An audit of PharmEasy's checkout: the real points where an order can't be placed, each one redesigned.", role:'UX researcher & product designer', result:'5 checkout breakdowns found and redesigned'},
+  'case-studies/hercessi.html': {type:'Independent audit · solo', desc:'A WCAG 2.2 AA audit of a live oncology biosimilar site, checked by hand against the code.', role:'UX researcher & accessibility auditor', result:'10 verified findings, top 3 written as handoff-ready tickets'},
+  'case-studies/arfinviz.html': {type:'MSc dissertation · KPMG × University of Nottingham', desc:'Tested whether augmented reality helps finance teams read data better than Excel and 2D charts.', role:'Researcher & product designer, end to end', result:'Version 2 onboarding raised task success by 31% (A/B test, 10 participants)'},
+  'https://www.behance.net/gallery/232395541/Shadow-Fax-Courier-Service': {type:'Courier app redesign · solo · 2022', desc:'A redesign of a multi-drop courier ordering flow, with two versions compared using heatmaps.', role:'End-to-end UX design & research'},
+  'https://www.behance.net/gallery/232397651/Growth-Book-Child-Growth-Tracking-App': {type:'Swabhav Techlabs · internship', desc:'A child growth-tracking app for parents.', role:'Ran in-home research and usability sessions with 30+ parents, then simplified the key journeys', result:'Retention up 45% (app analytics and follow-up surveys)'},
+  'https://www.behance.net/gallery/240349765/Enhancing-the-Online-Grocery-Shopping-Experience': {type:'Research project', desc:'Online grocery shopping, studied through ethnography to shape journey recommendations.', role:'Ran 48 hours of in-home fieldwork, diary studies and interviews'},
+  'https://www.behance.net/gallery/241982807/Real-Drive-XR': {type:'Hackathon project · solo build', desc:'A mixed reality driving experience for Meta Quest 3.', role:'Designed the UX/UI in Figma and built it myself in Unity, with AI tools like Cursor'},
+  'https://www.behance.net/gallery/240154913/Enchantopia-Augmented-Reality-AR-Game-UX-Case-Study': {type:'University project · team', desc:'An AR mobile game that mixes magic with the real world around you.', role:'UX research and UI design in Figma, with 3D in Blender and AR prototypes in 8th Wall and Adobe Aero'}
+};
+CASE_STUDIES_WORK_ALL.forEach(c => Object.assign(c, CARD_INFO[c.link] || {}));
 const CASE_STUDIES_WORK = CASE_STUDIES_WORK_ALL.filter(c => !['case-studies/neon-rapter.html','case-studies/marquee.html','case-studies/liquid-light.html','case-studies/singh-vanity.html'].includes(c.link));
 
 const MOVED_WORK = PROJECTS.filter(p => MOVED_TO_VIBE_LABELS.includes(p.label)).map(p => {
@@ -1017,10 +1013,12 @@ function renderWorkGrid(id, list, opts){
     <${tag} class="wk-card${w.comingSoon ? ' wk-coming-soon' : ''}"${linkAttrs}>
       ${w.video ? `<video class="wk-thumb" src="${w.video}" autoplay muted loop playsinline preload="metadata"></video>` : (w.thumb ? `<img class="wk-thumb" src="${w.thumb}" alt="${w.title}" loading="lazy"/>` : '')}
       <div class="wk-body">
-        ${w.comingSoon ? `<div class="wk-eyebrow">${w.eyebrow}</div>` : (simple ? '' : `<div class="wk-eyebrow">${w.eyebrow}</div>`)}
+        ${w.comingSoon ? `<div class="wk-eyebrow">${w.eyebrow}</div>` : (simple ? (w.type ? `<div class="wk-eyebrow">${w.type}</div>` : '') : `<div class="wk-eyebrow">${w.eyebrow}</div>`)}
         <div class="wk-title">${w.title}</div>
         ${simple || !w.sub ? '' : `<div class="wk-sub">${w.sub}</div>`}
         <p class="wk-desc">${w.desc}</p>
+        ${w.role ? `<p class="wk-role"><b>My role</b>${w.role}</p>` : ''}
+        ${w.result ? `<p class="wk-result"><b>Result</b>${w.result}</p>` : ''}
         ${simple ? '' : `<div class="wk-tags">${w.tags.map(t=>`<span class="wc-tag">${t}</span>`).join('')}</div>`}
       </div>
     </${tag}>`;
@@ -1065,35 +1063,6 @@ document.getElementById('expDeck').innerHTML = EXPERIENCE.map(e => `
       <div class="ic-badge">${e.date}</div>
     </div>
     <ul class="ic-bullets">${e.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>
-  </div></div>`).join('');
-
-/* Education */
-const EDUCATION=[
-  {num:'01', school:'UNIVERSITY OF NOTTINGHAM', deg:'MSc, Human-Computer Interaction', date:'SEPT 2022 - SEPT 2023', badge:'2:1',
-   bullets:['Focus on user research, human factors, interaction design, and mixed-reality systems.','Core Modules: Ethnography, Advanced Methods in Human Factors & HCI, Mixed Reality, Cognitive Ergonomics.']},
-  {num:'02', school:'UNIVERSITY OF PUNE & SEAMEDU', deg:'BSc, Game Development & Design', date:'JUN 2018 - JUL 2020', badge:'MERIT',
-   bullets:['Where I started: designing and building mobile and desktop games, with HCI alongside.','Core Modules: Mobile and Desktop Game Development and Design, HCI, Level Design, Sprite Design, C, C++, Python.']}
-];
-document.getElementById('eduDeck').innerHTML = EDUCATION.map(e => `
-  <div class="deck-card"><div class="sc-content">
-    <div class="ic-top">
-      <div class="ic-left"><div class="ic-num">${e.num}</div><div><div class="ic-meta-label">${e.school}</div><div class="ic-title">${e.deg}</div></div></div>
-      <div class="ic-badge">${e.date}</div>
-    </div>
-    <div class="ic-desc" style="margin-top:12px; margin-bottom:0"><span class="ic-badge" style="border-color:var(--pink);color:var(--pink)">${e.badge}</span></div>
-    <ul class="ic-bullets" style="margin-top:16px">${e.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>
-  </div></div>`).join('');
-
-/* Leadership & Recognition */
-const ACHIEVEMENTS=[
-  {num:'01', title:'Scholarship', desc:'Postgraduate Excellence Award recipient from the University of Nottingham (1% acceptance rate).'},
-  {num:'02', title:'International Student Ambassador', desc:'Led campus tours of 20+ prospective students and held talks to promote the university.'},
-  {num:'03', title:'State-Level Swimmer', desc:'Represented the state of Maharashtra in 20 events, achieving 3 medals.'}
-];
-document.getElementById('achDeck').innerHTML = ACHIEVEMENTS.map(a => `
-  <div class="deck-card"><div class="sc-content">
-    <div class="ic-left"><div class="ic-num">${a.num}</div><div><div class="ic-meta-label">LEADERSHIP &amp; RECOGNITION</div><div class="ic-title">${a.title}</div></div></div>
-    <p class="ic-desc">${a.desc}</p>
   </div></div>`).join('');
 
 /* Size each deck to its tallest card's natural content height, instead of one fixed box for all */
@@ -1147,17 +1116,11 @@ function deckMax(desktopMax, mobileMax){
   return window.innerWidth <= 980 ? mobileMax : desktopMax;
 }
 sizeDeckToContent('expDeck', {min:320, max:deckMax(820, 2200)});
-sizeDeckToContent('eduDeck', {min:260, max:deckMax(560, 1400)});
-sizeDeckToContent('achDeck', {min:180, max:deckMax(380, 900)});
 
 initStickyCards(document.getElementById('expCards'), document.querySelectorAll('#expDeck .deck-card'));
-initStickyCards(document.getElementById('eduCards'), document.querySelectorAll('#eduDeck .deck-card'));
-initStickyCards(document.getElementById('achCards'), document.querySelectorAll('#achDeck .deck-card'));
 
 function resizeDecksToContent(){
   sizeDeckToContent('expDeck', {min:320, max:deckMax(820, 2200)});
-  sizeDeckToContent('eduDeck', {min:260, max:deckMax(560, 1400)});
-  sizeDeckToContent('achDeck', {min:180, max:deckMax(380, 900)});
 }
 if (document.fonts && document.fonts.ready) {
   // Re-measure once web fonts land -- the initial sizeDeckToContent() calls above
