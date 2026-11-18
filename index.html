@@ -771,7 +771,7 @@ const PROJECTS=[
   {num:'03',label:'Growth Book',sub:'Child Growth Tracking App',tagline:"Track your child's growth with confidence",tags:['UX Design','Healthcare','Mobile','User Research'],
    images:['https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/91bad9232397651.689b72e1837b0.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/43b2bd232397651.689b72e182186.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/79d3c0232397651.689b72e184997.png'],
    link:'https://www.behance.net/gallery/232397651/Growth-Book-Child-Growth-Tracking-App'},
-  {num:'04',label:'Real Drive XR',sub:'Mixed Reality · Meta Quest 3',tagline:'Drive beyond reality',tags:['Mixed Reality','Meta Quest 3','Unity','XR Design'],
+  {num:'04',label:'Real Drive XR',sub:'Mixed Reality · Meta Quest 3',tagline:'Drive beyond reality', thumb:'realdrive-thumb.jpg',tags:['Mixed Reality','Meta Quest 3','Unity','XR Design'],
    images:['https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/dd3535241982807.6963f30b39e21.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/1b46fe241982807.6963f30b3f89f.png','https://mir-s3-cdn-cf.behance.net/project_modules/hd_webp/794459241982807.6963f30b3957b.png'],
    link:'https://www.behance.net/gallery/241982807/Real-Drive-XR'},
   {num:'05',label:'Enchantopia',sub:'AR Game UX Case Study',tagline:'Where augmented reality meets play',tags:['Augmented Reality','Game UX','Figma','WebXR'],
@@ -955,27 +955,29 @@ const MOVED_TO_VIBE_VIDEOS = { 'Neon Rapter':'showcase-neon.mp4', 'Master Stroke
 const CASE_STUDIES_WORK_ALL = PROJECTS.filter(p => !MOVED_TO_VIBE_LABELS.includes(p.label)).map(p => ({
   title: p.label, desc: p.tagline || p.sub, thumb: p.thumb || p.images[0], link: p.link
 })).concat([
-  {title:"Where PharmEasy's Checkout Breaks Trust", desc:'Five real checkout breakdowns, audited and redesigned, so an order can actually be placed', thumb:'pharmeasy-thumb.png', link:'case-studies/pharmeasy.html'},
+  {title:"Where PharmEasy's Checkout Breaks Trust", desc:'Five real checkout breakdowns, audited and redesigned, so an order can actually be placed', thumb:'pharmeasy-thumb-v2.jpg', link:'case-studies/pharmeasy.html'},
   {title:'Neon Raptor Brewing Co.', desc:"A Nottingham brewery's website, redesigned so ordering beer online feels like walking into the taproom", thumb:'neon-thumb.jpg', link:'case-studies/neon-rapter.html'},
   {title:'Marquee uPVC Architectural Fins', desc:'A 60-page print catalogue turned into a website architects can shortlist from and enquire through', thumb:'marquee-thumb.jpg', link:'case-studies/marquee.html'},
   {title:'Liquid Light Brewing Co.', desc:'A Nottingham brewery site built around three jobs: buying beer, ordering for a venue, and finding out what’s on', thumb:'liquid-thumb.jpg', link:'case-studies/liquid-light.html'},
   {title:'Singh Vanity', desc:'The first website for a Mumbai luxury vanity van company, for film crews and for families booking their own celebration', thumb:'vanity-thumb.jpg', link:'case-studies/singh-vanity.html'},
-  {title:'HERCESSI Site, WCAG 2.2 AA Conformance Audit', desc:'A real accessibility audit of a live oncology biosimilar site, 10 verified findings with handoff-ready tickets', thumb:'hercessi-thumb.png', link:'case-studies/hercessi.html'}
+  {title:'HERCESSI Site, WCAG 2.2 AA Conformance Audit', desc:'A real accessibility audit of a live oncology biosimilar site, 10 verified findings with handoff-ready tickets', thumb:'hercessi-thumb-v2.jpg', link:'case-studies/hercessi.html'}
 ]);
 /* Recruiter summary per case study card: project type, what it is, my role, and one real result
    (results only where they appear in the case study or CV) */
 const CARD_INFO = {
   'case-studies/pharmeasy.html': {type:'Independent redesign · solo', desc:"An audit of PharmEasy's checkout: the real points where an order can't be placed, each one redesigned.", role:'UX researcher & product designer', result:'5 checkout breakdowns found and redesigned'},
-  'case-studies/hercessi.html': {type:'Independent audit · solo', desc:'A WCAG 2.2 AA audit of a live oncology biosimilar site, checked by hand against the code.', role:'UX researcher & accessibility auditor', result:'10 verified findings, top 3 written as handoff-ready tickets'},
+  'case-studies/hercessi.html': {type:'Independent audit · solo', desc:'Can someone using only a keyboard order the drug on a live oncology site? I tested it against WCAG 2.2 AA, by hand and in the code.', role:'UX researcher & accessibility auditor', result:'10 verified findings in September; re-checked in November, 1 fixed and a new keyboard blocker found'},
   'case-studies/arfinviz.html': {type:'MSc dissertation · KPMG × University of Nottingham', desc:'Tested whether augmented reality helps finance teams read data better than Excel and 2D charts.', role:'Researcher & product designer, end to end', result:'Version 2 onboarding raised task success by 31% (A/B test, 10 participants)'},
-  'https://www.behance.net/gallery/232395541/Shadow-Fax-Courier-Service': {type:'Courier app redesign · solo · 2022', desc:'A redesign of a multi-drop courier ordering flow, with two versions compared using heatmaps.', role:'End-to-end UX design & research'},
-  'https://www.behance.net/gallery/232397651/Growth-Book-Child-Growth-Tracking-App': {type:'Swabhav Techlabs · internship', desc:'A child growth-tracking app for parents.', role:'Ran in-home research and usability sessions with 30+ parents, then simplified the key journeys', result:'Retention up 45% (app analytics and follow-up surveys)'},
-  'https://www.behance.net/gallery/240349765/Enhancing-the-Online-Grocery-Shopping-Experience': {type:'Research project', desc:'Online grocery shopping, studied through ethnography to shape journey recommendations.', role:'Ran 48 hours of in-home fieldwork, diary studies and interviews'},
-  'https://www.behance.net/gallery/241982807/Real-Drive-XR': {type:'Hackathon project · solo build', desc:'A mixed reality driving experience for Meta Quest 3.', role:'Designed the UX/UI in Figma and built it myself in Unity, with AI tools like Cursor'},
-  'https://www.behance.net/gallery/240154913/Enchantopia-Augmented-Reality-AR-Game-UX-Case-Study': {type:'University project · team', desc:'An AR mobile game that mixes magic with the real world around you.', role:'UX research and UI design in Figma, with 3D in Blender and AR prototypes in 8th Wall and Adobe Aero'}
+  'https://www.behance.net/gallery/232395541/Shadow-Fax-Courier-Service': {type:'Courier app redesign · solo · 2022', desc:'Senders with several parcels had to book every drop as its own order, and 60% of them left for a competitor.', role:'Solo, from research to tested design', result:'Up to 6 drops in one order, chosen by A/B testing two designs'},
+  'https://www.behance.net/gallery/232397651/Growth-Book-Child-Growth-Tracking-App': {type:'Swabhav Techlabs · internship', desc:'Half of parents tracked their baby on paper, and only 42.2% used an app. Growth Book puts growth, vaccinations and food in one place.', role:'Ran in-home research and usability sessions with 30+ parents, then simplified the key journeys', result:'Retention up 45% (app analytics and follow-up surveys)'},
+  'https://www.behance.net/gallery/240349765/Enhancing-the-Online-Grocery-Shopping-Experience': {type:'Research project', desc:'Online grocery shopping misses how people really shop. I watched them in context to close the gap between what they need and what the site offers.', role:'Ran 48 hours of in-home fieldwork, diary studies and interviews'},
+  'https://www.behance.net/gallery/241982807/Real-Drive-XR': {type:'Hackathon project · solo build', desc:'Only 47% of UK learners pass their driving test first time. Can mixed reality practice in a real car help?', role:'Designed the UX/UI in Figma and built it myself in Unity, with AI tools like Cursor', result:'68% passed first time in an 8-week pilot (n=24), against a 47% UK average'},
+  'https://www.behance.net/gallery/240154913/Enchantopia-Augmented-Reality-AR-Game-UX-Case-Study': {type:'University project · team', desc:'Most mobile games keep players sitting still. Could AR put magic into the real world and get them out exploring it?', role:'UX research and UI design in Figma, with 3D in Blender and AR prototypes in 8th Wall and Adobe Aero'}
 };
 CASE_STUDIES_WORK_ALL.forEach(c => Object.assign(c, CARD_INFO[c.link] || {}));
-const CASE_STUDIES_WORK = CASE_STUDIES_WORK_ALL.filter(c => !['case-studies/neon-rapter.html','case-studies/marquee.html','case-studies/liquid-light.html','case-studies/singh-vanity.html'].includes(c.link));
+const CARDS_LAST = ['Enchantopia','Grocery UX'];
+const CASE_STUDIES_WORK = CASE_STUDIES_WORK_ALL.filter(c => !['case-studies/neon-rapter.html','case-studies/marquee.html','case-studies/liquid-light.html','case-studies/singh-vanity.html'].includes(c.link))
+  .sort((a,b) => CARDS_LAST.indexOf(a.title) - CARDS_LAST.indexOf(b.title));
 
 const MOVED_WORK = PROJECTS.filter(p => MOVED_TO_VIBE_LABELS.includes(p.label)).map(p => {
   const detailed = WORK.find(w => w.link === p.link);
