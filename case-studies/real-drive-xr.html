@@ -328,6 +328,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .hero::after{height:62%;bottom:auto;top:0;opacity:.6;-webkit-mask-image:linear-gradient(90deg,#000 0 18%,transparent 26% 66%,#000 74%);mask-image:linear-gradient(90deg,#000 0 18%,transparent 26% 66%,#000 74%)}
   .photo figcaption{white-space:nowrap;font-size:13px}
   @media (max-width:700px){.part::after{font-size:150px;top:24px}.hero::after{opacity:.35}.photo figcaption{white-space:normal}}
+
+  /* ===== 2026-11-19 v2 background: motion (replaces grid, outlined numbers, static hero course) ===== */
+  .part::before,.part::after,.hero::after{content:none!important}
+  .part.dark::before{content:none!important}
+  .roadfx{position:absolute;inset:0;z-index:-1;pointer-events:none;width:100%;height:100%;display:block}
+  .hero .roadfx{-webkit-mask-image:linear-gradient(180deg,transparent 0 58%,#000 68%);mask-image:linear-gradient(180deg,transparent 0 58%,#000 68%)}
+  .hero .sheetrow{background:rgba(247,246,242,.72);backdrop-filter:blur(1.5px)}
+  .part.dark .roadfx{opacity:.9;-webkit-mask-image:linear-gradient(180deg,#000 0,rgba(0,0,0,.55) 45%,#000 100%);mask-image:linear-gradient(180deg,#000 0,rgba(0,0,0,.55) 45%,#000 100%)}
+  .end{overflow:hidden;isolation:isolate}
+  .end .roadfx{opacity:.5}
+  /* scroll progress: an L plate driving along a lane line under the top bar */
+  .drive{position:absolute;left:0;right:0;bottom:-2px;height:4px;pointer-events:none;
+    background:repeating-linear-gradient(90deg,rgba(17,18,20,.25) 0 18px,transparent 18px 32px)}
+  .drive i{position:absolute;left:0;top:0;height:4px;width:var(--p,0%);background:var(--red)}
+  .drive b{position:absolute;top:-9px;left:calc(13px + (100% - 26px) * var(--pn,0));transform:translateX(-50%);width:22px;height:22px;background:#fff;border:2px solid var(--ink);border-radius:5px;
+    display:grid;place-items:center;font:900 15px/1 var(--sans);color:var(--red);box-shadow:0 4px 10px -4px rgba(0,0,0,.4)}
 </style>
 </head>
 <body>
@@ -338,6 +354,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
+  <div class="drive" aria-hidden="true"><i></i><b>L</b></div>
   <div class="wrap">
     <a href="../index.html#work">&larr; Portfolio</a>
     <nav aria-label="Sections"><a href="#problem">Problem</a><a href="#research">Research</a><a href="#people">People</a><a href="#journey">Journey</a><a href="#design">Design</a><a href="#pilot">Pilot</a><a href="#learnings">Learnings</a></nav>
@@ -765,6 +782,50 @@ showJ('now');
   ty=table(tx,ty,'CONE LINE',[['C1','path C1→C8','34.7'],['C2','cone-step','2.3-7.2'],['N2','cones','8']]);
   ty=table(tx,ty,'P SERIES',[['P1','line length','61.1'],['P2','pitch','6.3-11.7'],['N3','positions','8'],['','purpose','[TBD]']]);
   ty=table(tx,ty,'SITE',[['E1','extent E-W','134.2'],['E2','extent N-S','68.4'],['A','stated area','50 × 50'],['','status','CONFLICT'],['S','sign markers','3']]);
+})();
+
+// ---- Motion background: a road in perspective, lane dashes + cones rolling toward you ----
+(function(){
+  const still=reduce;
+  function road(host,o){
+    const cv=document.createElement('canvas');cv.className='roadfx';cv.setAttribute('aria-hidden','true');host.prepend(cv);
+    const ctx=cv.getContext('2d');let w=0,h=0,dpr=1,run=false,t0=performance.now(),off=0;
+    const size=()=>{dpr=Math.min(devicePixelRatio||1,2);w=host.clientWidth;h=host.clientHeight;cv.width=w*dpr;cv.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);draw();};
+    const F=()=>h*o.focal, hz=()=>h*o.horizon, cam=1.25, Z0=1.6, Z1=90;
+    const P=(x,z)=>{const s=F()/z;return [w*o.cx+x*s*o.spread, hz()+cam*s];};
+    const fade=z=>Math.max(0,1-z/Z1);
+    function quad(x0,x1,za,zb,col,a){const A=P(x0,za),B=P(x1,za),C=P(x1,zb),D=P(x0,zb);ctx.globalAlpha=a;ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(...A);ctx.lineTo(...B);ctx.lineTo(...C);ctx.lineTo(...D);ctx.fill();}
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      // ground grid (XR floor): horizontal rungs rolling in, plus converging rails
+      for(let k=0;k<40;k++){const z=Z0+((k*4-off)%160+160)%160;if(z>Z1)continue;const [ ,y]=P(0,z);
+        ctx.globalAlpha=o.grid*fade(z);ctx.strokeStyle=o.line;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
+      for(let x=-40;x<=40;x+=4){const a=P(x,Z0),b=P(x,Z1);ctx.globalAlpha=o.grid*.7;ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();}
+      // road edges
+      for(const x of [-3.6,3.6]){for(let z=Z0;z<Z1;z+=2){quad(x-.08,x+.08,z,z+2,o.line,o.edge*fade(z));}}
+      // lane dashes (centre + two lanes)
+      for(const x of [-1.2,1.2]){for(let k=0;k<30;k++){const z=Z0+((k*7-off)%210+210)%210;if(z>Z1)continue;quad(x-.07,x+.07,z,z+3,o.line,o.dash*fade(z));}}
+      // cones every 9 m on both kerbs
+      for(const x of [-4.5,4.5]){for(let k=0;k<20;k++){const z=Z0+.6+((k*9-off*1)%180+180)%180;if(z>Z1)continue;const [px,py]=P(x,z);const s=F()/z*.55;
+        ctx.globalAlpha=o.cone*fade(z);ctx.fillStyle=o.accent;ctx.beginPath();ctx.moveTo(px,py-s);ctx.lineTo(px+s*.42,py);ctx.lineTo(px-s*.42,py);ctx.fill();
+        ctx.fillStyle=o.stripe;ctx.fillRect(px-s*.2,py-s*.55,s*.4,s*.12);}}
+      // horizon
+      ctx.globalAlpha=o.grid*1.4;ctx.fillStyle=o.line;ctx.fillRect(0,hz(),w,1);ctx.globalAlpha=1;
+    }
+    function loop(now){if(!run)return;off=(now-t0)/1000*o.speed;draw();requestAnimationFrame(loop);}
+    new ResizeObserver(size).observe(host);size();
+    if(still)return;
+    new IntersectionObserver(es=>es.forEach(e=>{const v=e.isIntersecting;if(v&&!run){run=true;requestAnimationFrame(loop);}else if(!v)run=false;})).observe(host);
+  }
+  const light={line:'#111214',accent:'#D7191F',stripe:'#ffffff',grid:.08,edge:.3,dash:.26,cone:.6,horizon:.66,focal:.9,cx:.5,spread:1.15,speed:9};
+  const dark={line:'#F7F6F2',accent:'#E2363B',stripe:'#F7F6F2',grid:.07,edge:.2,dash:.17,cone:.5,horizon:.18,focal:.7,cx:.5,spread:1.3,speed:9};
+  road(document.querySelector('.hero'),light);
+  document.querySelectorAll('.part.dark').forEach(s=>road(s,dark));
+  road(document.querySelector('.end'),{...dark,accent:'#ffffff',stripe:'#D7191F',grid:.09,cone:.35,horizon:.3});
+  // scroll progress car
+  const dv=document.querySelector('.drive');
+  const prog=()=>{const m=document.documentElement.scrollHeight-innerHeight;const r=m>0?Math.min(1,scrollY/m):0;dv.style.setProperty('--p',(r*100).toFixed(2)+'%');dv.style.setProperty('--pn',r.toFixed(4));};
+  addEventListener('scroll',prog,{passive:true});prog();
 })();
 </script>
 </body>
